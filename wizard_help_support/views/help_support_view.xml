@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--    tree view for help and support-->
+    <record id="view_help_and_support_tree" model="ir.ui.view">
+        <field name="name">help.support.tree</field>
+        <field name="model">help.support</field>
+        <field name="arch" type="xml">
+            <tree string="Help and Support Questions" default_order="sequence">
+                <field name="sequence" widget="handle"/>
+                <field name="name" string="Questions"/>
+            </tree>
+        </field>
+    </record>
+    <!--    search view for help and support-->
+    <record id="view_help_and_support_filter" model="ir.ui.view">
+        <field name="name">help.support.list.select</field>
+        <field name="model">help.support</field>
+        <field name="arch" type="xml">
+            <search string="Search Question">
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+    <!--form view for help and support-->
+    <record id="view_help_and_support_form" model="ir.ui.view">
+        <field name="name">help.support.form</field>
+        <field name="model">help.support</field>
+        <field name="arch" type="xml">
+            <form string="Help and Support">
+                <sheet>
+                    <label for="name"/>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <br/>
+                    <field name="answer"
+                           placeholder="If you use html content for answers and if you are using iframe, then set the video width as 100% and height as 250"/>
+                    <group>
+                        <group>
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!--action view for help and support-->
+    <record id="help_and_support_action" model="ir.actions.act_window">
+        <field name="name">Help and Support</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">help.support</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click here to Create questions and answers for Help and Support.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="help_and_support_menu"
+              name="Help and Support"
+              parent="wizard_project.car_care_configuration_menu"
+              action="help_and_support_action"
+              sequence="14"/>
+
+</odoo>

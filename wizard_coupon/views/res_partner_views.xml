@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--smart button for Coupons-->
+    <record id="res_partner_view_form_coupon_inherit" model="ir.ui.view">
+        <field name="name">res.partner.view.form.inherit.coupon</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button type="object" class="oe_stat_button" icon="fa-ticket" name="action_view_coupons">
+                    <div class="o_form_field o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="available_coupon_count"/>/
+                            <field name="total_coupon_count"/>
+                        </span>
+                        <span class="o_stat_text">Coupons</span>
+                    </div>
+                </button>
+            </div>
+            <field name="lang" position="after">
+                <field name="device_token" invisible="1" readonly="1"/>
+            </field>
+        </field>
+    </record>
+</odoo>

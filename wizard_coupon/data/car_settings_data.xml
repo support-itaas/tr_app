@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="wizard_car_settings" model="car.settings">
+            <field name="name">Car Settings</field>
+        </record>
+    </data>
+</odoo>
+

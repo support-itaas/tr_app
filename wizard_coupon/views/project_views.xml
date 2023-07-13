@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="project_task_form_inherit" model="ir.ui.view">
+        <field name="name">project.task.form.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_assign_to_me']" position="before">
+                <button name="button_start" string="Start" type="object" class="oe_highlight"
+                        attrs="{'invisible' : [('state', '!=', 'draft')]}"/>
+                <button name="button_stop" string="Stop" type="object" class="oe_highlight"
+                        attrs="{'invisible' : [('state', '!=', 'in_progress')]}"/>
+                <button name="button_deadline" string="Deadline" type="object" class="oe_highlight" groups="base.group_no_one"/>
+
+
+            </xpath>
+            <field name="name" position="after">
+                <field name="car_clean"/>/
+                <field name="barcode"/>
+            </field>
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="coupon_id" options="{'no_open':True,'no_create':True}"/>
+                <field name="picking_id"  attrs="{'invisible' : [('picking_id', '=', False)]}"/>
+                <field name="distance"/>
+                <field name="car_remark_ids" widget="many2many_checkboxes"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="amount" widget="monetary" options="{'currency_field': 'currency_id'}" invisible="1"/>
+                <field name="public_price" widget="monetary" options="{'currency_field': 'currency_id'}" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="replace">
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="partner_id"/>
+                <field name="plate_number_id"/>
+                <button name="button_cancel" string="Cancel" type="object" class="oe_highlight"
+                        attrs="{'invisible' : [('state', 'in', ('done','cancel'))]}"/>
+            </xpath>
+
+            <field name="stage_id" position="replace">
+                <field name="state" widget="statusbar"/>
+            </field>
+        </field>
+    </record>
+</odoo>

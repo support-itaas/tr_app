@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--Boolean field in Journal-->
+    <record id="account_journal_wallet_new" model="ir.ui.view">
+        <field name="name">account.journal.wallet.new</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='type']" position="after">
+                <field name="is_in_app_wallet"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_popup_promotion_tree" model="ir.ui.view">
+        <field name="name">popup.promotion.tree</field>
+        <field name="model">popup.promotion</field>
+        <field name="arch" type="xml">
+            <tree string="Popup Promotions">
+                <field name="name"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_popup_promotion_form" model="ir.ui.view">
+        <field name="name">popup.promotion.form</field>
+        <field name="model">popup.promotion</field>
+        <field name="arch" type="xml">
+            <form string="Popup Promotion">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="title"/>
+                            <field name="type" widget="radio"/>
+<!--                            attrs="{'invisible': [('tracking', '=', 'none')], 'required': [('tracking', '!=', 'none')]}"-->
+                            <field name="link" attrs="{'invisible':[('type', '!=', 'external')], 'required': [('type', '=', 'external')]}"/>
+                            <field name="news_and_promotion_id" attrs="{'invisible':[('type', '!=', 'internal')], 'required': [('type', '=', 'internal')]}"/>
+                            <field name="gallery_id" attrs="{'invisible':[('type', '!=', 'gallery')], 'required': [('type', '=', 'gallery')]}"/>
+
+                        </group>
+                        <group>
+                            <field name="image" widget="image"/>
+                        </group>
+                        <field name="optout_user_ids" widget="one2many_list" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="partner_id" required="1"/>
+                            </tree>
+                        </field>
+
+                        <!--                        </group>-->
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="popup_promotion_action" model="ir.actions.act_window">
+        <field name="name">Popup Promotions</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">popup.promotion</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click here to Create Popup Promotions.
+            </p>
+        </field>
+    </record>
+
+    <!--    <menuitem id="notification_main_menu"-->
+    <!--              name="Notifications"-->
+    <!--              parent="wizard_project.car_care_root_menu"-->
+    <!--              sequence="9"/>-->
+
+    <menuitem id="popup_promotion_menu"
+              name="Popup Promotions"
+              parent="wizard_project.car_care_configuration_menu"
+              action="popup_promotion_action"
+              sequence="11"/>
+
+</odoo>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="wizard_branch_rule" model="ir.rule">
+        <field name="name">Wizard branch restriction rule for user</field>
+        <field name="model_id" ref="project.model_project_project"/>
+        <field name="domain_force">[('operating_branch_id', '=', user.default_operating_unit_id.id)]
+        </field>
+        <field name="groups" eval="[(4, ref('project.group_project_user'))]"/>
+    </record>
+
+    <record id="wizard_branch_rule_manager" model="ir.rule">
+        <field name="name">Wizard branch restriction rule for manager</field>
+        <field name="model_id" ref="project.model_project_project"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('project.group_project_manager'))]"/>
+    </record>
+
+    <record id="wizard_branch_task_rule" model="ir.rule">
+        <field name="name">Wizard branch task restriction rule for user</field>
+        <field name="model_id" ref="project.model_project_task"/>
+        <field name="domain_force">[('project_id.operating_branch_id', '=', user.default_operating_unit_id.id)]
+        </field>
+        <field name="groups" eval="[(4, ref('project.group_project_user'))]"/>
+    </record>
+
+    <record id="wizard_branch_task_manager_rule" model="ir.rule">
+        <field name="name">Wizard branch task restriction rule for manager</field>
+        <field name="model_id" ref="project.model_project_task"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('project.group_project_manager'))]"/>
+    </record>
+
+    <record id="wizard_pos_order_branch_rule" model="ir.rule">
+        <field name="name">Wizard branch pos order restriction rule for user</field>
+        <field name="model_id" ref="point_of_sale.model_pos_order"/>
+        <field name="domain_force">[('operating_branch_id', '=', user.default_operating_unit_id.id)]
+        </field>
+        <field name="groups" eval="[(4, ref('point_of_sale.group_pos_user'))]"/>
+    </record>
+
+    <record id="wizard_pos_order_branch_manager_rule" model="ir.rule">
+        <field name="name">Wizard branch pos order restriction rule for manager</field>
+        <field name="model_id" ref="point_of_sale.model_pos_order"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('point_of_sale.group_pos_manager'))]"/>
+    </record>
+
+    <record id="wizard_appointment_rule" model="ir.rule">
+        <field name="name">Wizard appointment restriction rule for user</field>
+        <field name="model_id" ref="wizard_appointment.model_appointment_appointment"/>
+        <field name="domain_force">[('branch_id.operating_branch_id', '=', user.default_operating_unit_id.id)]
+        </field>
+        <field name="groups" eval="[(4, ref('project.group_project_user'))]"/>
+    </record>
+
+    <record id="wizard_appointment_manager_rule" model="ir.rule">
+        <field name="name">Wizard appointment restriction rule for manager</field>
+        <field name="model_id" ref="wizard_appointment.model_appointment_appointment"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('project.group_project_manager'))]"/>
+    </record>
+
+    <record id="wizard_coupon_rule" model="ir.rule">
+        <field name="name">Wizard coupon restriction rule for user</field>
+        <field name="model_id" ref="wizard_coupon.model_wizard_coupon"/>
+        <field name="domain_force">['|',('branch_id.operating_branch_id', '=', user.default_operating_unit_id.id),
+            ('order_branch_id.operating_branch_id', '=', user.default_operating_unit_id.id)]
+        </field>
+        <field name="groups" eval="[(4, ref('project.group_project_user'))]"/>
+    </record>
+
+    <record id="wizard_coupon_manager_rule" model="ir.rule">
+        <field name="name">Wizard coupon restriction rule for manager</field>
+        <field name="model_id" ref="wizard_coupon.model_wizard_coupon"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('project.group_project_manager'))]"/>
+    </record>
+
+</odoo>

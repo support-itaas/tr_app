@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pos_order_form_inherits_return_product" model="ir.ui.view">
+        <field name="name">pos.order.form.inherits.return.product</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='refund']" position="attributes">
+
+                <attribute name="groups">point_of_sale.group_pos_manager</attribute>
+
+            </xpath>
+        </field>
+    </record>
+</odoo>

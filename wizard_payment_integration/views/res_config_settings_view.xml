@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_general_form_gbprime" model="ir.ui.view">
+        <field name="name">res.config.settings.general.form.gbprime</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='emails']" position="after">
+
+                <div id="gbprime_credentials">
+                    <h2>Gateway Details</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div style="font-weight:bold;">
+                                    Configure GB Prime Gateway
+                                </div>
+                            <div class="o_setting_right_pane">
+
+                                <span/>
+
+                                <div class="content-group">
+                                    <div class="mt16 row">
+                                        <label for="gbp_public_key"
+                                               class="col-xs-3 col-md-3 o_light_label"/>
+                                        <field name="gbp_public_key" class="oe_inline" password="True"/>
+                                    </div>
+                                    <div class="mt16 row">
+                                        <label for="gbp_secret_key"
+                                               class="col-xs-3 col-md-3 o_light_label"/>
+                                        <field name="gbp_secret_key" class="oe_inline" password="True"/>
+                                    </div>
+                                    <div class="mt16 row">
+                                        <label for="gbp_token"
+                                               class="col-xs-3 col-md-3 o_light_label"/>
+                                        <field name="gbp_token" class="oe_inline" password="True"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <div style="font-weight:bold;">
+                                    Configure SCB Gateway
+                                </div>
+                            <div class="o_setting_right_pane">
+
+                                <span/>
+
+                                <div class="content-group">
+                                    <div class="mt16 row">
+                                        <label for="scb_api_key"
+                                               class="col-xs-3 col-md-3 o_light_label"/>
+                                        <field name="scb_api_key" class="oe_inline"/>
+                                    </div>
+                                    <div class="mt16 row">
+                                        <label for="scb_api_secret"
+                                               class="col-xs-3 col-md-3 o_light_label"/>
+                                        <field name="scb_api_secret" class="oe_inline"/>
+                                    </div>
+                                    <div class="mt16 row">
+                                        <label for="biller_id"
+                                               class="col-xs-3 col-md-3 o_light_label"/>
+                                        <field name="biller_id" class="oe_inline"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--                                <div class="col-xs-12 col-md-6 o_setting_box">-->
+                        <!--                                    <div class="o_setting_right_pane">-->
+                        <!--                                        <label string="Document Template"/>-->
+                        <!--                                        <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." groups="base.group_multi_company"/>-->
+                        <!--                                        <div class="text-muted">-->
+                        <!--                                            Choose your document's header and footer layout-->
+                        <!--                                        </div>-->
+                        <!--                                        <div class="content-group">-->
+                        <!--                                            <div class="mt16" groups="base.group_no_one">-->
+                        <!--                                                <label for="external_report_layout" string="Template" class="col-xs-3 col-md-3 o_light_label"/>-->
+                        <!--                                                <field name="external_report_layout" class="oe_inline"/>-->
+                        <!--                                            </div>-->
+                        <!--                                            <div class="mt16">-->
+                        <!--                                                <button name="change_report_template" string="Change Document Template" type="object" class="oe_link" icon="fa-arrow-right"/>-->
+                        <!--                                                <button name="edit_external_header" string="Edit Header" type="object" class="oe_link" groups="base.group_no_one"/>-->
+                        <!--                                                <button name="%(web.action_report_externalpreview)d" string="Preview Document" type="action" class="oe_link" groups="base.group_no_one"/>-->
+                        <!--                                            </div>-->
+                        <!--                                        </div>-->
+                        <!--                                    </div>-->
+                        <!--                                </div>-->
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--Adding field is branch field to res partner-->
+    <record id="res_partner_is_branch_form_inherit" model="ir.ui.view">
+        <field name="name">res.partner.view.form.is.branch.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group/group/field[@name='type']" position="before">
+                <field name="is_branch"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--Adding search view for branches in res partner-->
+    <record id="view_res_partner_filter_is_branch_inherit" model="ir.ui.view">
+        <field name="name">res.partner.view.filter.is.branch.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='type_company']" position="after">
+                <filter string="Branches" name="type_branch" domain="[('is_branch','=',1)]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
+
+

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="wizard_payment_details">
+        <t t-call="website.layout">
+            <style>
+                header{
+                display: none !important;
+                }
+                footer{
+                display: none !important;
+                }
+            </style>
+            <div class="container">
+                <div class="col-lg-12 col-md-12 col-sm-12 m-auto">
+                    <form role="form" action="/verification" method="POST">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="card1" style="padding: 53px 60px;">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                                    <h4 style="margin-bottom: 24px;">Payment amount details</h4>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 ">
+                                    <label>Reference number</label>
+                                    <br/>
+                                    <div>
+                                        <input id="ref" type="text" t-att-value="ref" name="ref" class="form-control"
+                                               readonly="1"
+                                               required="true" style="margin-bottom: 0;"/>
+                                    </div>
+                                    <br/>
+                                    <div>
+                                        <input id="amount" t-att-value="amount" type="text" name="amount"
+                                               class="form-control" readonly="1"
+                                               placeholder="Amount" required="true" style="margin-bottom: 0;"/>
+                                    </div>
+                                    <br/>
+                                    <div>
+                                        <input id="details" t-att-value="details[0]" readonly="1" type="text"
+                                               name="details" class="form-control"
+                                               placeholder="Details" style="margin-bottom: 0;"/>
+                                        <br/>
+                                    </div>
+                                    <!--                                    <div class="col-lg-12 col-md-12 col-sm-12" style="display:flex">-->
+                                    <!--                                        <button type="confirm" class="btn btn-primary button">Pay now</button>-->
+                                    <!--                                        <a class="cancel" role="button" href="/payment_cancel"-->
+                                    <!--                                           aria-expanded="false" aria-controls="o_concept_desc4">-->
+                                    <!--                                            Cancel-->
+                                    <!--                                        </a>-->
+                                    <!--                                    </div>-->
+                                    <div class="col-lg-12 col-md-12 col-sm-12"
+                                         style="justify-content: center;display:flex">
+                                        <button type="confirm" class="btn btn-primary button">Pay now</button>
+                                        <a class="cancel" role="button" href="/payment_cancel"
+                                        >
+                                            <button class="btn btn-primary button ml-2" name="cancel" style="margin-left: 8px;">Cancel</button>
+                                        </a>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                                        <h6 style="margin-top: 10px;">Secured by
+                                            <span>
+                                                <img src="wizard_payment_integration/static/src/images/logo.svg" style="width: 26px;"></img>
+                                            </span>
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </t>
+    </template>
+</odoo>

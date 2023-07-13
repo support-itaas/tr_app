@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pos_order_form_inherits" model="ir.ui.view">
+        <field name="name">pos.order.form.inherits</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='lines']" position="after">
+                <group>
+                    <field name="wallet_amount" widget="monetary"/>
+                </group>
+            </xpath>
+            <xpath expr="//form/sheet/notebook/page[@name='extra']/group[1]" position="replace">
+                <group>
+                    <group string="General Information">
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="location_id" widget="selection" groups="stock.group_stock_multi_locations"/>
+                        <field name="user_id"/>
+                        <field name="pricelist_id" groups="product.group_sale_pricelist"/>
+                        <field name="pricelist_currency_id"/>
+                        <field name="picking_id" readonly="1"/>
+                        <field name="pos_reference"/>
+                        <field name="points"/>
+                        <field name="star"/>
+                    </group>
+                    <group string="Branch Information">
+                        <field name="branch_id"/>
+                        <field name="operating_branch_id"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="product_stock_report_id">
+            <t t-call="web.basic_layout">
+                <div class="header">
+
+                    <!--<t t-set="product_name" t-value="0"/>-->
+                    <!--<t t-set="product_uom" t-value="0"/>-->
+                    <!--<t t-foreach="docs" t-as="product">-->
+                    <!--<t t-foreach="doc_model.get_stock_move_by_product_by_date(data['date_from'],data['date_to'],product)" t-as="move">-->
+                    <!--<t t-set="product_name" t-value="move['name']"/>-->
+                    <!--<t t-set="product_uom" t-value="move['uom']"/>-->
+                    <!--</t>-->
+                    <!--</t>-->
+
+                    <t t-set="product_name" t-value="product_id.name"/>
+                    <t t-set="product_uom" t-value="product_id.uom_id.name"/>
+
+                    <div style="text-align:center">
+                        <font style="font-size: 18px;">
+                            <strong>รายงานสินค้าและวัตถุดิบ</strong>
+                        </font>
+                    </div><p/>
+                    <div style="text-align:center">
+                        <font style="font-size: 14px;">
+                            <span>ณ วันที่</span>&amp;nbsp;&amp;nbsp;<span t-esc="date_to"/>
+                        </font>
+                    </div><p/>
+                    <div class="col-xs-12">
+                        <font style="font-size: 14px;">
+                            <span><b>ชื่อผู้ประกอบการ</b></span>&amp;nbsp;&amp;nbsp;
+                            <span t-esc="company_id.name" />
+                            <span style="position: absolute;left: 55%;"><b>เลขประจำตัวผู้เสียภาษีอากร</b></span>&amp;nbsp;&amp;nbsp;
+                            <span style="position: absolute;left: 78%;" t-field="company_id.vat"/><br/>
+                            <span><b>ชื่อสถานประกอบการ</b></span>&amp;nbsp;&amp;nbsp;
+                            <span t-esc="company_id.name" />
+                            <span style="position: absolute;left: 55%;">[X]</span>
+                            <span style="position: absolute;left: 58%;"><b>สำนักงานใหญ่</b></span>&amp;nbsp;&amp;nbsp;
+                            <span style="position: absolute;left: 70%;"><b>สาขาที่</b></span>&amp;nbsp;&amp;nbsp;
+                            <span style="position: absolute;left: 77%;">00000</span><br/>
+                            <strong>ชื่อสินค้า / วัตถุดิบ</strong>&amp;nbsp;&amp;nbsp;
+                            <span t-esc="product_name"/> [<span t-esc="product_id.default_code"/>]
+                            <!--<strong>ชนิด / ขนาด</strong>&amp;nbsp;&amp;nbsp;-->
+                            <!--<span/>-->
+                            <span style="position: absolute;left: 55%;"><b>ปริมาณนับเป็น</b></span>&amp;nbsp;&amp;nbsp;
+                            <span style="position: absolute;left: 65%;" t-esc="product_uom"/>
+                            <!--<span><b>จากวันที่ </b></span>&amp;nbsp;&amp;nbsp;-->
+                            <!--<span t-esc="date_from"/>-->
+                            <!--<span><b>ถึงวันที่ </b></span>&amp;nbsp;&amp;nbsp;-->
+                            <!--<span t-esc="date_to"/>-->
+
+                        </font>
+                    </div>
+                </div>
+
+                <br/><br/>
+                <div class="page">
+                    <style>
+                        .header{width:100%; height:50px;}
+                        .content{width:100%; height:600px;}
+                        .footer{width:100%; height:200px;}
+                        .doubleUnderline{border-bottom: 3px double;}
+                        table.table-bordered1{
+                        border:1px solid black;
+                        margin-top:20px;
+                        border-collapse: collapse;
+                        width: 100%;
+                        }
+                        table.table-bordered1 &gt; thead &gt; tr &gt; th{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered1 &gt; tbody &gt; tr &gt; td{
+                        border:0px solid white;
+                        border-left: 1px solid black;
+                        border-collapse: collapse;
+                        height: 40px;
+                        }
+                        table.table-bordered1 &gt; tfoot &gt; tr &gt; td{
+                        padding:0px;
+                        border:0px solid whtie;
+                        border-top:1px solid black;
+                        }
+                        table.table-bordered &gt; thead &gt; tr &gt; th{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered &gt; tbody &gt; tr &gt; td{
+                        border:1px solid black;
+                        <!--border-left: 1px solid;-->
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered &gt; tfoot &gt; tr &gt; td{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                        table.table-table1 {
+                        border:1px solid black;
+                        margin-top:20px;
+                        border-collapse: collapse;
+                        border-left: 1px solid;
+                        border-right: 1px solid;
+                        border-bottom: 1px solid;
+                        border-top: 1px solid;
+                        width: 100%;
+                        }
+                    </style>
+                    <div class="content">
+                        <div class="col-xs-12">
+                            <table class="table table-bordered1" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <!--<th rowspan="2" style="text-align:center"><b>ชื่อสินค้า</b></th>-->
+                                        <!--<th rowspan="2" style="text-align:center"><b>หน่วย</b></th>-->
+                                        <th rowspan="3" style="text-align:center; vertical-align: middle;"><b>ชนิดเอกสาร</b></th>
+                                        <th rowspan="3" style="text-align:center; vertical-align: middle;"><b>เลขที่ใบสำคัญ</b></th>
+                                        <th rowspan="3" style="text-align:center; vertical-align: middle;"><b>เลขที่อ้างอิง</b></th>
+                                        <th rowspan="3" style="text-align:center; vertical-align: middle;"><b>วัน เดือน ปี</b></th>
+                                        <th colspan="9" style="text-align:center; vertical-align: middle;"><b>ปริมาณสินค้าวัตถุดิบ</b></th>
+                                        <!--<th rowspan="2" style="text-align:center"><b>ราคา</b></th>-->
+                                        <th rowspan="3" style="text-align:center; vertical-align: middle;"><b>หมายเหตุ</b></th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="3" style="text-align:center"><b>รับ</b></th>
+                                        <th colspan="3" style="text-align:center"><b>จ่าย</b></th>
+                                        <th colspan="3" style="text-align:center"><b>คงเหลือ</b></th>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align:center"><b>ปริมาณ</b></th>
+                                        <th style="text-align:center"><b>ราคา/หน่วย</b></th>
+                                        <th style="text-align:center"><b>จำนวนเงิน</b></th>
+
+                                        <th style="text-align:center"><b>ปริมาณ</b></th>
+                                        <th style="text-align:center"><b>ราคา/หน่วย</b></th>
+                                        <th style="text-align:center"><b>จำนวนเงิน</b></th>
+
+                                        <th style="text-align:center"><b>ปริมาณ</b></th>
+                                        <th style="text-align:center"><b>ราคา/หน่วย</b></th>
+                                        <th style="text-align:center"><b>จำนวนเงิน</b></th>
+                                    </tr>
+
+                                </thead>
+                                <tbody class="sale_tbody">
+                                    <t t-set="i" t-value="1"/>
+                                    <t t-set="duration" t-value="0"/>
+                                    <t t-set="sum_use" t-value="0"/>
+                                    <t t-set="sum_add" t-value="0"/>
+                                    <t t-set="uom" t-value="0"/>
+                                    <t t-set="balance" t-value="0"/>
+                                    <t t-set="sum_total_price_add" t-value="0"/>
+                                    <t t-set="sum_total_price_use" t-value="0"/>
+                                    <!--<t t-set="sum_total_price1" t-value="0"/>-->
+                                    <t t-set="start_value" t-value="0"/>
+                                    <t t-set="sum_total_price" t-value="0"/>
+                                    <!--<t t-set="price1" t-value="0"/>-->
+                                    <t t-set="start_qty" t-value="0"/>
+                                    <!--<t t-set="start_qty" t-value="0"/>-->
+                                    <t t-set="sum_qty" t-value="0"/>
+
+                                    <t t-foreach="docs" t-as="product">
+                                        <!--old-->
+                                        <!--<t t-set="before" t-value="doc_model.get_inventory_before(data['date_from'],product)"/>-->
+
+                                        <!--new-->
+                                        <!--ยอดยกมา-->
+                                        <t t-set="before" t-value="doc_model.get_stock_before(data['date_from'],product)"/>
+                                        <t t-if="before and before['qty'] > 0">
+                                            <t t-set="sum_qty" t-value="sum_qty + before['qty']"/>
+                                            <t t-set="start_qty" t-value="before['qty']"/>
+                                            <t t-set="sum_total_price" t-value="sum_total_price + before['value']"/>
+                                            <t t-set="start_value" t-value="before['value']"/>
+                                            <tr>
+                                                <td style="text-align:center"><span>ยอดยกมา</span></td>
+                                                <td style="text-align:center"><span t-esc="before['reference']"/></td>
+                                                <td style="text-align:center"><span/></td>
+                                                <td style="text-align:center"><!--<span t-esc="history['date']"/>--></td>
+                                                <td style="text-align:right"><span t-esc="'{0:,.2f}'.format(float(before['qty']))"/></td>
+                                                <td style="text-align:right"><span t-esc="'{0:,.2f}'.format(float(before['value']/before['qty']))"/></td>
+                                                <td style="text-align:right"><span t-esc="'{0:,.2f}'.format(float(before['value']))"/></td>
+                                                <td style="text-align:center"><span/></td>
+                                                <td style="text-align:center"><span/></td>
+                                                <td style="text-align:center"><span/></td>
+                                                <td style="text-align:right"><span t-esc="'{0:,.2f}'.format(float(before['qty']))"/></td>
+                                                <td style="text-align:right"><span t-esc="'{0:,.2f}'.format(float(before['value']/before['qty']))"/></td>
+                                                <td style="text-align:right"><span t-esc="'{0:,.2f}'.format(float(before['value']))"/></td>
+                                                <td style="text-align:center"><span/></td>
+                                            </tr>
+                                        </t>
+                                        <t t-if="before and before['qty'] == 0">
+                                            <!--<t t-foreach="doc_model.get_stock_move_by_product_by_date(data['date_from'],data['date_to'],product)" t-as="move">-->
+                                            <tr>
+                                                <td style="text-align:center"><span>ยอดยกมา</span></td>
+                                                <td style="text-align:center"><span></span></td>
+                                                <td style="text-align:center"><span/></td>
+                                                <td style="text-align:center"><!--<span t-esc="history['date']"/>--></td>
+                                                <td style="text-align:right"><span>0.00</span></td>
+                                                <td style="text-align:right"><span>0.00</span></td>
+                                                <td style="text-align:right"><span>0.00</span></td>
+                                                <td style="text-align:center"><span/></td>
+                                                <td style="text-align:center"><span/></td>
+                                                <td style="text-align:center"><span/></td>
+                                                <td style="text-align:right"><span>0.00</span></td>
+                                                <td style="text-align:right"><span>0.00</span></td>
+                                                <td style="text-align:right"><span>0.00</span></td>
+                                                <td style="text-align:center"><span/></td>
+                                            </tr>
+                                        </t>
+                                        <!--</t>-->
+
+                                        <t t-foreach="doc_model.get_stock_after(data['date_from'],data['date_to'],product)" t-as="move">
+                                            <tr>
+                                                <t t-if="move['type'] == 'purchase'">
+                                                    <td style="text-align:center">
+                                                        <span>ซื้อ</span>
+                                                    </td>
+                                                </t>
+                                                <t t-if="move['type'] == 'sale'">
+                                                    <td style="text-align:center">
+                                                        <span>ขาย</span>
+                                                    </td>
+                                                </t>
+                                                <t t-if="move['type'] == 'production-out'">
+                                                    <td style="text-align:center">
+                                                        <span>ใช้ผลิต</span>
+                                                    </td>
+                                                </t>
+                                                <t t-if="move['type'] == 'production-in'">
+                                                    <td style="text-align:center">
+                                                        <span>ผลิต</span>
+                                                    </td>
+                                                </t>
+                                                <t t-if="move['type'] == 'return-supplier'">
+                                                    <td style="text-align:center">
+                                                        <span>คืนผู้จำหน่าย</span>
+                                                    </td>
+                                                </t>
+                                                <t t-if="move['type'] == 'return-customer'">
+                                                    <td style="text-align:center">
+                                                        <span>ลูกค้าคืนของ</span>
+                                                    </td>
+                                                </t>
+                                                <t t-if="move['type'] == 'set'">
+                                                    <td style="text-align:center">
+                                                        <span>ยอดยกมา</span>
+                                                    </td>
+                                                </t>
+                                                <t t-if="move['type'] == 'inventory-lost'">
+                                                    <td style="text-align:center">
+                                                        <span>ของเสีย ของหาย</span>
+                                                    </td>
+                                                </t>
+                                                <t t-if="move['type'] == 'credit'">
+                                                    <td style="text-align:center">
+                                                        <span>ลดหนี้</span>
+                                                    </td>
+                                                </t>
+                                                <t t-if="move['type'] == 'debit'">
+                                                    <td style="text-align:center">
+                                                        <span>เพิ่มหนี้</span>
+                                                    </td>
+                                                </t>
+                                                <t t-if="move['type'] == ''">
+                                                    <td style="text-align:center">
+                                                        <span>อื่นๆ</span>
+                                                    </td>
+                                                </t>
+                                                <td style="text-align:center"><span t-esc="move['reference']"/></td>
+                                                <td style="text-align:center"><span t-esc="move['no_ref']"/></td>
+                                                <td style="text-align:center"><span t-esc="move['date']"/></td>
+
+                                                <!--move in-->
+                                                <t t-if="move['move_in']">
+                                                    <t t-set="sum_qty" t-value="sum_qty + move['qty']"/>
+                                                    <!--move['value']-->
+                                                    <t t-set="move_value" t-value="move['move_line_id'].sudo().move_id.value"/>
+                                                    <t t-set="sum_total_price" t-value="sum_total_price + move_value"/>
+                                                    <t t-if="move['qty']">
+                                                        <td style="text-align:right"><span t-esc="'{0:,.2f}'.format(float(move['qty']))"/></td>
+                                                        <td style="text-align:right">
+                                                            <!--<span t-esc="'{0:,.2f}'.format(float(move['value']/move['qty']))"/>-->
+                                                            <span t-esc="'{0:,.2f}'.format(abs(move_value/move['qty']))"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="not move['qty']">
+                                                        <td style="text-align:right"></td>
+                                                        <td style="text-align:right"></td>
+                                                    </t>
+                                                    <td style="text-align:right">
+                                                        <!-- <span t-esc="'{0:,.2f}'.format(float(move['value']))"/>-->
+                                                        <span t-esc="'{0:,.2f}'.format(abs(move_value))"/>
+                                                    </td>
+
+                                                    <td style="text-align:center"><span></span></td>
+                                                    <td style="text-align:center"><span></span></td>
+                                                    <td style="text-align:center"><span></span></td>
+
+                                                    <td style="text-align:center"><span t-esc="'{0:,.2f}'.format(float(sum_qty))"/></td>
+                                                    <t t-if="sum_qty">
+                                                        <td style="text-align:center"><span t-esc="'{0:,.2f}'.format(float(sum_total_price/sum_qty))"/></td>
+                                                        <td style="text-align:center"><span t-esc="'{0:,.2f}'.format(float(sum_total_price))"/></td>
+                                                    </t>
+                                                    <t t-if="not sum_qty">
+                                                        <td style="text-align:center"><span>0.00</span></td>
+                                                        <td style="text-align:center"><span>0.00</span></td>
+                                                    </t>
+                                                    <td style="text-align:left">
+                                                        <span t-esc="move['note']"/>
+                                                    </td>
+                                                </t>
+
+                                                <!--move out-->
+                                                <t t-if="not move['move_in']">
+                                                    <t t-set="sum_qty" t-value="sum_qty - move['qty']"/>
+                                                    <t t-set="move_value" t-value="move['move_line_id'].sudo().move_id.value"/>
+                                                    <t t-set="sum_total_price" t-value="sum_total_price - move_value"/>
+                                                    <td style="text-align:center"><span></span></td>
+                                                    <td style="text-align:center"><span></span></td>
+                                                    <td style="text-align:center"><span></span></td>
+                                                    <t t-if="move['qty']">
+                                                        <td style="text-align:right"><span t-esc="'{0:,.2f}'.format(float(move['qty']))"/></td>
+                                                        <td style="text-align:right">
+                                                            <span t-esc="'{0:,.2f}'.format(abs(move_value/move['qty']))"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="not move['qty']">
+                                                        <td style="text-align:right"></td>
+                                                        <td style="text-align:right"></td>
+                                                    </t>
+                                                    <td style="text-align:right">
+                                                        <!-- <span t-esc="'{0:,.2f}'.format(float(move['value']))"/>-->
+                                                        <span t-esc="'{0:,.2f}'.format(abs(move_value))"/>
+                                                    </td>
+                                                    <td style="text-align:center"><span t-esc="'{0:,.2f}'.format(float(sum_qty))"/></td>
+                                                    <t t-if="sum_qty">
+                                                        <td style="text-align:center"><span t-esc="'{0:,.2f}'.format(float(sum_total_price/sum_qty))"/></td>
+                                                        <td style="text-align:center"><span t-esc="'{0:,.2f}'.format(float(sum_total_price))"/></td>
+                                                    </t>
+                                                    <t t-if="not sum_qty">
+                                                        <td style="text-align:center"><span>0.00</span></td>
+                                                        <td style="text-align:center"><span>0.00</span></td>
+                                                    </t>
+                                                    <td style="text-align:left">
+                                                        <span t-esc="move['note']"/>
+                                                    </td>
+                                                </t>
+                                            </tr>
+                                        </t>
+                                        <!--</t>-->
+
+                                        <!--footer-->
+                                        <tr style="text-align:right; border:1px solid black;">
+                                            <td colspan="10" style="text-align:right; border-bottom:1px solid black;">
+                                                <span>รวมคงเหลือ</span>
+                                            </td>
+                                            <td style="text-align:right; border-bottom:1px solid black;">
+                                                <span t-esc="'{0:,.2f}'.format(float(sum_qty))"/><br/>
+                                            </td>
+                                            <td style="text-align:right; border-bottom:1px solid black;"> </td>
+                                            <td style="text-align:right; border-bottom:1px solid black;">
+                                                <span t-esc="'{0:,.2f}'.format(float(sum_total_price))"/><br/>
+                                            </td>
+                                            <td style="text-align:right; border-bottom:1px solid black;"> </td>
+                                        </tr>
+                                        <tr style="text-align:right; border-bottom:1px solid black;">
+                                            <td style="text-align:right; border-bottom:1px solid black;" colspan="4">
+                                                <span>มูลค่าสินค้าคงเหลือต้นงวด</span>
+                                            </td>
+                                            <td colspan="3" style="text-align:right; border-bottom:1px solid black;">
+
+                                                <span t-esc="'{0:,.2f}'.format(float(start_value))"/><br/>
+                                            </td>
+                                            <td style="text-align:right; border-bottom:1px solid black;" colspan="5">
+                                                <span>มูลค่าสินค้าคงเหลือปลายงวด</span>
+                                            </td>
+                                            <td style="text-align:right; border-bottom:1px solid black;">
+                                                <span t-esc="'{0:,.2f}'.format(float(sum_total_price))"/><br/>
+                                            </td>
+                                            <td style="text-align:right; border-bottom:1px solid black;"> </td>
+                                        </tr>
+
+                                    </t>
+
+                                </tbody>
+                                <tfoot style="height:1px; padding:0px; border-bottom:1px solid white;">
+                                    <tr style="height:1px; padding:0px;">
+                                        <td colspan="10"/>
+                                        <td/>
+                                        <td/>
+                                        <td/>
+                                        <td/>
+                                    </tr>
+                                </tfoot>
+
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </t>
+        </template>
+    </data>
+</openerp>
+

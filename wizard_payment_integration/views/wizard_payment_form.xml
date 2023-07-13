@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="wizard_payment_form">
+        <t t-call="website.layout">
+            <style>
+                header{
+                display: none !important;
+                }
+                footer{
+                display: none !important;
+                }
+            </style>
+
+            <div class="container">
+                <form id="payment_details" action="/payment_details" method="POST">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="card1">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                                <h4>Enter Card Details</h4>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 space">
+                                <label>Name on Card</label>
+                                <br/>
+                                <input name="holder_name" t-att-value="name_on_card" type="text" class="card_input"
+                                       required="true"/>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 space">
+                                <label>Card Number</label>
+                                <br/>
+                                <input type="text" id="cardNumber" maxlength="19" class="card_input" name="card_number"
+                                       onkeypress="return checkDigit(event)"
+                                       placeholder="0000 0000 0000 0000" required="true"/>
+                                <span id="card_validation_warning" style="color:red; display:none;">Enter a valid Credit
+                                    card number..!
+                                </span>
+                                <script>
+                                    function checkDigit(event) {
+                                    var code = (event.which) ? event.which : event.keyCode;
+                                    if ((code
+                                    &lt;
+                                    48 || code > 57) &#38;&#38; (code > 31)) {
+                                    return false;
+                                    }
+                                    return true;
+                                    }
+                                </script>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-12 space">
+                                <label>Expiry Date</label>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 month">
+                                        <select name="expiry_month" class="form-control card_input" id="expiry_month"
+                                                t-att-value="expiry_month"
+                                                data-omise="expiration_month" required="true">
+                                            <option value="">MM</option>
+                                            <option value="01">01</option>
+                                            <option value="02">02</option>
+                                            <option value="03">03</option>
+                                            <option value="04">04</option>
+                                            <option value="05">05</option>
+                                            <option value="06">06</option>
+                                            <option value="07">07</option>
+                                            <option value="08">08</option>
+                                            <option value="09">09</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                        </select>
+
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 year">
+                                        <select name="expiry_year" class="form-control card_input" id="expiry_year"
+                                                t-att-value="expiry_year"
+                                                data-omise="expiration_year" required="true">
+                                            <option value="">YY</option>
+                                            <option value="2021">2021</option>
+                                            <option value="2022">2022</option>
+                                            <option value="2023">2023</option>
+                                            <option value="2024">2024</option>
+                                            <option value="2025">2025</option>
+                                            <option value="2026">2026</option>
+                                            <option value="2027">2027</option>
+                                            <option value="2028">2028</option>
+                                            <option value="2029">2029</option>
+                                            <option value="2030">2030</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-4 col-sm-12 space">
+                                <label>CVV</label>
+                                <br/>
+                                <input name="cvv" type="text" id="cvv" data-omise="security_code" maxlength="4"
+                                       onkeypress="return checkDigit(event)" class="card_input"/>
+                                <!--                                <span id="warning" style="color:red; display:none;">Invalid..!</span>-->
+
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12" style="display:flex;justify-content: center;">
+                                <button style="height:35px;" id="button_confirm" type="submit" class="btn btn-primary button">Confirm
+                                </button>
+                                <a href="/payment_cancel" style="margin-left: 6px;">
+<!--                                    <button class="btn btn-primary button" name="cancel">Cancelllllll</button>-->
+                                    <input type="button" class="btn btn-primary button" value="Cancel"/>
+                                </a>
+                            </div>
+
+                            <!--                        <button id="button_cancel" type="submit" class="btn btn-primary button"><a href=""></button>-->
+                            <!--                        <a href="/payment_cancel" string="Cancel"><button class="btn btn-primary button" name="cancel">Cancel</button></a>-->
+                            <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                                <h6>Secured by
+                                    <span>
+                                        <img src="/wizard_payment_integration/static/src/images/logo.svg"
+                                             style="width: 27px;"/>
+                                    </span>
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </t>
+    </template>
+</odoo>

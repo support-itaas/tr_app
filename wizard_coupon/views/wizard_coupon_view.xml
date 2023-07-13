@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--tree view for Wizard Coupon-->
+    <record id="wizard_coupon_tree" model="ir.ui.view">
+        <field name="name">wizard.coupon.tree</field>
+        <field name="model">wizard.coupon</field>
+        <field name="arch" type="xml">
+            <tree string="Coupons">
+                <field name="name" string="Coupon"/>
+                <field name="coupon_code" string="Code" invisible="1"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="package_id"/>
+                <field name="purchase_date"/>
+                <field name="expiry_date"/>
+                <field name="redeem_date"/>
+                <field name="order_branch_id"/>
+                <field name="branch_id"/>
+                <field name="source_branch_amount" widget='monetary'/>
+                <field name="destination_branch_amount" widget='monetary'/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--search view for Wizard Coupon-->
+    <record id="view_coupon_filter" model="ir.ui.view">
+        <field name="name">wizard.coupon.list.select</field>
+        <field name="model">wizard.coupon</field>
+        <field name="arch" type="xml">
+            <search string="Search Title">
+                <field name="name"/>
+                <field name="coupon_code" string="Code"/>
+                <field name="partner_id"/>
+                <field name="package_id"/>
+                <field name="source_operating_unit_id"/>
+                <field name="destination_operating_unit_id"/>
+                <filter name="available_filter" string="Available" domain="[('state', '=', 'draft')]"/>
+                <filter name="redeemed_filter" string="Redeemed" domain="[('state', '=', 'redeem')]"/>
+                <filter name="expired_filter" string="Expired" domain="[('state', '=', 'expire')]"/>
+                <filter name="expire_in_seven_days" string="Expire in 0-15 Days"
+                        domain="[('expiry_date', '&gt;=',  context_today().strftime('%Y-%m-%d')),('expiry_date', '&lt;',  (context_today() + relativedelta(days=16)).strftime('%Y-%m-%d'))]"/>
+                <filter name="expire_in_seven_days" string="Expire in 16-30 Days"
+                        domain="[('expiry_date', '&gt;',  (context_today() + datetime.timedelta(days=14)).strftime('%Y-%m-%d')),('expiry_date', '&lt;',  (context_today() + datetime.timedelta(days=31)).strftime('%Y-%m-%d'))]"/>
+                <filter name="expire_in_seven_days" string="Expire in more than 30 Days"
+                        domain="[('expiry_date', '&gt;=',  context_today().strftime('%Y-%m-%d')),('expiry_date', '&gt;',  (context_today() + relativedelta(days=31)).strftime('%Y-%m-%d'))]"/>
+
+                <filter name="operating_unit_filter" string="My operating unit" domain="[('state', '=', 'redeem'),'|',('source_operating_unit_id.user_ids', 'child_of', uid),('destination_operating_unit_id.user_ids', 'child_of', uid)]"/>
+
+                <group expand="0" string="Group By">
+                    <filter string="Status" domain="[]" context="{'group_by':'state'}"/>
+                    <filter string="Customer" domain="[]" context="{'group_by':'partner_id'}"/>
+                    <filter string="Coupon" domain="[]" context="{'group_by':'product_id'}"/>
+                    <filter string="Redeem Date" domain="[]" context="{'group_by':'redeem_date:day'}"/>
+                    <filter string="Package" domain="[]" context="{'group_by':'package_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!--kanban view for wizard coupon-->
+    <record id='wizard_coupon_view_kanban' model='ir.ui.view'>
+        <field name="name">wizard.coupon.kanban</field>
+        <field name="model">wizard.coupon</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="package_id"/>
+                <field name="purchase_date"/>
+                <field name="expiry_date"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click" style="border-radius: 25px; ">
+                            <div class="o_kanban_image">
+                                <img t-att-src="kanban_image('product.product', 'image_medium', record.product_id.raw_value)"/>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                    </div>
+                                    <span>
+                                        <font>
+                                            <t t-esc="record.name.value"/>
+                                        </font>
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <strong>
+                                        <field name="partner_id"/>
+                                        <br/>
+                                        <field name="product_id"/>
+                                    </strong>
+                                </div>
+
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left text-muted">
+                                        <span>
+                                            <field name="state" widget="label_selection"
+                                                   options="{'classes': {'draft': 'success', 'redeem': 'default', 'expire': 'danger', }}"/>
+                                        </span>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <t t-if="record.state.raw_value == 'redeem'">
+                                            <span class="pull-right text-right">
+                                                <font color="#ff3333">
+                                                    Redeemed :
+                                                    <field name="redeem_date"/>
+                                                </font>
+                                            </span>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="pull-right text-right">
+                                                <font color="#ff3333">
+                                                    Expiry Date :
+                                                    <field name="expiry_date"/>
+                                                </font>
+                                            </span>
+                                        </t>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!--form view for Wizard Coupon-->
+    <record id="view_coupon_form" model="ir.ui.view">
+        <field name="name">wizard.coupon.form</field>
+        <field name="model">wizard.coupon</field>
+        <field name="arch" type="xml">
+            <form string="Coupons">
+                <header>
+<!--                    <button name="request_redeem" string="Redeem Request" type="object"-->
+<!--                            class="btn btn-primary btn-sm o_list_button_add"-->
+<!--                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>-->
+
+                    <button name="button_redeem" string="Redeem" type="object"
+                            class="btn btn-primary btn-sm o_list_button_add"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+
+
+                    <button name="expire_coupon" string="Expire" type="object"
+                            class="btn btn-primary btn-sm o_list_button_add"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button name="transfer_customer" string="Transfer" type="object"
+                            class="btn btn-primary btn-sm o_list_button_add"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button name="button_cancel" string="Cancel" type="object"
+                            class="btn btn-primary btn-sm o_list_button_add"
+                            attrs="{'invisible': [('state', 'in', ('draft','expire'))]}"/>
+
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_tasks"
+                                attrs="{'invisible': [('state', '!=', 'redeem')]}"
+                                type="object"
+                                class="oe_stat_button"
+                                string="Task"
+                                icon="fa-tasks">
+                        </button>
+                        <button name="action_view_journal_entries"
+                                attrs="{'invisible': [('state', '=', 'draft')]}"
+                                type="object"
+                                class="oe_stat_button"
+                                string="Journal Entries"
+                                icon="fa-pencil"
+                                groups="account.group_account_user">
+                        </button>
+                        <button name="action_view_pos_orders"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-money"
+                        >
+                            <div class="o_form_field o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="amount" widget='monetary' readonly="1"
+                                           options="{'currency_field': 'currency_id'}"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </span>
+                            </div>
+                        </button>
+                        <button name="toggle_active" type="object"
+                                class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button"
+                                   options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" attrs="{'readonly': [('state', 'in', ['redeem','expire'])]}"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id" attrs="{'readonly': [('state', 'in', ['redeem','expire'])]}"/>
+                            <field name="package_id" domain="[('is_pack', '=', True)]"
+                                   attrs="{'readonly': [('state', 'in', ['redeem','expire'])]}"/>
+                            <field name="product_id" attrs="{'readonly': [('state', 'in', ['redeem','expire'])]}"/>
+                        </group>
+                        <group>
+                            <field name="order_branch_id" attrs="{'readonly': [('state', 'in', ['redeem','expire'])]}"/>
+                            <field name="purchase_date" attrs="{'readonly': [('state', 'in', ['redeem','expire'])]}"/>
+                            <field name="expiry_date" attrs="{'readonly': [('state', 'in', ['redeem','expire'])]}"/>
+                            <field name="coupon_running" readonly="1" string="Package ID"/>
+<!--                            <field name="redeem_request_date" readonly="1" string="Redeem Requested Date"/>-->
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Redeem Details">
+                            <group>
+                                <group>
+                                    <field name="redeem_date"
+                                           attrs="{'readonly': [('state', 'in' , ['redeem','expire'])]}"/>
+                                    <field name="branch_id"
+                                           attrs="{'readonly': [('state', 'in', ['redeem','expire'])]}"/>
+                                    <field name="plate_number_id" domain="[('partner_id', '=', partner_id)]"
+                                           attrs="{'readonly': [('state', 'in' , ['redeem','expire'])]}"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Used detail">
+                            <group>
+                                <group>
+                                    <field name="source_branch_amount" widget='monetary' readonly="1"/>
+                                    <field name="destination_branch_amount" widget='monetary' readonly="1"/>
+                                </group>
+                                <group groups="base.group_no_one">
+                                    <field name="source_operating_unit_id"/>
+                                    <field name="destination_operating_unit_id"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Images and Description">
+                            <group>
+                                <group>
+                                    <field name="image" readonly="True"/>
+                                </group>
+                                <group>
+                                    <field name="description" readonly="True"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Notes">
+                            <group>
+                                <field name="note" readonly="True"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!--action view for Wizard Coupon-->
+    <record id="wizard_coupon_action" model="ir.actions.act_window">
+        <field name="name">Coupons</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.coupon</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{"search_default_filter_available_filter":4}</field>
+        <field name="view_id" ref="wizard_coupon.wizard_coupon_tree"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click here to Create Coupons
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="care_care_coupon_menu"
+              name="Coupons"
+              parent="wizard_project.car_care_root_menu"
+              sequence="1"/>
+    <menuitem id="care_care_coupon_sub_menu"
+              name="Coupons"
+              parent="care_care_coupon_menu"
+              action="wizard_coupon_action"
+              sequence="1"/>
+
+    <!--tree view for Claim Wizard Coupon-->
+    <record id="wizard_claim_coupon_tree" model="ir.ui.view">
+        <field name="name">wizard.claim.coupon.tree</field>
+        <field name="model">wizard.coupon</field>
+        <field name="arch" type="xml">
+            <tree string="Coupons" edit="false" create="false" delete="false">
+                <field name="redeem_date" string="Redeem Date"/>
+                <field name="name" string="Coupon"/>
+                <field name="coupon_code" string="Code" invisible="1"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="package_id"/>
+                <field name="purchase_date"/>
+                <field name="expiry_date"/>
+                <field name="order_branch_id"/>
+                <field name="branch_id"/>
+                <field name="source_branch_amount" widget='monetary'/>
+                <field name="destination_branch_amount" widget='monetary'/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--action view for Wizard Coupon-->
+    <record id="wizard_claim_coupon_action" model="ir.actions.act_window">
+        <field name="name">Claim Coupons</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.coupon</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">[('state', '=', 'redeem'),'|',('source_operating_unit_id.user_ids', 'child_of', uid),('destination_operating_unit_id.user_ids', 'child_of', uid)]</field>
+<!--        <field name="domain">[('state', '=', 'redeem')]</field>-->
+        <field name="view_id" ref="wizard_claim_coupon_tree"/>
+    </record>
+
+    <menuitem id="claim_coupon_menu"
+              name="Claim Coupons"
+              parent="project.menu_project_report"
+              action="wizard_claim_coupon_action"
+              sequence="1"/>
+
+
+</odoo>
+
+
+

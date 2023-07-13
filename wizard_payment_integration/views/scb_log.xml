@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="scb_log_view" model="ir.ui.view">
+            <field name="name">scb.log.form</field>
+            <field name="model">scb.log</field>
+            <field name="arch" type="xml">
+                <form string="SCB log">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="scb_data"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_scb_log" model="ir.actions.act_window">
+            <field name="name">SCB Log</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">scb.log</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+<!--            <field name="search_view_id" ref="ir_default_search_view"/>-->
+        </record>
+
+        <menuitem id="car_care_seb_menu"
+                  name="SEB"
+                  sequence="3"
+                  parent="wizard_project.car_care_root_menu"/>
+
+        <menuitem action="action_scb_log"
+                  id="menu_action_scb_log"
+                  parent="wizard_payment_integration.car_care_seb_menu"
+                  sequence="1"/>
+
+    </data>
+</odoo>

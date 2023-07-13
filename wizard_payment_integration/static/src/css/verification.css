@@ -1,0 +1,58 @@
+.card2{
+ max-width: 30%;
+    margin: auto;
+    display: block;
+    border-radius: 14px;
+    box-shadow: 0 0 32px 0 #0000002e;
+    margin-top: 5%;
+    padding: 10px 15px 10px 15px;
+}
+.verification-code h4{
+margin-bottom:30px;
+font-weight:bold;
+}
+
+.card2 .button{
+    margin:auto!important;
+    display: block;
+    background-color: #004071 !important;
+margin-bottom:10px
+    border-radius: 11px;
+padding: 10px 20px 10px 20px;
+}
+.verification-code {
+    max-width: 300px;
+    position: relative;
+    margin:50px auto;
+    text-align:center;
+
+}
+.control-label{
+  display:block;
+  margin:40px;
+  font-weight:900;
+}
+
+.verification-code--inputs input[type=text] {
+    border: 2px solid #e1e1e1;
+    width: 41px;
+    height: 41px;
+    padding: 10px;
+    text-align: center;
+    display: inline-block;
+  box-sizing:border-box;
+  padding-bottom:12px
+}
+
+
+.verification-code--inputs  {
+    margin-bottom: 32px;
+   }
+
+.card2 img{
+width:20px
+}
+.card2 h6{
+padding-top: 10px;
+color:#ccc
+}

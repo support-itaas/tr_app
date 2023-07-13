@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="payment_gbpay" model="account.journal">
+            <field name="name">GBPay</field>
+            <field name="type">bank</field>
+            <field name="code">GBP</field>
+            <field name="journal_user">True</field>
+        </record>
+    </data>
+    <data>
+        <record id="payment_scb" model="account.journal">
+            <field name="name">SCB</field>
+            <field name="type">bank</field>
+            <field name="code">SCB</field>
+            <field name="journal_user">True</field>
+        </record>
+    </data>
+</odoo>

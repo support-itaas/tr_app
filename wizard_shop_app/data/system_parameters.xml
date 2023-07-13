@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="active_build_version" model="ir.config_parameter">
+        <field name="key">active_build_version</field>
+        <field name="value">1.0</field>
+    </record>
+</odoo>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="membership_type_gray" model="membership.type">
+            <field name="name">Gray</field>
+            <field name="thai_name">สีเท่า</field>
+            <field name="color">#808080</field>
+            <field name="sequence">1</field>
+            <field name="point_from">0</field>
+            <field name="point_to">50</field>
+            <field name="amount_from">0</field>
+            <field name="amount_to">10</field>
+        </record>
+        <record id="membership_type_red" model="membership.type">
+            <field name="name">Red</field>
+            <field name="thai_name">สีแดง</field>
+            <field name="color">#ff0000</field>
+            <field name="sequence">2</field>
+            <field name="point_from">51</field>
+            <field name="point_to">250</field>
+            <field name="amount_from">5100</field>
+            <field name="amount_to">25000</field>
+        </record>
+        <record id="membership_type_black" model="membership.type">
+            <field name="name">Black</field>
+            <field name="thai_name">สีดำ</field>
+            <field name="color">#000000</field>
+            <field name="sequence">3</field>
+            <field name="point_from">251</field>
+            <field name="point_to">500</field>
+            <field name="amount_from">25100</field>
+            <field name="amount_to">50000</field>
+        </record>
+        <record id="membership_type_gold" model="membership.type">
+            <field name="name">Gold</field>
+            <field name="thai_name">สีทอง</field>
+            <field name="color">#ffd700</field>
+            <field name="sequence">4</field>
+            <field name="point_from">501</field>
+            <field name="point_to">100000</field>
+            <field name="amount_from">50100</field>
+            <field name="amount_to">100000000</field>
+        </record>
+    </data>
+</odoo>

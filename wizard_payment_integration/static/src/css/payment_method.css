@@ -1,0 +1,43 @@
+.card4{
+    max-width: 32%;
+    margin: auto;
+    display: block;
+    border-radius: 14px;
+    margin-top: 5%;
+   padding: 50px 5px 50px 5px;
+    box-shadow: 0 0 32px 0 #0000002e;
+}
+
+.card4 .button{
+    margin:auto!important;
+    background: #004071;
+    border-radius: 11px;
+    padding: 10px 20px 10px 20px;
+
+}
+
+.card4 .selection{
+padding-bottom:22px;
+}
+
+.card4 h4{
+margin:auto;
+font-size:20px;
+font-weight:bold;
+padding-bottom:30px;
+}
+
+.card4 img{
+width:20px
+}
+
+.card4 h6{
+padding-top: 10px;
+color:#ccc
+}
+
+@media (max-width: 991px) {
+.card4 {
+  max-width: 100% !important;
+}
+}

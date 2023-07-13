@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_project_news_and_promotions_user,project.news.and.promotions,model_news_promotions,project.group_project_user,1,0,0,0
+access_project_news_and_promotions_manager,project.news.and.promotions,model_news_promotions,project.group_project_manager,1,1,1,1
+access_project_home_banner_user,project.home.banner,model_home_banner,project.group_project_user,1,0,0,0
+access_project_home_banner_manager,project.home.banner,model_home_banner,project.group_project_manager,1,1,1,1
+access_project_promo_banner_user,project.promo.banner,model_promo_banner,project.group_project_user,1,0,0,0
+access_project_promo_banner_manager,project.promo.banner,model_promo_banner,project.group_project_manager,1,1,1,1

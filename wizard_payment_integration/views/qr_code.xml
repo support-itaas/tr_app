@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="scb_payment">
+        <t t-call="website.layout">
+            <style>
+                header{
+                display: none !important;
+                }
+                footer{
+                display: none !important;
+                }
+            </style>
+            <div class="container">
+                <form role="form" method="POST" action="/success">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="card5">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 qr text-center">
+
+                                <div class="image">
+                                    <img id="image" t-attf-src="data:image/*;base64,{{data['qr_image']}}"/>
+                                    <!--                                <img id="image" src="wizard_payment_integration/static/src/images/qr.png"></img>-->
+                                </div>
+                                <h4>Scan here to complete your payment</h4>
+                                <h4>OR</h4>
+                                <button type="submit" class="btn button">Save and Scan</button>
+                                <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                                    <h6>Secured by
+                                        <span>
+                                            <img id="logo2"
+                                                 src="wizard_payment_integration/static/src/images/scb.png"></img>
+                                        </span>
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </t>
+    </template>
+</odoo>

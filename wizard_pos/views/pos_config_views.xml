@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pos_config_branch_inherit" model="ir.ui.view">
+        <field name="name">pos.config.view.form.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/div[4]" position="after">
+                <h2 name="order">Branch</h2>
+                <div class="row mt16 o_settings_container">
+                    <div class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <label string='Branch'/>
+                            <div class="content-group mt16">
+                                <field name="branch_id" colspan="4" nolabel="1"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box" style="float:right">
+                        <div class="o_setting_right_pane">
+                            <label string='Operating Branch'/>
+                            <div class="content-group mt16">
+                                <field name="operating_branch_id" colspan="4" nolabel="1"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_account_journal_form">
+        <field name="name">account.journal.form.view</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="point_of_sale.view_account_journal_pos_user_form"/>
+        <field name="arch" type="xml">
+            <field name="journal_user" position="after">
+                <field name='wallet_journal'/>
+            </field>
+        </field>
+    </record>
+
+</odoo>
+

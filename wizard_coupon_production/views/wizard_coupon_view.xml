@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--tree view for Wizard Coupon-->
+    <record id="wizard_coupon_production_tree" model="ir.ui.view">
+        <field name="name">wizard.coupon.production.tree</field>
+        <field name="model">wizard.coupon.production</field>
+        <field name="arch" type="xml">
+            <tree string="ผลิตคูปอง">
+                <field name="name"/>
+                <field name="branch_id"/>
+                <field name="date_order"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--search view for Wizard Coupon-->
+    <!--    <record id="view_coupon_filter" model="ir.ui.view">-->
+    <!--        <field name="name">wizard.coupon.list.select</field>-->
+    <!--        <field name="model">wizard.coupon</field>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <search string="Search Title">-->
+    <!--                <field name="name"/>-->
+    <!--                <field name="coupon_code" string="Code"/>-->
+    <!--                <field name="partner_id"/>-->
+    <!--                <field name="package_id"/>-->
+    <!--                <field name="source_operating_unit_id"/>-->
+    <!--                <field name="destination_operating_unit_id"/>-->
+    <!--                <filter name="available_filter" string="Available" domain="[('state', '=', 'draft')]"/>-->
+    <!--                <filter name="redeemed_filter" string="Redeemed" domain="[('state', '=', 'redeem')]"/>-->
+    <!--                <filter name="expired_filter" string="Expired" domain="[('state', '=', 'expire')]"/>-->
+    <!--                <filter name="expire_in_seven_days" string="Expire in 0-15 Days"-->
+    <!--                        domain="[('expiry_date', '&gt;=',  context_today().strftime('%Y-%m-%d')),('expiry_date', '&lt;',  (context_today() + relativedelta(days=16)).strftime('%Y-%m-%d'))]"/>-->
+    <!--                <filter name="expire_in_seven_days" string="Expire in 16-30 Days"-->
+    <!--                        domain="[('expiry_date', '&gt;',  (context_today() + datetime.timedelta(days=14)).strftime('%Y-%m-%d')),('expiry_date', '&lt;',  (context_today() + datetime.timedelta(days=31)).strftime('%Y-%m-%d'))]"/>-->
+    <!--                <filter name="expire_in_seven_days" string="Expire in more than 30 Days"-->
+    <!--                        domain="[('expiry_date', '&gt;=',  context_today().strftime('%Y-%m-%d')),('expiry_date', '&gt;',  (context_today() + relativedelta(days=31)).strftime('%Y-%m-%d'))]"/>-->
+
+    <!--                <filter name="operating_unit_filter" string="My operating unit" domain="[('state', '=', 'redeem'),'|',('source_operating_unit_id.user_ids', 'child_of', uid),('destination_operating_unit_id.user_ids', 'child_of', uid)]"/>-->
+
+    <!--                <group expand="0" string="Group By">-->
+    <!--                    <filter string="Status" domain="[]" context="{'group_by':'state'}"/>-->
+    <!--                    <filter string="Customer" domain="[]" context="{'group_by':'partner_id'}"/>-->
+    <!--                    <filter string="Coupon" domain="[]" context="{'group_by':'product_id'}"/>-->
+    <!--                    <filter string="Redeem Date" domain="[]" context="{'group_by':'redeem_date:day'}"/>-->
+    <!--                    <filter string="Package" domain="[]" context="{'group_by':'package_id'}"/>-->
+    <!--                </group>-->
+    <!--            </search>-->
+    <!--        </field>-->
+    <!--    </record>-->
+
+
+
+    <!--form view for Wizard Coupon-->
+    <record id="view_coupon_production_form" model="ir.ui.view">
+        <field name="name">wizard.coupon.production.form</field>
+        <field name="model">wizard.coupon.production</field>
+        <field name="arch" type="xml">
+            <form string="Coupons Production">
+                <header>
+                    <button name="button_validate" string="Validate" type="object"
+                            class="btn btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button name="button_generate" string="Generate" type="object"
+                            class="btn btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'validate')]}"/>
+
+                    <button name="button_cancel" string="Cancel" type="object"
+                            class="btn btn-primary"
+                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="branch_id" attrs="{'readonly': [('state', '=', 'validate')]}" require="1"/>
+                            <field name="partner_id" require="1"/>
+
+                        </group>
+                        <group>
+                            <field name="date_order" attrs="{'readonly': [('state', '=', 'validate')]}"/>
+
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Package Order">
+                            <field name="package_line" attrs="{'readonly': [('state', '=', 'validate')]}">
+                                <tree editable="bottom">
+                                    <field name="package_id" domain="[('is_pack', '=', True)]"/>
+                                    <field name="day_to_expire"/>
+                                    <field name="quantity"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Coupon Order">
+                            <field name="coupon_line" attrs="{'readonly': [('state', '=', 'validate')]}">
+                                <tree>
+                                    <field name="coupon_id"/>
+                                    <field name="package_id"/>
+                                    <field name="quantity" sum="Quantity"/>
+                                    <field name="expire_date"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page string="Coupon Detail">
+                            <field name="coupon_ids" readonly="1">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="product_id"/>
+                                    <field name="package_id"/>
+                                    <field name="expiry_date"/>
+                                    <field name="barcode"/>
+                                    <field name="coupon_running"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page string="Notes">
+                            <group>
+                                <field name="note"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_coupon_filter_coupon_type" model="ir.ui.view">
+        <field name="name">wizard.coupon.list.select.coupon.type</field>
+        <field name="model">wizard.coupon</field>
+        <field name="inherit_id" ref="wizard_coupon.view_coupon_filter"/>
+        <field name="arch" type="xml">
+            <filter name="available_filter" position="after">
+                <filter name="paper_coupon" string="Paper Coupon" domain="[('type', '=', 'paper')]"/>
+                <filter name="e_coupon" string="E-Coupon" domain="[('type', '=', 'e-coupon')]"/>
+            </filter>
+        </field>
+    </record>
+
+    <!--action view for Wizard Coupon-->
+    <record id="wizard_coupon_production_action" model="ir.actions.act_window">
+        <field name="name">ผลิตคูปอง</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.coupon.production</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="wizard_coupon_production.wizard_coupon_production_tree"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click here to Create Coupons
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem id="production_coupon_menu"
+              name="ผลิตคูปอง"
+              parent="wizard_coupon.care_care_coupon_menu"
+              action="wizard_coupon_production_action"
+              sequence="1"/>
+
+
+
+    <record id="wizard_coupon.wizard_coupon_action" model="ir.actions.act_window">
+        <field name="domain">[('type','=','e-coupon')]</field>
+    </record>
+
+    <record id="wizard_paper_coupon_action" model="ir.actions.act_window">
+        <field name="name">Paper Coupons</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.coupon</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[('type','=','paper')]</field>
+        <field name="context">{"search_default_filter_available_filter":4}</field>
+        <field name="view_id" ref="wizard_coupon.wizard_coupon_tree"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click here to Create Coupons
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="paper_coupon_menu"
+              name="Paper-Coupons"
+              parent="wizard_coupon.care_care_coupon_menu"
+              action="wizard_paper_coupon_action"
+              sequence="2"/>
+
+
+    <record id="wizard_package_id_tree" model="ir.ui.view">
+        <field name="name">wizard.coupon.pack.tree</field>
+        <field name="model">wizard.coupon.pack</field>
+        <field name="arch" type="xml">
+            <tree string="Package ID">
+                <field name="name"/>
+                <field name="package_id"/>
+                <field name="branch_id"/>
+                <field name="production_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="wizard_package_id_action" model="ir.actions.act_window">
+        <field name="name">Package ID</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wizard.coupon.pack</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+<!--        <field name="domain">[('type','=','paper')]</field>-->
+<!--        <field name="context">{"search_default_filter_available_filter":4}</field>-->
+        <field name="view_id" ref="wizard_coupon_production.wizard_package_id_tree"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click here to Create Coupons
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="package_id_menu"
+              name="Package ID"
+              parent="wizard_coupon.care_care_coupon_menu"
+              action="wizard_package_id_action"
+              sequence="5"/>
+
+
+</odoo>
+
+
+

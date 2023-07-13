@@ -1,0 +1,6 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_project_appointment_appointment,project.appointment.appointment,model_appointment_appointment,project.group_project_user,1,0,0,0
+access_project_appointment_appointment_manager,project.appointment.appointment,model_appointment_appointment,project.group_project_manager,1,1,1,1
+access_project_appointment_slot,project.appointment.slot,model_appointment_slot,project.group_project_user,1,0,0,0
+access_project_appointment_slot_manager,project.appointment.slot,model_appointment_slot,project.group_project_manager,1,1,1,1
+

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="inherit_project_project_form">
+        <field name="name">project.project.form.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='emails']" position="after">
+                <page name="services" string="Services">
+                    <group>
+                        <field name="services_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="product_id" required="1"/>
+                                <field name="signal"/>
+                                <field name="duration" widget="float_time"/>
+                            </tree>
+                        </field>
+                    </group>
+                </page>
+                <page name="qrcode" string="QR Code">
+                    <group>
+                        <field name="qr_code" widget="image" width="200"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

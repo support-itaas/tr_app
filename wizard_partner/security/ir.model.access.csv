@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_project_membership_type,project.membership.type,model_membership_type,project.group_project_user,1,0,0,0
+access_project_membership_type_manager,project.membership.type,model_membership_type,project.group_project_manager,1,1,1,1
+access_project_car_details,project.car.details,model_car_details,project.group_project_user,1,0,0,0
+access_project_car_details_manager,project.car.details,model_car_details,project.group_project_manager,1,1,1,1
+access_project_star_level,project.star.level,model_star_level,project.group_project_user,1,0,0,0
+access_project_star_level_manager,project.star.level,model_star_level,project.group_project_manager,1,1,1,1
