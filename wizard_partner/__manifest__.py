@@ -2,7 +2,7 @@
 # Copyright (C) 2020-present  Technaureus Info Solutions Pvt. Ltd.(<http://www.technaureus.com/>).
 {
     'name': 'Wizard Partner',
-    'version': '11.0.5.8',
+    'version': '11.0.5.7',
     'summary': 'Adding Membership Related Fields',
     'sequence': 1,
     'author': 'Technaureus Info Solutions Pvt. Ltd.',

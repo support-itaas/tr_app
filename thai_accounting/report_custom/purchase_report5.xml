@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="PO_report_id5">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="report.external_layout5">
+                    <div class="page">
+                        <style>
+                            .header{width:100%; height:30px;}
+                            .content{width:100%; height:700px;}
+                            .footer{width:100%; height:30px;}
+                            .doubleUnderline{border-bottom: 3px double;}
+
+                            table.table-bordered11{
+                            width: 100%;
+                            margin-top:-15px;
+                            border:1px solid black;
+                            border-left: 1px solid black;
+                            border-collapse: collapse;
+                            border-right: 1px solid black;
+                            border-bottom: 1px solid black;
+                            border-top: 1px solid black;
+                            }
+                            table.table-bordered11 &gt; thead &gt; tr &gt; th{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            border-left: 1px solid black;
+                            border-right: 1px solid black;
+                            border-bottom: 1px solid black;
+                            border-top: 1px solid black;
+                            }
+                            table.table-bordered11 > tbody > tr > td{
+                            border:1px solid black;
+                            border-left: 1px solid black;
+                            border-collapse: collapse;
+                            border-right: 1px solid black;
+                            border-bottom: 1px solid black;
+                            border-top: 1px solid black;
+                            }
+                            table.table-bordered11 &gt; tfoot &gt; tr &gt; td{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            border-right: 1px solid black;
+                            border-bottom: 1px solid black;
+                            border-top: 1px solid black;
+                            }
+
+                            table.table-bordered1{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            width: 100%;
+                            height:950px;
+
+                            }
+                            table.table-bordered1 &gt; thead &gt; tr &gt; th{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            }
+                            table.table-bordered1 > tbody > tr > td{
+                            border:0px solid white;
+                            border-left: 1px solid black;
+                            border-collapse: 0;
+                            }
+                            table.table-bordered1 &gt; tfoot &gt; tr &gt; td{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            }
+                            table.table-bordered &gt; thead &gt; tr &gt; th{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            }
+                            table.table-bordered &gt; tbody &gt; tr &gt; td{
+                            border:1px solid black;
+                            <!--border-left: 1px solid;-->
+                            border-collapse: collapse;
+                            }
+                            table.table-bordered &gt; tfoot &gt; tr &gt; td{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            }
+                            .doubleUnderline {
+                            text-decoration:underline;
+                            border-bottom: 1px solid #000;
+                            }
+                            table.table-table1 {
+                            border:1px solid black;
+                            margin-top:20px;
+                            border-collapse: collapse;
+                            border-left: 1px solid;
+                            border-right: 1px solid;
+                            border-bottom: 1px solid;
+                            border-top: 1px solid;
+                            width: 100%;
+                        </style>
+
+                        <div class="content" style="font-family: TH Krub; position: absolute; top: 0.55cm;width:100%;">
+                            <div class="row" style="position: absolute;width:100%;">
+                                <div class="col-xs-12">
+                                    <div class="row">
+                                        <table class="table table-bordered1" style="width:100%;">
+                                            <thead>
+                                                <tr height="24px;">
+                                                    <th colspan="6"
+                                                        style="background-color:#0f75bc; text-align:center; line-height: 20px">
+                                                        <font style="font-size: 26px; color: white;">
+                                                            <strong>ใบสั่งซื้อ</strong>
+                                                        </font>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="6">
+                                                        <div class="row">
+                                                            <div class="col-xs-8">
+                                                                <div class="row">
+                                                                    <div class="col-xs-3">
+                                                                        <font style="font-size: 22px;">
+                                                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                                                            <B>บริษัท:</B>
+                                                                            <br/>
+                                                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                                                            <B>ที่อยู่:</B>
+                                                                            <br/>
+                                                                            <br/>
+                                                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                                                            <B>เรียน:</B>
+                                                                            <br/>
+                                                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                                                            <B>Tel:</B>
+                                                                            <br/>
+                                                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                                                            <B>E-mail:</B>
+                                                                        </font>
+                                                                    </div>
+                                                                    <div class="col-xs-9">
+                                                                        <font style="font-size: 22px;">
+                                                                            <span t-if="o.partner_id.parent_id">
+                                                                               <span t-field="o.partner_id.parent_id.name"/>
+                                                                            </span>
+                                                                            <span t-if="not o.partner_id.parent_id">
+                                                                                <span t-field="o.partner_id.name"/>
+                                                                            </span>
+                                                                            <br/>
+                                                                            <span t-field="o.partner_id.street"/>
+                                                                            <br/>
+                                                                            <span t-if="o.partner_id.street2">
+                                                                                <span t-field="o.partner_id.street2"/>
+                                                                            </span>
+                                                                            <span t-if="o.partner_id.city and o.partner_id.state_id and o.partner_id.state_id.code == 'BKK'">
+                                                                                <span t-field="o.partner_id.city"/>
+                                                                            </span>
+                                                                            <span t-if="o.partner_id.city and o.partner_id.state_id and o.partner_id.state_id.code != 'BKK'">
+                                                                                <span t-field="o.partner_id.city"/>
+                                                                            </span>
+                                                                            <span t-if="o.partner_id.state_id.name">
+                                                                                <span t-field="o.partner_id.state_id.name"/>
+                                                                            </span>
+                                                                            <span t-field="o.partner_id.zip"/>
+                                                                            <br/>
+                                                                            <t t-if="o.contact_person.name">
+                                                                                <span t-field="o.contact_person.title"/><span t-field="o.contact_person.name"/>
+                                                                            </t>
+                                                                            <t t-if="not o.contact_person.name">
+                                                                                -
+                                                                            </t>
+                                                                            <br/>
+                                                                            <span t-if="o.contact_person.phone">
+                                                                                <font style="font-size: 22px;">
+                                                                                    <span t-field="o.contact_person.phone"/>
+                                                                                </font>
+                                                                            </span>
+                                                                            <span t-if="o.contact_person.mobile">
+                                                                                <font style="font-size: 22px;">
+                                                                                    <span t-if="o.contact_person.phone">
+                                                                                        <B>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                                                                            Mobile:&amp;nbsp;&amp;nbsp;
+                                                                                        </B>
+                                                                                    </span>
+                                                                                    <span t-field="o.contact_person.mobile"/>
+                                                                                </font>
+                                                                            </span>
+                                                                            <span t-if="not o.contact_person.phone">
+                                                                                <span t-if="not o.contact_person.mobile">
+                                                                                    -
+                                                                                </span>
+                                                                            </span>
+                                                                            <br/>
+                                                                            <span t-if="o.contact_person.email">
+                                                                                <font style="font-size: 22px;">
+                                                                                    <span t-field="o.contact_person.email"/>
+                                                                                </font>
+                                                                            </span>
+                                                                            <span t-if="not o.contact_person.email">
+                                                                                <font style="font-size: 22px;">
+                                                                                    -
+                                                                                </font>
+                                                                            </span>
+                                                                        </font>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--<div class="col-xs-1"/>-->
+                                                            <div class="col-xs-4">
+
+                                                                <font style="font-size: 22px;">
+                                                                    <strong>เลขที่ใบสั่งซื้อ:</strong>
+                                                                    <span t-field="o.name"/>
+                                                                    <br/>
+                                                                    <strong>วันที่:</strong>
+                                                                    <span t-field="o.date_order"
+                                                                          t-field-options='{"widget": "date"}'/>
+                                                                    <br/>
+                                                                    <!--<strong>Date of receipt:</strong>&amp;nbsp;&amp;nbsp;
+                                                                    <span t-field="o.date_receipt"
+                                                                          t-field-options='{"widget": "date"}'/>
+                                                                    <br/>
+                                                                    -->
+                                                                    <strong>เครดิต:</strong>
+                                                                    <span t-field="o.partner_id.property_supplier_payment_term_id"/>
+                                                                    <br/>
+                                                                    <strong>วันที่รับของ:</strong>
+                                                                    <span t-field="o.date_receipt"
+                                                                          t-field-options='{"widget": "date"}'/>
+                                                                </font>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                                <tr style="background-color:#0f75bc;">
+                                                    <th width="5%" style="text-align:center; line-height: 20px">
+                                                        <font style="font-size: 22px; color: white;">
+                                                            <b>ที่</b>
+                                                        </font>
+                                                    </th>
+                                                    <th width="15%" style="text-align:center; line-height: 20px">
+                                                        <font style="font-size: 22px; color: white;">
+                                                            <b>รหัสสินค้า</b>
+                                                        </font>
+                                                    </th>
+
+                                                    <th width="40%" style="text-align:center; line-height: 20px">
+                                                        <font style="font-size: 22px; color: white;">
+                                                            <b>รายละเอียด</b>
+                                                        </font>
+                                                    </th>
+                                                    <th width="10%" style="text-align:center; line-height: 20px">
+                                                        <font style="font-size: 22px; color: white;">
+                                                            <b>จำนวน</b>
+                                                        </font>
+                                                    </th>
+                                                    <th width="15%" style="text-align:center; line-height: 20px">
+                                                        <font style="font-size: 22px; color: white;">
+                                                            <b>ราคา/หน่วย</b>
+                                                        </font>
+                                                    </th>
+                                                    <th width="15%" style="text-align:center; line-height: 20px">
+                                                        <font style="font-size: 22px; color: white;">
+                                                            <b>จํานวนเงิน</b>
+                                                        </font>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="sale_tbody">
+                                                <t t-set="i" t-value="1"/>
+                                                <t t-set="max" t-value="10"/>
+                                                <t t-set="count" t-value="0"/>
+                                                <t t-set="total" t-value="o.amount_untaxed"/>
+                                                <t t-set="total_multi" t-value="0"/>
+                                                <t t-foreach="o.order_line" t-as="l">
+                                                    <tr>
+                                                        <td style="text-align:center">
+                                                            <font style="font-size: 22px;">
+                                                                <span t-esc="i"/>
+                                                            </font>
+                                                        </td>
+                                                        <t t-set="i" t-value="i+1"/>
+                                                        <t t-if="count &gt; 12">
+                                                            <t t-set="count" t-value="1"/>
+                                                        </t>
+                                                        <t t-if="count &lt; 13">
+                                                            <t t-set="count" t-value="count + l.get_line(l.name) + 1"/>
+                                                        </t>
+
+                                                        <td style="text-align:left">
+                                                            <font style="font-size: 22px;">
+                                                                <span t-field="l.product_id.default_code"/>
+                                                            </font>
+                                                        </td>
+                                                        <td style="text-align:left">
+                                                            <font style="font-size: 22px;">
+                                                                <span t-field="l.name"/>
+                                                            </font>
+                                                        </td>
+                                                        <td style="text-align:center">
+                                                            <font style="font-size: 22px;">
+                                                                <span t-field="l.product_qty"/>
+                                                                <!--
+                                                                <span t-field="l.product_uom.name"/>
+                                                                -->
+                                                            </font>
+                                                        </td>
+                                                        <td style="text-align:right">
+                                                            <font style="font-size: 22px;">
+                                                                <span t-esc="'{0:,.2f}'.format(float(l.price_unit))"/>
+
+                                                            </font>
+                                                        </td>
+                                                        <td style="text-align:right">
+                                                            <font style="font-size: 22px;">
+                                                                <span t-esc="'{0:,.2f}'.format(float(l.price_subtotal))"/>
+
+                                                            </font>
+                                                        </td>
+                                                        <!--</t>-->
+                                                    </tr>
+                                                </t>
+                                                <t t-foreach="range(count, 10)" t-as="x">
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td/>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                            <!--if using tfoot it will help to continue the table -->
+                                            <!--<tfoot class="table table-bordered" style="width:100%;page-break-inside: avoid">-->
+                                            <tfoot>
+                                                <tr style="height:22px;">
+                                                    <td colspan="3" style="text-align:left; border:1px solid black;">
+                                                        <font style="font-size: 22px;">
+                                                            <strong>หมายเหตุ</strong>&amp;nbsp;
+                                                            <span t-field="o.notes"/>
+                                                            <br/>
+                                                            <br/>
+                                                            <span>(
+                                                                <span t-esc="o.baht_text(o.amount_total)"/>
+                                                                ).
+                                                            </span>
+                                                        </font>
+                                                    </td>
+                                                    <td colspan="2" style="text-align:left;border:1px solid black;">
+                                                        <font style="font-size: 22px;">
+                                                            <strong>จํานวนเงินรวม</strong>
+                                                            <br/>
+                                                            <t t-if="o.discount_view == 'Before Tax'">
+                                                                <strong>ส่วนลด</strong>
+                                                                <br/>
+                                                                <u>
+                                                                    <strong>รวมมูลค่าสินค้า</strong>
+                                                                </u>
+                                                                <br/>
+                                                            </t>
+                                                            <strong>ภาษีมูลค่าเพิ่ม VAT 7%</strong>
+                                                            <br/>
+                                                            <t t-if="o.discount_view == 'After Tax'">
+                                                                <u>
+                                                                    <strong>รวมมูลค่าสินค้า</strong>
+                                                                </u>
+                                                                <br/>
+                                                                <strong>ส่วนลด</strong>
+                                                                <br/>
+                                                            </t>
+                                                            <strong>รวมเงินสุทธิ</strong>
+                                                            <br/>
+                                                        </font>
+                                                    </td>
+                                                    <td style="text-align:right;border:1px solid black;">
+                                                        <font style="font-size: 22px;">
+                                                            <span t-esc="'{0:,.2f}'.format(float(o.amount_untaxed))"/>
+                                                            <br/>
+                                                            <t t-if="o.discount_view == 'Before Tax'">
+                                                                <span t-esc="'{0:,.2f}'.format(float(o.discounted_amount))"/>
+                                                                <br/>
+                                                                <u>
+                                                                    <span
+                                                                            t-esc="'{0:,.2f}'.format(float(o.amount_untaxed - o.discounted_amount))"/>
+                                                                </u>
+                                                                <br/>
+                                                            </t>
+                                                            <span t-esc="'{0:,.2f}'.format(float(o.amount_tax))"/>
+
+                                                            <br/>
+                                                            <t t-if="o.discount_view == 'After Tax'">
+                                                                <u>
+                                                                    <span
+                                                                            t-esc="'{0:,.2f}'.format(float(o.amount_untaxed + o.amount_tax))"/>
+                                                                </u>
+                                                                <br/>
+                                                                <span t-esc="'{0:,.2f}'.format(float(o.discounted_amount))"/>
+                                                                <br/>
+                                                            </t>
+                                                            <span t-esc="'{0:,.2f}'.format(float(o.amount_total))"/>
+
+                                                            <br/>
+                                                        </font>
+                                                    </td>
+                                                </tr>
+
+                                                <table class="table table-bordered11">
+                                                    <tr>
+                                                        <td class="col-xs-6">
+                                                            <font style="text-align:center; font-size: 22px;">
+                                                                <p align="center">
+                                                                    Issued By
+                                                                    <br/>
+                                                                    Cheeranun Thanasuwan
+                                                                    <br/>
+                                                                    Purchasing Manager
+                                                                    <br/>
+                                                                </p>
+                                                                Tel:&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                                                <span t-field="o.validate_uid.phone"/>
+                                                                <t t-if="not o.validate_uid.phone">
+                                                                    02-7434595
+                                                                </t>
+                                                                <br/>
+                                                                E-mail:&amp;nbsp;&amp;nbsp;
+                                                                cheeranun@rbs-center.info
+                                                            </font>
+                                                        </td>
+                                                        <td class="col-xs-6">
+                                                            <font style="text-align:center; font-size: 22px;">
+                                                                <p align="center">
+                                                                    Approved By
+                                                                    <br/>
+                                                                    Mr.Shuchart&amp;nbsp;&amp;nbsp;Suphawimol
+                                                                    <br/>
+                                                                    Manager
+                                                                    <br/>
+                                                                </p>
+                                                                Tel:&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;+668-182-79592
+                                                                <br/>
+                                                                E-mail:&amp;nbsp;&amp;nbsp;shuchart@rbs-center.info
+                                                            </font>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

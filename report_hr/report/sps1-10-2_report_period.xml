@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="sps1_10_2_period_id">
+            <t t-call="web.basic_layout">
+                <t t-set="company" t-value="get_header_info"/>
+                <t t-set="period" t-value="get_period_info"/>
+                <t t-set="i" t-value="0"/>
+                <t t-set="sum_total_sso" t-value="0.0"/>
+                <t t-set="sum_sso" t-value="0.0"/>
+                <t t-set="con_branch_id" t-value="doc_model.env['contract.branch'].search([('id','=',data['con_branch_id'][0])])" />
+
+                <t t-foreach="range(0, num_page)" t-as="i_page">
+                    <div class="page" t-attf-style="background-image:url('/report_hr/static/description/sps1-10-2.jpg');                     background-size:520mm 365mm; width:520mm; height:365mm; page-break-inside: avoid;                     font-family:Tahoma; src:url(/report_hr/static/tahoma.ttf);">
+                        <style>
+                            .header{width:100%; height:25px;}
+                            .content{width:100%; height:1000px;}
+                            table.table-bordered {
+                            border:none;
+                            padding:3px;
+                            }
+                            table.table-bordered &gt; thead &gt; tr &gt; th{
+                            border:none;
+                            padding:3px;
+                            }
+                            table.table-bordered &gt; tbody &gt; tr &gt; td{
+                            border:none;
+                            padding:3px;
+                            }
+                            table.table-bordered &gt; tfoot &gt; tr &gt; td{
+                            border:none;
+                            padding:3px;
+                            }
+                        </style>
+
+                        <div class="header"/>
+
+                        <div class="content" style="position: relative;">
+
+                            <!--company info-->
+                            <div style="height:440px; position:relative; font-size: 24px;">
+                                <div style="position: absolute; top:148px; left: 400px;">
+                                    <t t-if="doc_model.date_end">
+                                        <t t-set="date" t-value="time.strptime(doc_model.date_end,'%Y-%m-%d')"/>
+                                        <t t-if="date.tm_mon == 1"><span>มกราคม</span></t>
+                                        <t t-if="date.tm_mon == 2"><span>กุมภาพันธ์</span></t>
+                                        <t t-if="date.tm_mon == 3"><span>มีนาคม</span></t>
+                                        <t t-if="date.tm_mon == 4"><span>เมษายน</span></t>
+                                        <t t-if="date.tm_mon == 5"><span>พฤษภาคม</span></t>
+                                        <t t-if="date.tm_mon == 6"><span>มิถุนายน</span></t>
+                                        <t t-if="date.tm_mon == 7"><span>กรกฎาคม</span></t>
+                                        <t t-if="date.tm_mon == 8"><span>สิงหาคม</span></t>
+                                        <t t-if="date.tm_mon == 9"><span>กันยายน</span></t>
+                                        <t t-if="date.tm_mon == 10"><span>ตุลาคม</span></t>
+                                        <t t-if="date.tm_mon == 11"><span>พฤศจิกายน</span></t>
+                                        <t t-if="date.tm_mon == 12"><span>ธันวาคม</span></t>
+                                    </t>
+                                </div>
+
+                                <div style="position: absolute; top:148px; left: 650px;">
+                                    <t t-if="doc_model.date_payment">
+                                        <t t-set="date" t-value="time.strptime(doc_model.date_payment,'%Y-%m-%d')"/>
+                                        <span t-esc="date.tm_year + 543"/>
+                                    </t>
+                                </div>
+
+                                <div style="position: absolute; left: 20%;">
+                                    <div class="col-xs-12" style="height:192px;"><br/></div>
+                                    <t t-if="con_branch_id">
+                                        <span t-esc="con_branch_id.description"/>
+                                    </t>
+                                </div>
+
+                                <div style="position: absolute; left: 76.5%;">
+                                    <div class="col-xs-12" style="height:190px;"><br/></div>
+                                    <t t-if="company and company['company_bank']">
+                                        <t t-set="bank" t-value="company['company_bank']"/>
+                                        <span t-if="len(bank) &gt; 0" t-esc="bank[0]"/>&amp;nbsp;&amp;nbsp;
+                                        <span t-if="len(bank) &gt; 1" t-esc="bank[1]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                        <span t-if="len(bank) &gt; 2" t-esc="bank[2]"/>&amp;nbsp;&amp;nbsp;
+                                        <span t-if="len(bank) &gt; 3" t-esc="bank[3]"/>&amp;nbsp;
+                                        <span t-if="len(bank) &gt; 4" t-esc="bank[4]"/>&amp;nbsp;&amp;nbsp;
+                                        <span t-if="len(bank) &gt; 5" t-esc="bank[5]"/>&amp;nbsp;&amp;nbsp;
+                                        <span t-if="len(bank) &gt; 6" t-esc="bank[6]"/>&amp;nbsp;&amp;nbsp;
+                                        <span t-if="len(bank) &gt; 7" t-esc="bank[7]"/>&amp;nbsp;
+                                        <span t-if="len(bank) &gt; 8" t-esc="bank[8]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                        <span t-if="len(bank) &gt; 9" t-esc="bank[9]"/>
+                                    </t>
+                                </div>
+
+                                <div style="position: absolute; left: 76.5%;">
+                                    <div class="col-xs-12" style="height:238px;"><br/></div>
+                                    <t t-if="data['con_branch_id']">
+                                        <t t-set="con_branch" t-value="data['con_branch_id'][1]"/>
+                                        <span t-if="len(con_branch) &gt; 0" t-esc="con_branch[0]"/>&amp;nbsp;&amp;nbsp;
+                                        <span t-if="len(con_branch) &gt; 1" t-esc="con_branch[1]"/>&amp;nbsp;
+                                        <span t-if="len(con_branch) &gt; 2" t-esc="con_branch[2]"/>&amp;nbsp;&amp;nbsp;
+                                        <span t-if="len(con_branch) &gt; 3" t-esc="con_branch[3]"/>&amp;nbsp;&amp;nbsp;
+                                        <span t-if="len(con_branch) &gt; 4" t-esc="con_branch[4]"/>&amp;nbsp;&amp;nbsp;
+                                        <span t-if="len(con_branch) &gt; 5" t-esc="con_branch[5]"/>&amp;nbsp;&amp;nbsp;
+                                        <span t-if="len(con_branch) &gt; 6" t-esc="con_branch[6]"/>&amp;nbsp;&amp;nbsp;
+                                    </t>
+                                </div>
+
+                                <!--page and topage-->
+                                <div style="position: absolute; top:148px; right:480px;">
+                                    <span t-esc="i_page+1"/>
+                                </div>
+                                <div style="position: absolute; top:148px; right:250px;">
+                                    <span t-esc="num_page"/>
+                                </div>
+
+                            </div>
+
+                            <!--employee info-->
+                            <table class="table table-bordered" width="100%" style="font-size:24px; line-height: 20px;">
+                                <t t-foreach="range(0, 10,1)" t-as="y">
+                                    <t t-if="len(period) &gt; i ">
+                                        <tr style="height:50px;">
+                                            <td style="width:158px;"/>
+                                            <td style="width:90px; " align="center"><span t-esc="i+1"/></td>
+                                            <td style="width:520px;">
+                                                <t t-if="period[i] and period[i]['employee_id']">
+                                                    <t t-set="ident" t-value="period[i]['employee_id'].sso_id"/>
+                                                    <t t-if="ident">
+                                                        &amp;nbsp;&amp;nbsp;
+                                                        <span t-if="len(ident) &gt; 0" t-esc="ident[0]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                                        <span t-if="len(ident) &gt; 1" t-esc="ident[1]"/>&amp;nbsp;&amp;nbsp;
+                                                        <span t-if="len(ident) &gt; 2" t-esc="ident[2]"/>&amp;nbsp;&amp;nbsp;
+                                                        <span t-if="len(ident) &gt; 3" t-esc="ident[3]"/>&amp;nbsp;&amp;nbsp;
+                                                        <span t-if="len(ident) &gt; 4" t-esc="ident[4]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                                        <span t-if="len(ident) &gt; 5" t-esc="ident[5]"/>&amp;nbsp;&amp;nbsp;
+                                                        <span t-if="len(ident) &gt; 6" t-esc="ident[6]"/>&amp;nbsp;&amp;nbsp;
+                                                        <span t-if="len(ident) &gt; 7" t-esc="ident[7]"/>&amp;nbsp;
+                                                        <span t-if="len(ident) &gt; 8" t-esc="ident[8]"/>&amp;nbsp;&amp;nbsp;
+                                                        <span t-if="len(ident) &gt; 9" t-esc="ident[9]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                                        <span t-if="len(ident) &gt; 10" t-esc="ident[10]"/>&amp;nbsp;&amp;nbsp;
+                                                        <span t-if="len(ident) &gt; 11" t-esc="ident[11]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                                        <span t-if="len(ident) &gt; 12" t-esc="ident[12]"/>
+                                                    </t>
+                                                </t>
+                                            </td>
+                                            <td style="width:500px;"><span t-esc="period[i]['name']"/></td>
+                                            <td style="width:180px;" align="right">
+                                                <span t-esc="'{0:,.0f}'.format(int(period[i]['sum_total_sso']))"/>
+                                                <t t-set="sum_total_sso" t-value="sum_total_sso + period[i]['sum_total_sso']"/>
+                                            </td>
+                                            <td style="width:70px; "/>
+                                            <td style="width:190px;" align="right">
+                                                <span t-esc="'{0:,.0f}'.format(int(period[i]['total_sso']))"/>
+                                                <t t-set="sum_sso" t-value="sum_sso + period[i]['total_sso']"/>
+                                            </td>
+                                            <td style="width:130px;"/>
+                                        </tr>
+                                    </t>
+                                    <t t-else="">
+                                        <tr style="height:50px;">
+                                            <td colspan="8"><span style="color:white;">free</span></td>
+                                        </tr>
+                                    </t>
+                                    <t t-set="i" t-value="i+1"/>
+                                </t>
+                            </table>
+                            <table width="100%" class="table table-bordered" style="font-size:24px; line-height: 24px; margin-top:10px;">
+                                <tr>
+                                    <td width="79%" align="right"><span t-esc="'{0:,.0f}'.format(sum_total_sso)"/></td>
+                                    <td width="14%" align="right"><span t-esc="'{0:,.0f}'.format(sum_sso)"/></td>
+                                    <td width="7%"><span style="color:white;">-</span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <p style="page-break-after:always;"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

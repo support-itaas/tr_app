@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="account_order_add_more_field_itaas_update" model="ir.ui.view">
+            <field name="name">account.invoice.form.update</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <field name="date_invoice" position="after">
+                    <field name="manual_amount"/>
+                    <field name="amount_untaxed" readonly="0" attrs="{'invisible': [('manual_amount', '=',False)]}"/>
+                    <field name="amount_tax"  readonly="0" attrs="{'invisible': [('manual_amount', '=',False)]}"/>
+                    <field name="amount_total" readonly="0" attrs="{'invisible': [('manual_amount', '=',False)]}"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="customer_billing_order_add_more_field_itaas_update" model="ir.ui.view">
+            <field name="name">customer.billing.form.update</field>
+            <field name="model">customer.billing</field>
+            <field name="inherit_id" ref="thai_accounting.customer_billing_form"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="after">
+                    <field name="manual_amount"/>
+                    <field name="amount_untaxed" readonly="0" attrs="{'invisible': [('manual_amount', '=',False)]}"/>
+                    <field name="amount_tax"  readonly="0" attrs="{'invisible': [('manual_amount', '=',False)]}"/>
+                    <field name="amount_total" readonly="0" attrs="{'invisible': [('manual_amount', '=',False)]}"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="account_invoice_order_add_more_field_itaas_update" model="ir.ui.view">
+            <field name="name">account.invoice.form.update</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <field name="date_invoice" position="after">
+                    <field name="manual_amount"/>
+                    <field name="amount_untaxed" readonly="0" attrs="{'invisible': [('manual_amount', '=',False)]}"/>
+                    <field name="amount_tax"  readonly="0" attrs="{'invisible': [('manual_amount', '=',False)]}"/>
+                    <field name="amount_total" readonly="0" attrs="{'invisible': [('manual_amount', '=',False)]}"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="customer_billing_order_add_more_field_itaas_update" model="ir.ui.view">
+            <field name="name">customer.billing.form.update</field>
+            <field name="model">customer.billing</field>
+            <field name="inherit_id" ref="thai_accounting.supplier_billing_form"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="after">
+                    <field name="manual_amount"/>
+                    <field name="amount_untaxed" readonly="0" attrs="{'invisible': [('manual_amount', '=',False)]}"/>
+                    <field name="amount_tax"  readonly="0" attrs="{'invisible': [('manual_amount', '=',False)]}"/>
+                    <field name="amount_total" readonly="0" attrs="{'invisible': [('manual_amount', '=',False)]}"/>
+                </field>
+            </field>
+        </record>
+
+
+
+
+
+
+
+    </data>
+</odoo>
+

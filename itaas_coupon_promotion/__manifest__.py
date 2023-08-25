@@ -10,7 +10,7 @@
 
 {
     'name': 'ITAAS Coupon Promotion',
-    'version': '11.0.1.3',
+    'version': '11.0.1.1',
     'summary': 'Coupon Promotion',
     'sequence': 1,
     'author': 'ITAAS',

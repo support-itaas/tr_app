@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="report_supplier_evaluation_id">
+            <t t-call="web.basic_layout">
+                <t t-foreach="supplier_ids" t-as="o">
+                    <div class="page" style="font-family:TH SarabunPSK;                     src:url(/print_itaas_report/static/THSarabun.ttf);padding-left: 80px;padding-right: 80px;padding-top: 40px">
+                        <div  style="width:100%; font-size:20px;">
+                            <div style="width:100%; text-align:center;">
+                                <span t-esc="to_days"/>
+                                <br/><br/>
+                            </div>
+                            <div style="width:100%;">
+                                <span>เรื่อง&amp;nbsp;&amp;nbsp;&amp;nbsp;</span><span>การประเมินประสิทธิภาพผู้ขายปี</span>&amp;nbsp;<span t-esc="to_year"/><br/>
+                                <span>เรียน&amp;nbsp;&amp;nbsp;&amp;nbsp;</span><span>ผู้จัดการฝ่ายขาย</span> ( <span t-field="o.name"/> )
+                            </div>
+                            <br/>
+                            <div style="width:100%;">
+                                <span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;เนื่องด้วยบริษัท มีการประเมินประสิทธิภาพของผู้ขายประจำปีระหว่างเดือน </span>
+                                <span t-esc="t_month_y"/>
+                                <span> ตามระบบ ISO 9001 : 2008 บริษัทฯ จึงขอแจ้งผลการประเมินให้ท่านทราบ
+                                    และเพื่อเป็นแนวทางการแก้ไขปัญหาในครั้งต่อๆ ไป โดยบริษัทฯ
+                                    มีหลักเกณฑ์การพิจารณา 2 ประเด็น ดังนี้</span>
+                            </div>
+                            <div>
+                                <table width="100%">
+                                    <tr>
+                                        <td width="100%" colspan="4">
+                                            <span>1. ด้านคุณภาพ คะแนนเต็ม 70 คะแนน</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="20%"></td>
+                                        <td width="20%">
+                                            <span>คุณภาพของสินค้า =</span>
+                                        </td>
+                                        <td width="40%" align="center">
+                                            <u><span>จำนวนครั้งที่เป็นไปตามมาตรฐานที่กำหนด x 70</span></u><br/>
+                                            <span>จำนวนครั้งที่ส่งมอบทั้งหมดของสินค้า</span>
+                                        </td>
+                                        <td width="20%"></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100%" colspan="4">
+                                            <span>2. ด้านการส่งมอบ คะแนนเต็ม 30 คะแนน</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="20%"></td>
+                                        <td width="20%">
+                                            <span>การส่งมอบ =</span>
+                                        </td>
+                                        <td width="40%" align="center">
+                                            <u><span>จำนวนครั้งที่ส่งมอบตรงเวลา x 30</span></u><br/>
+                                            <span>จำนวนครั้งที่ส่งมอบทั้งหมด</span>
+                                        </td>
+                                        <td width="20%"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <br/>
+                            <div>
+                                <u><span>หมายเหตุ</span></u>
+                                ;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                <span>  การส่งมอบตรงเวลา หมายถึง ส่งสินค้า ก่อน-หลัง ไม่เกิน 3
+                                    วัน นับจากวันที่กำหนดรับในใบสั่งซื้อ</span><br/>
+                                &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                <span>การส่งมอบไม่ตรงเวลา หมายถึง ส่งสินค้าเกิน 3 วัน ขึ้นไป
+                                    นับจากวันที่กำหนดรับในใบสั่งซื้อ</span>
+                            </div>
+                            <br/>
+                            <div>
+                                <table width="100%">
+                                    <tr>
+                                        <td width="15%">
+                                            <u><span>เกรดการประเมิน</span></u>
+                                        </td>
+                                        <td width="85%">
+                                            <span>ระบุเกรด A คือระดับคะแนน 91-100 คะแนน</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="15%">
+                                            <span style="color:white;">-</span>
+                                        </td>
+                                        <td width="85%">
+                                            <span>ระบุเกรด B คือระดับคะแนน 81-90 คะแนน</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="15%">
+                                            <span style="color:white;">-</span>
+                                        </td>
+                                        <td width="85%">
+                                            <span>ระบุเกรด C คือระดับคะแนน 70-80 คะแนน</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="15%">
+                                            <span style="color:white;">-</span>
+                                        </td>
+                                        <td width="85%">
+                                            <span>ระบุเกรด F คือระดับคะแนน ต่ำกว่า 70 คะแนน</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br/>
+                                <table width="100%">
+                                    <tr>
+                                        <td width="10%">
+                                            <u><span>หมายเหตุ</span></u>
+                                        </td>
+                                        <td width="90%">
+                                            <ul>
+                                                <li>
+                                                    <span>
+                                                        หากการประเมินได้เกรด F ติดต่อกัน เกิน 2 ครั้ง บริษัทฯ
+                                                        จะทำการตัดรายชื่อของท่านออกจาก
+                                                        ทะเบียนผู้ขาย
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span>
+                                                        หากการประเมินได้เกรด F ท่านจะได้รับเอกสารการ Complain
+                                                        เพื่อให้พิจารณาปรับปรุงแก้ไข
+                                                        และหาแนวทางการป้องกัน
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <t t-set="eval" t-value="docs.get_function_eval(data['date_from'],data['date_to'],o.id)"/>
+                                            <span>คือ เกรด </span><span t-esc="eval"/>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <u><span>ผลการประเมินบริษัทฯ ของท่านประจำปี </span><span t-esc="to_year"/></u>
+                                        </td>
+                                    </tr>
+                                    <tr><td/></tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <span>         จากผลการประเมินดังกล่าว ทางบริษัทฯ ต้องขอขอบคุณมายังท่าน และหวังเป็นอย่างยิ่งว่า บริษัทฯ
+                                                คงได้รับความร่วมมือเป็นอย่างดีเหมือนเช่นนี้อีกในโอกาสต่อๆ ไป</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br/>
+                                <table width="100%">
+                                    <tr>
+                                        <td width="60%"></td>
+                                        <td width="30%" align="center">
+                                            <span>ขอแสดงความนับถือ</span>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <br/>
+                                            <span>ใจเอื้อ สุวรรณพงศ์</span><br/>
+                                            <span>หัวหน้าแผนกจัดซื้อ</span>
+                                        </td>
+                                        <td width="10%"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <p style="page-break-after:always;"/>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

@@ -7,10 +7,12 @@
 #08/02/2021 - 11.0.5.0 by Jeng
 # if product_id in not is_create_task will create deadline = redeem
 # create button deadline for deadline != redeem
-
+#11.0.6.4 - 18/07/2021 - update back from TIS
+#11.0.6.5 - 18/07/2021 - update ITAAS Function (expire schedule, notification, claim coupon)
+#11.0.6.6 - 10/08/2021 - add account payable to claim coupon
 {
     'name': 'Wizard Coupon',
-    'version': '11.0.6.4',
+    'version': '11.0.6.7',
     'summary': 'Wizard Coupon',
     'sequence': 1,
     'author': 'Technaureus Info Solutions Pvt. Ltd.',
@@ -22,6 +24,7 @@
         'security/ir.model.access.csv',
         'data/wizard_coupon.xml',
         'data/expire_coupon_scheduler.xml',
+        'data/redeem_coupon_scheduler.xml',
         'data/coupon_data.xml',
         'data/coupon_journal_data.xml',
         'data/car_settings_data.xml',

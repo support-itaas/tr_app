@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_financial_itaas" inherit_id="account.report_financial">
+        <xpath expr="//t[@t-call='web.internal_layout']" position="replace">
+            <t t-call="web.internal_layout">
+                <div class="page">
+                    <t t-set="sum_1" t-value="0.0"/>
+                    <t t-set="sum_2" t-value="0.0"/>
+                    <t t-set="new" t-value="0"/>
+                    <t t-if="data['date_to']" >
+                        <t t-set="date" t-value="time.strptime(data['date_to'],'%Y-%m-%d' )"/>
+                    </t>
+                    <h4 t-esc="o.company_id.name" style="text-align: center"/>
+                    <h4 t-esc="data['account_report_id'][1]" style="text-align: center"/>
+                    <h4 style="text-align: center">สำหรับปี สิ้นสุดวันที่&amp;nbsp;&amp;nbsp;<span t-esc="date.tm_mday"/>&amp;nbsp;&amp;nbsp;
+                        <span t-if="date.tm_mon == 1">มกราคม</span>
+                        <span t-if="date.tm_mon == 2">กุมภาพันธ์</span>
+                        <span t-if="date.tm_mon == 3">มีนาคม</span>
+                        <span t-if="date.tm_mon == 4">เมษายน</span>
+                        <span t-if="date.tm_mon == 5">พฤษภาคม</span>
+                        <span t-if="date.tm_mon == 6">มิถุนายน</span>
+                        <span t-if="date.tm_mon == 7">กรกฎาคม</span>
+                        <span t-if="date.tm_mon == 8">สิงหาคม</span>
+                        <span t-if="date.tm_mon == 9">กันยายน</span>
+                        <span t-if="date.tm_mon == 10">ตุลาคม</span>
+                        <span t-if="date.tm_mon == 11">พฤศจิกายน</span>
+                        <span t-if="date.tm_mon == 12">ธันวาคม</span>
+                        &amp;nbsp;&amp;nbsp;<span t-esc="date.tm_year+543"/>
+                    </h4>
+
+
+                    <table class="table table-condensed" t-if="data['debit_credit'] == 1">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th class="text-right">Debit</th>
+                                <th class="text-right">Credit</th>
+                                <th class="text-right">Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="new_account_lines" t-value="docs.split_financial(data,get_account_lines)"/>
+                            <!--                        <tr t-foreach="new_account_lines" t-as="a">-->
+                            <!--                            <t t-if="a['level'] != 0 and (a.get('balance') != 0 or docs.show_zero)">-->
+                            <!--                                &lt;!&ndash;<t t-if="a.get('level') &gt; 3"><t t-set="style" t-value="'font-weight: normal;'"/></t>&ndash;&gt;-->
+                            <!--                                &lt;!&ndash;<t t-if="not a.get('level') &gt; 3"><t t-set="style" t-value="'font-weight: bold;'"/></t>&ndash;&gt;-->
+                            <!--                                <t t-if="a.get('level') == 1 and not a.get('new_line')">-->
+                            <!--                                    <t t-set="style_name" t-value="'font-weight: bold;'"/>-->
+                            <!--                                    <t t-set="style" t-value="'font-weight: bold;'"/>-->
+                            <!--                                </t>-->
+                            <!--                                <t t-if="a.get('level') == 2 and not a.get('new_line')">-->
+                            <!--                                    <t t-set="style_name" t-value="'font-weight: bold;'"/>-->
+                            <!--                                    <t t-set="style" t-value="'font-weight: bold;'"/>-->
+                            <!--                                </t>-->
+                            <!--                                <t t-if="a.get('level') &gt; 2 and a.get('level') &lt;= 4 and not a.get('new_line')">-->
+                            <!--                                    <t t-set="style_name" t-value="'font-weight: normal;'"/>-->
+                            <!--                                    <t t-set="style" t-value="'font-weight: normal;'"/>-->
+                            <!--                                </t>-->
+                            <!--                                <t t-if="a.get('level') &gt; 4 and not a.get('new_line')">-->
+                            <!--                                    <t t-set="style_name" t-value="'font-weight: normal;'"/>-->
+                            <!--                                    <t t-set="style" t-value="'font-weight: normal;'"/>-->
+                            <!--                                </t>-->
+                            <!--                                <t t-if="a.get('new_line') and a.get('level') != 1">-->
+                            <!--                                    <t t-set="style_name" t-value="'font-weight: bold;'"/>-->
+                            <!--                                    <t t-set="style" t-value="'font-weight: bold;border-bottom: 1px double'"/>-->
+                            <!--                                </t>-->
+                            <!--                                <t t-if="a.get('new_line') and a.get('level') == 1">-->
+                            <!--                                    <t t-set="style_name" t-value="'font-weight: bold;'"/>-->
+                            <!--                                    <t t-set="style" t-value="'font-weight: bold;border-bottom: 3px double'"/>-->
+                            <!--                                </t>-->
+
+                            <!--                                <td>-->
+                            <!--                                    <span style="color: white;" t-esc="'..' * a.get('level', 0)"/>-->
+                            <!--                                    <t t-if="a.get('show_deduct')">-->
+                            <!--                                        <span><u>หัก</u></span>-->
+                            <!--                                    </t>-->
+                            <!--                                    <span t-att-style="style_name" t-esc="a.get('name')"/>-->
+                            <!--                                </td>-->
+                            <!--                                <t t-if="a.get('account_type') != 'sum'">-->
+                            <!--                                    <td class="text-right" style="white-space: text-nowrap;">-->
+                            <!--                                        <t t-if="int(a.get('debit')) &lt; 0">-->
+                            <!--                                            <span>(</span>-->
+                            <!--                                            <span t-att-style="style" t-esc="'{0:,.2f}'.format(float(abs(a.get('debit'))))"/>-->
+                            <!--                                            <span>)</span>-->
+                            <!--                                        </t>-->
+                            <!--                                        <t t-if="int(a.get('debit')) &gt;= 0">-->
+                            <!--                                            <span t-att-style="style" t-esc="'{0:,.2f}'.format(float(abs(a.get('debit'))))"/>-->
+                            <!--                                        </t>-->
+                            <!--                                    </td>-->
+                            <!--                                    <td class="text-right" style="white-space: text-nowrap;">-->
+                            <!--                                        <t t-if="int(a.get('credit')) &lt; 0">-->
+                            <!--                                            <span>(</span>-->
+                            <!--                                            <span t-att-style="style" t-esc="'{0:,.2f}'.format(float(abs(a.get('credit'))))"/>-->
+                            <!--                                            <span>)</span>-->
+                            <!--                                        </t>-->
+                            <!--                                        <t t-if="int(a.get('credit')) &gt;= 0">-->
+                            <!--                                            <span t-att-style="style" t-esc="'{0:,.2f}'.format(float(abs(a.get('credit'))))"/>-->
+                            <!--                                        </t>-->
+                            <!--                                    </td>-->
+                            <!--                                    <td class="text-right" style="white-space: text-nowrap;">-->
+                            <!--                                        <t t-if="int(a.get('balance')) &lt; 0">-->
+                            <!--                                            <span>(</span>-->
+                            <!--                                            <span t-att-style="style" t-esc="'{0:,.2f}'.format(float(abs(a.get('balance'))))"/>-->
+                            <!--                                            <span>)</span>-->
+                            <!--                                        </t>-->
+                            <!--                                        <t t-if="int(a.get('balance')) &gt;= 0">-->
+                            <!--                                            <span t-att-style="style" t-esc="'{0:,.2f}'.format(float(abs(a.get('balance'))))"/>-->
+                            <!--                                        </t>-->
+                            <!--                                    </td>-->
+                            <!--                                </t>-->
+                            <!--                                <t t-if="a.get('account_type') == 'sum'">-->
+                            <!--                                    <td/>-->
+                            <!--                                    <td/>-->
+                            <!--                                    <td/>-->
+                            <!--                                </t>-->
+                            <!--                            </t>-->
+                            <!--                        </tr>-->
+                        </tbody>
+                    </table>
+
+                    <table class="table table-condensed" t-if="not data['enable_filter'] and not data['debit_credit']">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th class="text-right">บาท/Baht</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="new_account_lines" t-value="docs.split_financial(data,get_account_lines)"/>
+                            <tr t-foreach="new_account_lines" t-as="a">
+                                <t t-if="a['level'] != 0 and (a.get('balance') != 0 or docs.show_zero)">
+                                    <!--<t t-if="a['level'] != 0">-->
+                                    <t t-if="a.get('level') == 1 and not a.get('new_line')">
+                                        <t t-set="style_name" t-value="'font-weight: bold;'"/>
+                                        <t t-set="style" t-value="'font-weight: bold;'"/>
+                                    </t>
+                                    <t t-if="a.get('level') == 2 and not a.get('new_line')">
+                                        <t t-set="style_name" t-value="'font-weight: bold;'"/>
+                                        <t t-set="style" t-value="'font-weight: bold;'"/>
+                                    </t>
+                                    <t t-if="a.get('level') &gt; 2 and a.get('level') &lt;= 4 and not a.get('new_line')">
+                                        <t t-set="style_name" t-value="'font-weight: normal;'"/>
+                                        <t t-set="style" t-value="'font-weight: normal;'"/>
+                                    </t>
+                                    <t t-if="a.get('level') &gt; 4 and not a.get('new_line')">
+                                        <t t-set="style_name" t-value="'font-weight: normal;'"/>
+                                        <t t-set="style" t-value="'font-weight: normal;'"/>
+                                    </t>
+                                    <t t-if="a.get('new_line') and a.get('level') != 1">
+                                        <t t-set="style_name" t-value="'font-weight: bold;'"/>
+                                        <t t-set="style" t-value="'font-weight: bold;border-bottom: 1px double'"/>
+                                    </t>
+                                    <t t-if="a.get('new_line') and a.get('level') == 1">
+                                        <t t-set="style_name" t-value="'font-weight: bold;'"/>
+                                        <t t-set="style" t-value="'font-weight: bold;border-bottom: 3px double'"/>
+                                    </t>
+                                    <td>
+                                        <span style="color: white;" t-esc="'....' * a.get('level', 0)"/>
+                                        <t t-if="a.get('show_deduct')">
+                                            <span><u>หัก</u></span>
+                                        </t>
+                                        <span t-att-style="style_name" t-esc="a.get('name')"/>
+                                    </td>
+                                    <t t-if="a.get('account_type') != 'sum'">
+                                        <td class="text-right">
+                                            <t t-if="int(a.get('balance')) &lt; 0">
+                                                <span>(</span>
+                                                <span t-att-style="style" t-esc="'{0:,.2f}'.format(float(abs(a.get('balance'))))"/>
+                                                <span>)</span>
+                                            </t>
+                                            <t t-if="int(a.get('balance')) &gt;= 0">
+                                                <span t-att-style="style" t-esc="'{0:,.2f}'.format(float(abs(a.get('balance'))))"/>
+                                            </t>
+                                        </td>
+                                    </t>
+                                    <t t-if="a.get('account_type') == 'sum'">
+                                        <td/>
+                                    </t>
+                                </t>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <table class="table table-condensed" t-if="data['enable_filter'] == 1 and not data['debit_credit']">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th class="text-right">บาท/Baht<br/><span t-esc="date.tm_year+543"/></th>
+                                <th class="text-right">บาท/Baht<br/><span t-esc="data['label_filter']"/></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="new_account_lines" t-value="docs.split_financial(data,get_account_lines)"/>
+                            <tr t-foreach="new_account_lines" t-as="a">
+                                <t t-if="a['level'] != 0 and (a.get('balance') != 0 or docs.show_zero)">
+                                    <!--<t t-if="a.get('level') == 1"><t t-set="style" t-value="'font-weight: bold;border-bottom: 3px double;'"/></t>-->
+                                    <!--<t t-if="a.get('level') &gt; 1 and a.get('level') &lt;= 4"><t t-set="style" t-value="'font-weight: bold;'"/></t>-->
+                                    <!--<t t-if="a.get('level') &gt; 4"><t t-set="style" t-value="'font-weight: normal;'"/></t>-->
+                                    <t t-if="a.get('level') == 1 and not a.get('new_line')">
+                                        <t t-set="style_name" t-value="'font-weight: bold;'"/>
+                                        <t t-set="style" t-value="'font-weight: bold;'"/>
+                                    </t>
+                                    <t t-if="a.get('level') == 2 and not a.get('new_line')">
+                                        <t t-set="style_name" t-value="'font-weight: bold;'"/>
+                                        <t t-set="style" t-value="'font-weight: bold;'"/>
+                                    </t>
+                                    <t t-if="a.get('level') &gt; 2 and a.get('level') &lt;= 4 and not a.get('new_line')">
+                                        <t t-set="style_name" t-value="'font-weight: normal;'"/>
+                                        <t t-set="style" t-value="'font-weight: normal;'"/>
+                                    </t>
+                                    <t t-if="a.get('level') &gt; 4 and not a.get('new_line')">
+                                        <t t-set="style_name" t-value="'font-weight: normal;'"/>
+                                        <t t-set="style" t-value="'font-weight: normal;'"/>
+                                    </t>
+                                    <t t-if="a.get('new_line') and a.get('level') != 1">
+                                        <t t-set="style_name" t-value="'font-weight: bold;'"/>
+                                        <t t-set="style" t-value="'font-weight: bold;border-bottom: 1px double'"/>
+                                    </t>
+                                    <t t-if="a.get('new_line') and a.get('level') == 1">
+                                        <t t-set="style_name" t-value="'font-weight: bold;'"/>
+                                        <t t-set="style" t-value="'font-weight: bold;border-bottom: 3px double'"/>
+                                    </t>
+                                    <td>
+                                        <span style="color: white;" t-esc="'....' * a.get('level', 0)"/>
+                                        <t t-if="a.get('show_deduct')">
+                                            <span><u>หัก</u></span>
+                                        </t>
+                                        <span t-att-style="style_name" t-esc="a.get('name')"/>
+                                    </td>
+                                    <t t-if="a.get('account_type') != 'sum'">
+                                        <td class="text-right">
+                                            <t t-if="int(a.get('balance')) &lt; 0">
+                                                <span>(</span>
+                                                <span t-att-style="style" t-esc="'{0:,.2f}'.format(float(abs(a.get('balance'))))"/>
+                                                <span>)</span>
+                                            </t>
+                                            <t t-if="int(a.get('balance')) &gt;= 0">
+                                                <span t-att-style="style" t-esc="'{0:,.2f}'.format(float(abs(a.get('balance'))))"/>
+                                            </t>
+                                            <t t-set="sum_1" t-value="sum_1 + a.get('balance')"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <t t-if="int(a.get('balance')) &lt; 0">
+                                                <span>(</span>
+                                                <span t-att-style="style" t-esc="'{0:,.2f}'.format(float(abs(a.get('balance_cmp'))))"/>
+                                                <span>)</span>
+                                            </t>
+                                            <t t-if="int(a.get('balance')) &gt;= 0">
+                                                <span t-att-style="style" t-esc="'{0:,.2f}'.format(float(abs(a.get('balance_cmp'))))"/>
+                                            </t>
+                                            <t t-set="sum_1" t-value="sum_2 + a.get('balance_cmp')"/>
+                                        </td>
+                                    </t>
+                                    <t t-if="a.get('account_type') == 'sum'">
+                                        <td/>
+                                        <td/>
+                                    </t>
+                                </t>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>

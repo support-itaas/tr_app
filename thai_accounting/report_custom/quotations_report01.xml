@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <template id="quotations01_report_id">
+          <t t-foreach="docs" t-as="doc">
+             <t t-call="report.internal_layout">
+                <div class="page">
+                    <style>
+                        .header{width:100%; height:380px;}
+                        .content{width:100%; height:700px;}
+                        .footer{width:100%; height:200px;}
+                        .table1 {
+                            border-collapse: collapse;
+                            border: 1px solid black;
+                        }
+                    </style>
+                    <div class="header">
+                        <div class="col-xs-3">
+                            <img class="img-rounded pull-left" style="width: 100%;" src="/signature/static/logo.jpg"/>
+                        </div>
+                        <div class="col-xs-9" style="text-align:right">
+                            <font style="font-size: 14px;"><br/>
+                                <b><span>บริษัท เอเบิ้ล ทู จำกัด</span><br/>
+                                <span>ABLE TO CO.,LTD</span><br/>
+                                <span>168/51 ถนนนาคนิวาส แขวงลาดพร้าว</span><br/>
+                                <span>เขตลาดพร้าว กรุงเทพฯ 10230</span></b>
+                            </font>
+                        </div>
+                        <div class="row zero_min_height">
+                            <div class="col-xs-12">
+                                <div style="border-bottom: 1px solid black;"/>
+                            </div>
+                        </div><br/>
+                        <div class="col-xs-12" style="text-align:center">
+                            <font style="font-size: 14px;"><b><span>QUOTATION / ใบเสนอราคา</span></b></font>
+                        </div><br/>
+                        <div class="row" style="page-break-inside: avoid">
+                            <table class="table1" style="width:100%">
+                                <tr>
+                                    <td>
+                                        <table style="width:100%">
+                                            <p/>
+                                            <tr>
+                                                <td width="15%">
+                                                    <font style="font-size: 10px;">
+                                                        &amp;nbsp;&amp;nbsp;
+                                                        <strong><span>เรียน / To:</span></strong>
+                                                    </font>
+                                                </td>
+                                                <td width="30%">
+                                                    <t t-if="doc.partner_id.company_type != 'person'">
+                                                        <span />
+                                                    </t>
+                                                    <t t-if="doc.partner_id.company_type == 'person'">
+                                                        <font style="font-size: 10px;">
+                                                            <span t-field="doc.partner_id.name"/>
+                                                        </font>
+                                                    </t>
+                                                </td>
+                                                <td width="25%">
+                                                    <font style="font-size: 10px;">
+                                                        &amp;nbsp;&amp;nbsp;
+                                                        <strong><span>ใบเสนองานเลขที่ / Quotation No.:</span></strong>
+                                                    </font>
+                                                </td>
+                                                <td width="30%">
+                                                    <font style="font-size: 10px;">
+                                                        <span t-field="doc.name"/>
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="15%">
+                                                    <font style="font-size: 10px;">
+                                                        &amp;nbsp;&amp;nbsp;
+                                                        <strong><span>ตำแหน่ง / Title:</span></strong>
+                                                    </font>
+                                                </td>
+                                                <td width="30%">
+                                                    <font style="font-size: 10px;">
+                                                        <span t-field="doc.partner_id.function"/>
+                                                    </font>
+                                                </td>
+                                                <td width="25%">
+                                                    <font style="font-size: 10px;">
+                                                        &amp;nbsp;&amp;nbsp;
+                                                        <strong><span>วันที่ / Date:</span></strong>
+                                                    </font>
+                                                </td>
+                                                <td width="30%">
+                                                    <font style="font-size: 10px;">
+                                                        <span t-field="doc.date_order" t-field-options='{"widget": "date"}'/>
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="15%">
+                                                    <font style="font-size: 10px;">
+                                                        &amp;nbsp;&amp;nbsp;
+                                                        <strong><span>บริษัท / Company:</span></strong>
+                                                    </font>
+                                                </td>
+                                                <td width="30%">
+                                                    <font style="font-size: 10px;">
+                                                        <span t-field="doc.partner_id.parent_name"/>
+                                                    </font>
+                                                    <t t-if="doc.partner_id.company_type == 'company'">
+                                                        <font style="font-size: 10px;">
+                                                            <span t-field="doc.partner_id.name"/>
+                                                        </font>
+                                                    </t>
+                                                    <t t-if="doc.partner_id.company_type != 'company'">
+                                                        <span />
+                                                    </t>
+                                                </td>
+                                                <td width="25%">
+                                                    <font style="font-size: 10px;">
+                                                        &amp;nbsp;&amp;nbsp;
+                                                        <strong><span>ผู้เสนอราคา / Proposer:</span></strong>
+                                                    </font>
+                                                </td>
+                                                <td width="30%">
+                                                    <font style="font-size: 10px;">
+                                                        <span t-field="doc.user_id.name"/>
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="15%">
+                                                    <font style="font-size: 10px;">
+                                                        &amp;nbsp;&amp;nbsp;
+                                                        <strong><span>ที่อยู่ / Address:</span></strong>
+                                                    </font>
+                                                </td>
+                                                <td width="30%">
+                                                    <font style="font-size: 10px;">
+                                                        <span t-field="doc.partner_id.street"/><br/>
+                                                        <span t-field="doc.partner_id.street2"/><br/>
+                                                        <span t-field="doc.partner_id.city"/>&amp;nbsp;
+                                                        <span t-field="doc.partner_id.state_id.name"/>&amp;nbsp;
+                                                        <span t-field="doc.partner_id.zip"/>
+                                                    </font>
+                                                </td>
+                                                <td width="25%">
+                                                    <font style="font-size: 10px;">
+                                                        &amp;nbsp;&amp;nbsp;
+                                                        <strong><span>ตำแหน่ง / Title:</span></strong>
+                                                    </font>
+                                                </td>
+                                                <td width="30%">
+                                                    <font style="font-size: 10px;">
+                                                        <span t-field="doc.user_id.function"/>
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="15%">
+                                                    <font style="font-size: 10px;">
+                                                        &amp;nbsp;&amp;nbsp;
+                                                        <strong><span>มือถือ / Cellphone:</span></strong>
+                                                    </font>
+                                                </td>
+                                                <td width="30%">
+                                                    <font style="font-size: 10px;">
+                                                        <span t-field="doc.partner_id.mobile"/>
+                                                    </font>
+                                                </td>
+                                                <td width="25%">
+                                                    <font style="font-size: 10px;">
+                                                        &amp;nbsp;&amp;nbsp;
+                                                        <strong><span>มือถือ / Cellphone:</span></strong>
+                                                    </font>
+                                                </td>
+                                                <td width="30%">
+                                                    <font style="font-size: 10px;">
+                                                        <span t-field="doc.user_id.employee_id.mobile_phone"/>
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="15%">
+                                                    <font style="font-size: 10px;">
+                                                        &amp;nbsp;&amp;nbsp;
+                                                        <strong><span>โทรศัพท์ / Baseline:</span></strong>
+                                                    </font>
+                                                </td>
+                                                <td width="30%">
+                                                    <font style="font-size: 10px;">
+                                                        <span t-field="doc.partner_id.phone"/>
+                                                    </font>
+                                                </td>
+                                                <td width="25%">
+                                                    <font style="font-size: 10px;">
+                                                        &amp;nbsp;&amp;nbsp;
+                                                        <strong><span>โทรศัพท์ / Baseline:</span></strong>
+                                                    </font>
+                                                </td>
+                                                <td width="30%">
+                                                    <font style="font-size: 10px;">
+                                                        <span t-field="doc.user_id.employee_id.work_phone"/>
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="15%">
+                                                    <font style="font-size: 10px;">
+                                                        &amp;nbsp;&amp;nbsp;
+                                                        <strong><span>แฟกซ์ / Fax:</span></strong>
+                                                    </font>
+                                                </td>
+                                                <td width="30%">
+                                                    <font style="font-size: 10px;">
+                                                        <span t-field="doc.partner_id.fax"/>
+                                                    </font>
+                                                </td>
+                                                <td width="25%">
+                                                    <font style="font-size: 10px;">
+                                                        &amp;nbsp;&amp;nbsp;
+                                                        <strong><span>แฟกซ์ / Fax:</span></strong>
+                                                    </font>
+                                                </td>
+                                                <td width="30%">
+                                                    <font style="font-size: 10px;">
+                                                        <span t-field="doc.user_id.fax"/>
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="15%">
+                                                    <font style="font-size: 10px;">
+                                                        &amp;nbsp;&amp;nbsp;
+                                                        <strong><span>E-mail Address:</span></strong>
+                                                    </font>
+                                                </td>
+                                                <td width="30%">
+                                                    <font style="font-size: 10px;">
+                                                        <span t-field="doc.partner_id.email"/>
+                                                    </font>
+                                                </td>
+                                                <td width="25%">
+                                                    <font style="font-size: 10px;">
+                                                        &amp;nbsp;&amp;nbsp;
+                                                        <strong><span>E-mail Address:</span></strong>
+                                                    </font>
+                                                </td>
+                                                <td width="30%">
+                                                    <font style="font-size: 10px;">
+                                                        <span t-field="doc.user_id.email"/>
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <font style="font-size: 10px;">
+                                                        &amp;nbsp;&amp;nbsp;
+                                                        <strong><span>Tax Identification No. / เลขประจำตัวผู้เสียภาษี:</span></strong>
+                                                        &amp;nbsp;&amp;nbsp;
+                                                        <span t-field="doc.partner_id.vat"/><p/>
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="table1" width="100%">
+                                <tr>
+                                    <td width="20%">
+                                        <font style="font-size: 10px;">
+                                            <p/>&amp;nbsp;&amp;nbsp;
+                                            <strong><span>วันที่ทำงาน / Operation Date:</span></strong>
+                                        </font>
+                                    </td>
+                                    <td width="30%">
+                                        <font style="font-size: 10px;">
+                                            <span t-field="doc.operation_date"/><p/>
+                                        </font>
+                                    </td>
+                                    <td width="25%">
+                                        <font style="font-size: 10px;">
+                                            <p/>&amp;nbsp;&amp;nbsp;
+                                            <strong><span>โปรโมชั่น / Promotion:</span></strong>
+                                        </font>
+                                    </td>
+                                    <td width="30%">
+                                        <font style="font-size: 10px;">
+                                            <span t-field="doc.promotion"/><p/>
+                                        </font>
+                                    </td>
+                                    <p/>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div name="payment_term" t-if="doc.payment_term_id" class="col-xs-3"> </div>
+                        <div class="col-xs-12">
+                            <t t-set="display_discount" t-value="any([l.discount for l in doc.order_line])"/>
+                              <table class="table table-condensed">
+                                <thead>
+                                  <tr>
+                                    <th class="col-xs-1">
+                                      <font style="font-size: 10px;">ลำดับ</font>
+                                      <br/>
+                                      <font style="font-size: 10px;">No.</font>
+                                    </th>
+                                    <th class="col-xs-3">
+                                      <font style="font-size: 10px;">รายการ</font>
+                                      <br/>
+                                      <font style="font-size: 10px;">Description</font>
+                                    </th>
+                                    <th class="col-xs-2">
+                                      <font style="font-size: 10px;">สาขา</font>
+                                      <br/>
+                                      <font style="font-size: 10px;">Branch</font>
+                                    </th>
+                                    <th class="col-xs-1" style="text-align:right">
+                                      <font style="font-size: 10px;">จำนวนหน่วย</font>
+                                      <br/>
+                                      <font style="font-size: 10px;">QTY</font>
+                                    </th>
+                                    <th class="col-xs-1" style="text-align:right">
+                                      <font style="font-size: 10px;">วัน</font>
+                                      <br/>
+                                      <font style="font-size: 10px;">Days</font>
+                                    </th>
+                                    <th class="col-xs-1" style="text-align:right">
+                                      <font style="font-size: 10px;">หน่วย</font>
+                                      <br/>
+                                      <font style="font-size: 10px;">Unit</font>
+                                    </th>
+                                    <th class="col-xs-1" style="text-align:right">
+                                      <font style="font-size: 10px;">บาท / หน่วย</font>
+                                      <br/>
+                                      <font style="font-size: 10px;">Baht / Unit</font>
+                                    </th>
+                                    <th class="col-xs-1" style="text-align:right">
+                                      <font style="font-size: 10px;">รวม</font>
+                                      <br/>
+                                      <font style="font-size: 10px;">Total</font>
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody class="sale_tbody">
+                                  <t t-set="i" t-value="1"/>
+                                  <t t-set="total" t-value="doc.amount_untaxed"/>
+                                  <t t-set="descript" t-value="0"/>
+                                  <t t-foreach="doc.order_line" t-as="l">
+                                    <t t-set="discount" t-value="l.price_subtotal"/>
+                                    <tr t-if="l.product_uom_qty">
+                                      <t t-if="l.price_subtotal &lt; 0">
+                                        <t t-set="total" t-value="total-l.price_subtotal"/>
+                                      </t>
+                                      <t t-if="(discount) &gt; 0">
+                                        <span/>
+                                        <td>
+                                          <font style="font-size: 10px;">
+                                            <span t-esc="i"/>
+                                          </font>
+                                        </td>
+                                        <t t-set="i" t-value="i+1"/>
+                                        <!-- คำนวณหาค่า  -->
+                                        <!--td>
+                                          <t t-if="descript == l.product_id.name">
+                                            <span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span>
+                                          </t>
+                                          <t t-if="descript != l.product_id.name">
+                                            <t t-set="descript" t-value="l.product_id.name"/>
+                                            <font style="font-size: 10px;"><span t-esc="descript"/></font>
+                                          </t>
+                                        </td>
+                                        <td>
+                                          <t t-if="descript == l.product_id.name">
+                                            <font style="font-size: 10px;">
+                                              <span t-field="l.branch_ids.name"/>
+                                            </font>
+                                          </t>
+                                          <t t-if="descript != l.product_id.name">
+                                            <t t-set="descript" t-value="l.product_id.name"/>
+                                            <font style="font-size: 10px;"><span t-field="l.branch_ids.name"/></font>
+                                          </t>
+                                        </td-->
+                                        <!-- จบ  -->
+                                        <td>
+                                            <font style="font-size: 10px;">
+                                                <span t-field="l.name"/>
+                                            </font>
+                                        </td>
+                                        <td>
+                                            <font style="font-size: 10px;">
+                                                <span t-field="l.branch_ids.name"/>
+                                            </font>
+                                        </td>
+                                        <td style="text-align:right">
+                                          <font style="font-size: 10px;">
+                                            <span t-field="l.product_uom_qty"/>
+                                            <!--span groups="product.group_uom" t-field="l.product_uom"/-->
+                                          </font>
+                                        </td>
+                                        <td style="text-align:right">
+                                          <font style="font-size: 10px;">
+                                            <span t-field="l.day"/>
+                                          </font>
+                                        </td>
+                                        <td style="text-align:right">
+                                          <font style="font-size: 10px;">
+                                            <span t-field="l.product_uom.name"/>
+                                          </font>
+                                        </td>
+                                        <td style="text-align:right">
+                                          <font style="font-size: 10px;">
+                                            <span t-field="l.price_unit"/>
+                                          </font>
+                                        </td>
+                                        <td style="text-align:right">
+                                          <font style="font-size: 10px;">
+                                            <span t-field="l.price_subtotal" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;doc.pricelist_id.currency_id&quot;}"/>
+                                          </font>
+                                        </td>
+                                      </t>
+                                    </tr>
+                                  </t>
+                                </tbody>
+                              </table>
+                              <div class="row" name="total">
+                                <div class="col-xs-4 pull-right">
+                                  <table class="table table-condensed">
+                                    <tr class="border-black">
+                                      <td>
+                                        <strong>
+                                          <font style="font-size: 10px;">รวมจำนวนเงินก่อนภาษี</font>
+                                        </strong>
+                                      </td>
+                                      <td style="text-align:right">
+                                        <font style="font-size: 10px;">
+                                          <span t-esc="'{0:,.2f}'.format(int(total))"/>&amp;nbsp;<span>฿</span>
+                                        </font>
+                                      </td>
+                                    </tr>
+                                    <t t-foreach="doc.order_line" t-as="l">
+                                    <tr t-if="l.price_subtotal &lt; 0">
+                                      <td>
+                                        <font style="font-size: 10px;">ส่วนลด</font>
+                                      </td>
+                                        <td style="text-align:right">
+                                          <font style="font-size: 10px;">
+                                            <span t-field="l.price_subtotal" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;doc.pricelist_id.currency_id&quot;}"/>
+                                          </font>
+                                        </td>
+                                    </tr>
+                                    </t>
+                                    <tr>
+                                      <td>
+                                        <font style="font-size: 10px;">รวมจำนวนเงิน</font>
+                                      </td>
+                                      <td style="text-align:right">
+                                        <font style="font-size: 10px;">
+                                          <span t-field="doc.amount_untaxed" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;doc.pricelist_id.currency_id&quot;}"/>
+                                        </font>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        <font style="font-size: 10px;">ภาษีมูลค่าเพิ่ม 7%</font>
+                                      </td>
+                                      <td style="text-align:right">
+                                        <font style="font-size: 10px;">
+                                          <span t-field="doc.amount_tax" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;doc.pricelist_id.currency_id&quot;}"/>
+                                        </font>
+                                      </td>
+                                    </tr>
+                                    <tr class="border-black">
+                                      <td>
+                                        <strong>
+                                          <font style="font-size: 10px;">จำนวนเงินรวมทั้งสิ้น</font>
+                                        </strong>
+                                      </td>
+                                      <td style="text-align:right">
+                                        <font style="font-size: 10px;">
+                                          <span t-field="doc.amount_total" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;doc.pricelist_id.currency_id&quot;}"/>
+                                        </font>
+                                      </td>
+                                    </tr>
+                                  </table>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="row" style="page-break-inside: avoid">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td>
+                                    <div class="col-xs-3">
+                                        <font style="font-size: 10px;">
+                                            <span>Note / หมายเหตุ:</span>
+                                        </font>
+                                    </div>
+                                    <div class="col-xs-9">
+                                        <font style="font-size: 10px;">
+                                            <span t-field="doc.note" />
+                                        </font>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="col-xs-3">
+                                        <font style="font-size: 10px;">
+                                            <span>Payment / การชำระเงิน:</span>
+                                        </font>
+                                    </div>
+                                     <div class="col-xs-9">
+                                        <font style="font-size: 10px;">
+                                            <span t-field="doc.payment_term_id.note"/>
+                                        </font>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="col-xs-3">
+                                        <font style="font-size: 10px;">
+                                            <span>Validity / การยืนยันราคา:</span>
+                                        </font>
+                                    </div>
+                                     <div class="col-xs-9">
+                                        <font style="font-size: 10px;">
+                                            <span>
+                                                 ภายใน 30 วัน นับจากวันที่เสนอราคา <br/>
+                                                 ความต้องการเพิ่มเติมหรือการเปลี่ยนแปลงใดๆ ในภายหลังนอกเหนือที่ระบุในใบเสนอราคานี้<br/>
+                                                 อาจมีผลต่อการเปลี่ยนแปลงราคาบริษัทฯขอสงวนสิทธิ์ในการเปลี่ยนแปลงราคาตามการเปลี่ยนแปลง
+                                            </span>
+                                        </font>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="col-xs-4">
+                                        <font style="font-size: 10px;">
+                                            <span><b>สำหรับลูกค้าลงนามอนุมัติ</b></span>
+                                        </font>
+                                    </div>
+                                     <div class="col-xs-4" style="text-align:center">
+                                        <font style="font-size: 10px;">
+                                            <span>
+                                                <t t-if="doc.check_uid.name" />
+	                                            <img class="img img-responsive pull-center" style="margin:auto; width: 100px; hight: 50px; " src="/signature/static/1.gif"/>
+                                            </span>
+                                        </font>
+                                    </div>
+                                    <div class="col-xs-4" style="text-align:center">
+                                        <font style="font-size: 10px;">
+                                            <span>
+                                                 <t t-if="doc.validate_uid.name" />
+                                                 <img class="img img-responsive pull-center" style="margin:auto; width: 100px; hight: 50px; " src="/signature/static/2.gif"/>
+                                            </span>
+                                        </font>
+                                    </div><br/>
+                                    <div class="col-xs-4" style="text-align:center">
+                                        <font style="font-size: 10px;">
+                                            <span>_____________________________</span><br/>
+                                            (&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;)<br/>
+                                                                                        <br/>
+                                            <span t-field="doc.date_order"  t-field-options='{"widget": "date"}'/>
+                                        </font>
+                                    </div>
+                                     <div class="col-xs-4" style="text-align:center">
+                                        <font style="font-size: 10px;">
+                                            <span>_____________________________</span><br/>
+                                            (<span t-field="doc.check_uid.name" />)<br/>
+                                            <span t-field="doc.check_uid.function" /><br/>
+                                            <span t-field="doc.date_order"  t-field-options='{"widget": "date"}'/>
+                                        </font>
+                                    </div>
+                                    <div class="col-xs-4" style="text-align:center">
+                                        <font style="font-size: 10px;">
+                                             <span>_____________________________</span><br/>
+                                             (<span t-field="doc.validate_uid.name" />)<br/>
+                                             <span t-field="doc.validate_uid.function" /><br/>
+                                             <span t-field="doc.date_order"  t-field-options='{"widget": "date"}'/>
+                                        </font>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+              </t>
+          </t>
+        </template>
+        
+    </data>
+</openerp>

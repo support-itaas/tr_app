@@ -1,0 +1,5 @@
+id,name,model,function,interval_number,interval_type,numbercall,active
+work_age_update,Work Age Update,hr.contract,update_work_ages,1,days,1,TRUE
+update_employee_tag,Employee Tag Update,hr.contract,update_employee_tag,1,days,-1,True
+update_employee_holiday,Employee Holiday Update,hr.contract,update_holiday,1,months,-1,False
+

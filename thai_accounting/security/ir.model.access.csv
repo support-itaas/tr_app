@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_customer_billing,customer.billing,model_customer_billing,account.group_account_invoice,1,1,1,1
+access_customer_billing_accountant,customer.billing accountant,model_customer_billing,account.group_account_user,1,0,0,0
+access_customer_billing_user,customer.billing user,model_customer_billing,base.group_user,1,0,0,0
+access_writeoff_accounts_group_user,writeoff_accounts group_user,model_writeoff_accounts,account.group_account_invoice,1,1,1,1
+access_register_billing_payment_user,RegisterBillingPayments user,model_register_billing_payments,account.group_account_invoice,1,1,1,0
+access_register_payment_user,RegisterPayments user,model_account_register_payments,account.group_account_invoice,1,1,1,0
+access_customer_area_group_user,customer_area group user,model_customer_area,base.group_user,1,1,1,1
+account_cheque_statement_user,account_cheque_statement_group_user,model_account_cheque_statement,base.group_user,1,1,1,0
+account_cheque_statement_manager,account_cheque_statement_group_manager,model_account_cheque_statement,account.group_account_manager,1,1,1,0
+

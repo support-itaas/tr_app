@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_sale_form_inherit_agreement">
+            <field name="name">sale.form.inherit.agreement</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_view_invoice']" position="before">
+                    <button type="object"
+                        name="demo_picking"
+                        class="oe_stat_button"
+                        icon="fa-truck" attrs="{'invisible': [('picking_count', '=', 0)]}" groups="base.group_user" >
+                        <field name="picking_count" widget="statinfo" string="Demo"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

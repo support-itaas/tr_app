@@ -16,6 +16,20 @@
         'views/coupon_tree.xml',
         'security/ir.model.access.csv',
         'views/coupon_order_record_view.xml',
+
+
+        # 'report/report_stockpicking_operations.xml',
+        # 'report/product_stock_report.xml',
+        # 'report/report_stockhistory.xml',
+        # 'report/product_report.xml',
+        # 'views/stock_card_view.xml',
+        # 'views/stock_valuation_history_view.xml',
+        # 'views/stock_land_cost_view.xml',
+        # 'views/product_template_view.xml',
+        # 'views/stock_picking_view.xml',
+        # 'wizard/inventory_age_wizard.xml',
+        # 'report/report_reg.xml',
+
     ],
     'qweb': [],
     "installable": True,

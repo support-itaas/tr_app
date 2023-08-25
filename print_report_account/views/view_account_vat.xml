@@ -1,0 +1,43 @@
+<odoo>
+
+	<!-- tax report wizard form view -->
+	<record id="view_account_vat_report_wizard_form" model="ir.ui.view">
+	    <field name="name">account.vat.report.form</field>
+	    <field name="model">vat.report</field>
+	    <field name="type">form</field>
+	    <field name="arch" type="xml">
+	        <form string="Account Vat Reports">
+	            <group col="4" colspan="4">
+	            	<field name="date_from"/>
+	            	<field name="date_to"/>
+                    <field name="type"/>
+	            </group>
+	            <footer>
+                    <button name="print_report" string="Print(PDF)" type="object" default_focus="1" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+	        </form>
+	   </field>
+	</record>
+
+
+	<!-- Action for Tax Report Wizard -->
+
+    <record id="action_account_vat_report_excel" model="ir.actions.act_window">
+        <field name="name">Account Vat Report</field>
+        <field name="res_model">vat.report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_account_vat_report_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+
+    <!-- Menu for tax report action -->
+
+    <!--<menuitem id="menu_main_production_report" parent="jtp_center_extension.menu_pc_root" name="production Reports"/>-->
+    <menuitem id="menu_acc_vat_report" action="action_account_vat_report_excel"  parent="thai_accounting.menu_main_tax_report"  sequence="1"/>
+
+</odoo>

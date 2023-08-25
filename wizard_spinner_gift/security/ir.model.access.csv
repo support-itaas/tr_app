@@ -2,5 +2,9 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_spinner_wheel_gift_user,spinner.wheel.gift.user,model_spinner_wheel_gift,base.group_user,1,1,1,1
 access_spinner_wheel_gift_portal,spinner.wheel.gift.portal,model_spinner_wheel_gift,base.group_portal,1,1,1,1
 access_spinner_wheel_gift_public,spinner.wheel.gift.public,model_spinner_wheel_gift,base.group_public,1,1,1,1
+access_spinner_wheel_gift_user,spinner.wheel.gift.user,model_gift_winners_list,base.group_user,1,1,1,1
 access_wizard_notification_public,wizard.notification.public,wizard_notifications.model_wizard_notification,base.group_public,1,1,1,1
 access_wizard_coupon_public,wizard.coupon.public,wizard_coupon.model_wizard_coupon,base.group_public,1,1,1,1
+
+
+

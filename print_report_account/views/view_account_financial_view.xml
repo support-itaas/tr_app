@@ -1,0 +1,46 @@
+<odoo>
+
+
+    <record id="accounting_report_before_after_yearend_inherit_view" model="ir.ui.view">
+        <field name="name">Accounting Report</field>
+        <field name="model">accounting.report</field>
+        <field name="inherit_id" ref="account.accounting_report_view"/>
+        <field name="arch" type="xml">
+            <data>
+
+                <field name="date_to" position="after">
+                    <field name="before_after_year_end" required="1"/>
+                    <field name="show_zero"/>
+                </field>
+            </data>
+        </field>
+    </record>
+
+    <record id="view_account_financial_report_form_inherit_itaas" model="ir.ui.view">
+        <field name="name">account.financial.report.form</field>
+        <field name="model">account.financial.report</field>
+        <field name="inherit_id" ref="account.view_account_financial_report_form"/>
+        <field name="arch" type="xml">
+            <field name="style_overwrite" position="after">
+                <field name="show_summary"/>
+                <field name="position"/>
+                <field name="type_ni_report"/>
+                <field name="show_deduct"/>
+                <field name="is_retain_earning"/>
+            </field>
+
+        </field>
+    </record>
+
+
+    <record id="action_account_type" model="ir.actions.act_window">
+        <field name="name">Account Type</field>
+        <field name="res_model">account.account.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_acc_type" action="action_account_type"  parent="account.menu_finance_entries"  sequence="10"/>
+
+
+
+</odoo>

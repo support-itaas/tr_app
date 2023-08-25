@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="receipt_report_id">
+            <t t-foreach="docs" t-as="doc">
+                <t t-set="amount" t-value="doc.amount" />
+                <t t-set="i" t-value="1"/>
+                <t t-call="report.internal_layout">
+                    <div class="page">
+                        <style>
+                            .header{width:100%; height:200px;}
+                            .content{width:100%; height:700px;}
+                            .footer{width:100%; height:200px;}
+                            .doubleUnderline{border-bottom: 3px double;}
+                            table.table-bordered1{
+                            border:1px solid black;
+                            margin-top:20px;
+                            border-collapse: collapse;
+                            width: 100%;
+                            }
+                            table.table-bordered1 &gt; thead &gt; tr &gt; th{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            }
+                            table.table-bordered1 &gt; tbody &gt; tr &gt; td{
+                            border:0px solid white;
+                            border-left:1px solid black;
+                            border-collapse: collapse;
+                            height: 40px;
+                            }
+                            table.table-bordered1 &gt; tfoot &gt; tr &gt; td{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            }
+
+                            table.table-bordered{
+                            border:1px solid black;
+                            margin-top:20px;
+                            border-collapse: collapse;
+                            width: 100%;
+                            }
+                            table.table-bordered &gt; thead &gt; tr &gt; th{
+                            border:0px solid white;
+                            border-collapse: collapse;
+                            }
+                            table.table-bordered &gt; tbody &gt; tr &gt; td{
+                            border:0px solid black;
+                            border-collapse: collapse;
+                            }
+                            table.table-bordered &gt; tfoot &gt; tr &gt; td{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            }
+                        </style>
+                        <div class="header">
+                            <table width="100%">
+                                <tr>
+                                    <td width="20%">
+                                        <img t-att-src="'data:image/png;base64,%s' % doc.company_id.logo" style="max-height: 100px;"/>
+                                    </td>
+                                    <td width="60%">
+                                        <font style="font-size: 12px;">
+                                            <strong><span t-field="doc.company_id.name"/></strong><br/>
+                                            <span t-field="doc.company_id.street"/>&amp;nbsp;<span t-field="doc.company_id.street2"/>&amp;nbsp;
+                                            <span t-field="doc.company_id.city"/>&amp;nbsp;<span t-field="doc.company_id.state_id.name"/>&amp;nbsp;
+                                            <span t-field="doc.company_id.zip"/><br/>
+                                            <span t-if="doc.company_id.phone">โทรศัพท์&amp;nbsp;<span t-esc="doc.company_id.phone"/>&amp;nbsp;</span>
+                                            <span t-if="doc.company_id.fax">แฟกซ์.&amp;nbsp;<span t-esc="doc.company_id.fax"/></span><br/>
+                                            <span t-if="doc.company_id.vat">เลขประจำตัวผู้เสียภาษี&amp;nbsp;<span t-esc="doc.company_id.vat"/></span>
+                                        </font>
+                                    </td>
+                                    <td width="20%">
+                                        <font style="font-size: 20px;">
+                                            <strong>ใบเสร็จรับเงิน</strong>
+                                        </font>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br/>
+                            <table style="width:100%">
+                                <tr>
+                                    <td width="7%">
+                                        <font style="font-size: 12px;">
+                                            <strong>ชื่อ</strong>
+                                        </font>
+                                    </td>
+                                    <td width="63%">
+                                        <font style="font-size: 12px;">
+                                            <span t-field="doc.partner_id.name"/><br/>
+                                            <span t-if="doc.partner_id.vat">เลขประจำตัวผู้เสียภาษี&amp;nbsp;<span t-esc="doc.partner_id.vat"/></span>
+                                        </font>
+                                    </td>
+
+                                    <td width="10%">
+                                        <font style="font-size: 12px;">
+                                            <strong>วันที่เอกสาร</strong>
+                                        </font>
+                                    </td>
+                                    <td width="20%">
+                                        <font style="font-size: 12px;">
+                                            <span t-field="doc.payment_date"/>
+                                        </font>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="7%" rowspan="2">
+                                        <font style="font-size: 12px;">
+                                            <strong>ที่อยู่</strong>
+                                        </font>
+                                    </td>
+                                    <td width="63%" rowspan="2">
+                                        <font style="font-size: 12px;">
+                                            <span t-field="doc.partner_id.street"/>&amp;nbsp;
+                                            <span t-field="doc.partner_id.street2"/><br/>
+                                            <span t-field="doc.partner_id.city"/>&amp;nbsp;
+                                            <span t-field="doc.partner_id.state_id.name"/>&amp;nbsp;
+                                            <span t-field="doc.partner_id.zip"/>&amp;nbsp;
+                                            <span t-if="doc.partner_id.mobile">โทร.&amp;nbsp;<span t-esc="doc.partner_id.mobile"/></span>
+                                            <span t-if="doc.partner_id.phone">,<span t-esc="doc.partner_id.phone"/>&amp;nbsp;</span>
+                                            <span t-if="doc.partner_id.fax">แฟกซ์.&amp;nbsp;<span t-esc="doc.partner_id.fax"/></span>
+                                        </font>
+                                    </td>
+
+                                    <td width="10%">
+                                        <font style="font-size: 12px;">
+                                            <strong>เลขที่เอกสาร</strong>
+                                        </font>
+                                    </td>
+                                    <td width="20%">
+                                        <font style="font-size: 12px;">
+                                            <span t-field="doc.name"/>
+                                        </font>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%">
+                                        <font style="font-size: 12px;">
+                                            <strong>ผู้พิมพ์</strong>
+                                        </font>
+                                    </td>
+                                    <td width="20%">
+                                        <font style="font-size: 12px;">
+                                            <span t-field="doc.create_uid.name"/>
+                                        </font>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <font style="font-size: 12px;">
+                                            <span>บริษัทฯ ได้รับชำระค่าสินค้าตามบิลต่าง ๆ ดังนี้</span>
+                                        </font>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="content">
+                            <t t-set="amount_total" t-value="0"/>
+                            <table class="table table-bordered1">
+                                <thead>
+                                    <tr>
+                                        <th class="col-xs-0.5" style="text-align:center">
+                                            <font style="font-size: 12px;">ลำดับ</font>
+                                        </th>
+                                        <th class="col-xs-1" style="text-align:center">
+                                            <font style="font-size: 12px;">วันที่</font>
+                                        </th>
+                                        <th class="col-xs-2" style="text-align:center">
+                                            <font style="font-size: 12px;">เลขที่</font>
+                                        </th>
+                                        <th class="col-xs-3" style="text-align:center">
+                                            <font style="font-size: 12px;">รายละเอียด</font>
+                                        </th>
+                                        <th class="col-xs-2" style="text-align:center">
+                                            <font style="font-size: 12px;">ยอดหนี้คงค้าง</font>
+                                        </th>
+                                        <th class="col-xs-2" style="text-align:center">
+                                            <font style="font-size: 12px;">ลดสด</font>
+                                        </th>
+                                        <th class="col-xs-2" style="text-align:center">
+                                            <font style="font-size: 12px;">ยอดชำระ</font>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="sale_tbody">
+
+                                    <t t-foreach="doc.invoice_ids" t-as="l">
+                                        <tr>
+                                            <td style="text-align:center">
+                                                <font style="font-size: 12px;">
+                                                    <span t-esc="i"/>
+                                                </font>
+                                            </td>
+                                            <t t-set="i" t-value="i+1"/>
+                                            <td style="text-align:center">
+                                                <font style="font-size: 12px;">
+                                                    <span t-field="l.date_invoice"/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:center">
+                                                <font style="font-size: 12px;">
+                                                    <span t-field="l.number"/>
+                                                </font>
+                                            </td>
+                                            <td>
+                                                <font style="font-size: 12px;">
+                                                    <span t-field="l.name"/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:right">
+                                                <font style="font-size: 12px;">
+                                                    <span t-field="l.amount_total"/>
+                                                    <t t-set="amount_total" t-value="amount_total + l.amount_total"/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:right">
+                                                <font style="font-size: 12px;">
+                                                    <span />
+                                                </font>
+                                            </td>
+                                            <td style="text-align:right">
+                                                <font style="font-size: 12px;">
+                                                    <span t-field="l.amount_total"/>
+                                                </font>
+                                            </td>
+                                        </tr>
+                                    </t>
+
+                                    <t t-foreach="range(i, 12)" t-as="x">
+                                        <tr>
+
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+
+                                        </tr>
+                                    </t>
+
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td colspan="3">
+                                        <font style="font-size: 12px;">
+                                            <strong>ใบเสร็จรับเลินนี้จะสมบูรณ์ต่อเมื่อได้รับเงินตามเช็คเรียบร้อยแล้ว</strong><br/>
+                                            <span>และต้องมีรายมือชื่อกรรมการผู้มีอำนาจหรือผู้แทนที่ถูกต้อง และผู้รับเงิน</span>
+                                        </font>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="col-xs-7">
+                                        <font style="font-size: 12px;">
+                                            <strong>ชำระโดย :</strong><br/>
+                                        </font>
+                                        <!--<font style="font-size: 20px;">-->
+                                            <!--&lt;!&ndash;<span t-if="doc.journal_id.type != 'Cash'">&#9744;</span>&ndash;&gt;-->
+                                            <!--<span t-if="doc.journal_id.type == 'Cash'">&#9745;</span>-->
+                                            <!--&lt;!&ndash;<span t-field="doc.journal_id.type"/>&ndash;&gt;-->
+                                        <!--</font>-->
+                                        <font style="font-size: 12px;">
+                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            <strong>เงินสด</strong><br/>
+                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            <strong>ยอดโอน</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            <span t-esc="doc.amount"/>
+                                            <br/>
+                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            <strong>เช็คธนาคาร</strong>
+                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            <strong>เลขที่</strong>
+                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            <strong>ลงวันที่</strong><br/>
+                                            <strong>อื่น ๆ</strong>
+                                        </font>
+                                    </td>
+                                    <td class="col-xs-3">
+                                        <font style="font-size: 12px;"><br/><br/><br/>
+                                            <strong>รวมรายการเพิ่มหนี้</strong>&amp;nbsp;
+                                            <strong t-esc="i - 1"/>&amp;nbsp;<strong>รายการ</strong><br/>
+                                            <strong><span>รวมรายการลดหนี้</span>&amp;nbsp;
+                                            <span>0</span>&amp;nbsp;<span>รายการ</span></strong><br/>
+                                            <strong>ยอดลดสด</strong><br/>
+                                            <strong><span>ภาษีหักไว้ ณ ที่จ่าย</span></strong><br/>
+                                            <strong><span>ยอดชำระขาด/เกิน</span></strong>
+                                            <strong>คงเหลือต้องชำระ</strong><br/>
+                                            <strong>ยอดชำระรวม</strong><br/>
+
+                                        </font>
+                                    </td>
+                                    <td class="col-xs-2" style="text-align:right">
+                                        <!--<t t-set="diff" t-value="doc.get_pay_diff_amount()"/>-->
+                                        <font style="font-size: 12px;"><br/><br/><br/>
+                                            <span t-esc="'{0:,.2f}'.format(float(amount_total))"/><br/>
+                                            <span>0</span><br/>
+                                            <span>0.00</span><br/>
+                                            <span t-esc="doc.get_wht_amount_pay_diff_amount()"/><br/>
+                                            <span t-esc="abs(round(amount_total - amount - doc.get_wht_amount_pay_diff_amount()))"/><br/>
+                                            <u><span t-esc="'{0:,.2f}'.format(float(amount))"/></u><br/>
+                                            <span class="doubleUnderline">
+                                                <span t-esc="'{0:,.2f}'.format(float(amount_total))"/></span><br/>
+
+                                        </font>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="3">
+                                        <div class="col-xs-7">
+                                            <font style="font-size: 12px;">
+                                                <span>(<span t-esc="doc.baht_text(amount_total)"/>).</span>
+                                            </font>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="col-xs-12">
+                                <font style="font-size: 12px;">
+                                    <strong>หมายเหตุ</strong>&amp;nbsp;&amp;nbsp;
+                                    <span/>
+                                </font>
+                            </div>
+                            <br/><br/>
+                            <table width="100%">
+                                <tr>
+                                    <td style="text-align:center">
+
+                                        <font style="font-size: 12px;">
+                                            <span>....................................</span><br/>
+                                            <span>ผู้จัดทำ</span><br/>
+                                            <span>วันที่........../........../.........</span>
+                                        </font>
+
+                                    </td>
+                                    <td style="text-align:center">
+
+                                        <font style="font-size: 12px;">
+                                            <span>....................................</span><br/>
+                                            <span>ผู้รับเงิน</span><br/>
+                                            <span>วันที่........../........../.........</span>
+                                        </font>
+
+                                    </td>
+                                    <td style="text-align:center">
+
+                                        <font style="font-size: 12px;">
+                                            <span>....................................</span><br/>
+                                            <span>ผู้อนุมัติ</span><br/>
+                                            <span>วันที่........../........../.........</span>
+                                        </font>
+
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <div class="text-center" style="border-top: 1px solid black;">
+                            <ul class="list-inline">
+                                <li><span class="page"/></li>
+                                <li>/</li>
+                                <li><span class="topage"/></li>
+                            </ul>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</openerp>

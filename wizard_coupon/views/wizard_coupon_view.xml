@@ -16,6 +16,7 @@
                 <field name="redeem_date"/>
                 <field name="order_branch_id"/>
                 <field name="branch_id"/>
+                <field name="amount" sum="Sum"/>
                 <field name="source_branch_amount" widget='monetary'/>
                 <field name="destination_branch_amount" widget='monetary'/>
                 <field name="state"/>
@@ -46,6 +47,9 @@
                         domain="[('expiry_date', '&gt;=',  context_today().strftime('%Y-%m-%d')),('expiry_date', '&gt;',  (context_today() + relativedelta(days=31)).strftime('%Y-%m-%d'))]"/>
 
                 <filter name="operating_unit_filter" string="My operating unit" domain="[('state', '=', 'redeem'),'|',('source_operating_unit_id.user_ids', 'child_of', uid),('destination_operating_unit_id.user_ids', 'child_of', uid)]"/>
+                <filter name="claim_across_branch" string="เคลมระหว่างสาขา" domain="[('is_cross_claim', '=', True)]"/>
+
+                <filter name="tr_branch" string="TR" domain="[('order_branch_id.partner_id.parent_id', '=', 1)]"/>
 
                 <group expand="0" string="Group By">
                     <filter string="Status" domain="[]" context="{'group_by':'state'}"/>
@@ -149,13 +153,19 @@
 
                     <button name="expire_coupon" string="Expire" type="object"
                             class="btn btn-primary btn-sm o_list_button_add"
-                            attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                            attrs="{'invisible': [('state', '!=', 'draft')]}" groups="account.group_account_user"/>
                     <button name="transfer_customer" string="Transfer" type="object"
                             class="btn btn-primary btn-sm o_list_button_add"
                             attrs="{'invisible': [('state', '!=', 'draft')]}"/>
                     <button name="button_cancel" string="Cancel" type="object"
                             class="btn btn-primary btn-sm o_list_button_add"
                             attrs="{'invisible': [('state', 'in', ('draft','expire'))]}"/>
+                    <button name="create_actual_revenue" string="Actual Income" type="object"
+                            class="btn btn-primary btn-sm o_list_button_add"
+                            attrs="{'invisible': [('state', '!=', 'redeem')]}" groups="account.group_account_user"/>
+                    <button name="create_picking" string="Create Picking" type="object"
+                            class="btn btn-primary btn-sm o_list_button_add"
+                            attrs="{'invisible': [('state', '!=', 'redeem')]}" groups="account.group_account_user"/>
 
                     <field name="state" widget="statusbar"/>
                 </header>
@@ -212,7 +222,8 @@
                             <field name="purchase_date" attrs="{'readonly': [('state', 'in', ['redeem','expire'])]}"/>
                             <field name="expiry_date" attrs="{'readonly': [('state', 'in', ['redeem','expire'])]}"/>
                             <field name="coupon_running" readonly="1" string="Package ID"/>
-<!--                            <field name="redeem_request_date" readonly="1" string="Redeem Requested Date"/>-->
+                            <field name="revenue_to_branch"/>
+                            <field name="move_id" readonly="1" groups="account.group_account_user"/>
                         </group>
                     </group>
                     <notebook>

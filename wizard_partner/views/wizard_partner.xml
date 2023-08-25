@@ -44,13 +44,14 @@
                             </div>
                         </group>
                         <group string="Member Details">
+                            <button name="reset_member_status" string="Reset Member" type="object" class="btn-primary"/>
                             <group>
                                 <field name="is_a_member"/>
-<!--                                <label for="otp_expiry"/>-->
-<!--                                <div>-->
-<!--                                    <field name="otp_expiry" widget="float_time"/>-->
-<!--                                    <span>Seconds</span>-->
-<!--                                </div>-->
+                                <!--                                <label for="otp_expiry"/>-->
+                                <!--                                <div>-->
+                                <!--                                    <field name="otp_expiry" widget="float_time"/>-->
+                                <!--                                    <span>Seconds</span>-->
+                                <!--                                </div>-->
 
                             </group>
                             <group>
@@ -75,14 +76,24 @@
                                        domain="[('car_ids.is_primary','==',True)]"/>
                                 <field name="last_service"
                                        attrs="{'invisible':[('is_a_member','==',False)]}"/>
+                                <field name="membership_level" attrs="{'invisible':[('is_a_member','==',False)]}"/>
+                                <field name="membership_valid_start_date" attrs="{'invisible':[('is_a_member','==',False)]}"/>
+                                <field name="membership_valid_end_date" attrs="{'invisible':[('is_a_member','==',False)]}"/>
+                                <field name="membership_level_color" attrs="{'invisible':[('is_a_member','==',False)]}"/>
+                                <field name="membership_level_sequence" attrs="{'invisible':[('is_a_member','==',False)]}"/>
+                                <field name="last_order_date"/>
+
                             </group>
                         </group>
 
                         <group attrs="{'invisible':[('is_a_member','==',False)]}">
                             <!-- Adding Notebook Plate Numbers -->
                             <notebook>
+
                                 <page string="Car Details" autofocus="autofocus"
+
                                       attrs="{'invisible':[('is_a_member','==',False)], 'required':[('is_a_member','==',True)]}">
+                                    <field name="pos_order_ids"/>
                                     <field name="car_ids" mode="kanban">
                                         <kanban>
                                             <templates>
@@ -189,6 +200,10 @@
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='type_company']" position="after">
                 <filter string="Members" name="member" domain="[('is_a_member','=',1)]"/>
+                <!--                <filter string="Gold Member" name="gold_member" domain="[('membership_type_color','=','Gold')]"/>-->
+                <!--                <filter string="Black Member" name="block_member" domain="[('membership_type_color','=','Black')]"/>-->
+                <!--                <filter string="Red Member" name="red_member" domain="[('membership_type_color','=','Red')]"/>-->
+                <!--                <filter string="Gray Member" name="gray_member" domain="[('membership_type_color','=','Gray')]"/>-->
             </xpath>
         </field>
     </record>
@@ -251,7 +266,7 @@
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
-    <!-- Adding Menu under Configuration of Contacts-->
+    <!--     Adding Menu under Configuration of Contacts-->
     <menuitem id="star_level_menu"
               name="Star Level"
               parent="sale.menu_sale_config"

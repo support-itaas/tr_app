@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="supplier_assessment_report_id">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="o">
+                <div class="header">
+                    <div style="text-align:right; font-size: 12px;">
+                        <span>หน้า </span>
+                        <span class="page"/>
+                        <span>/</span>
+                        <span class="topage"/>
+                    </div>
+                </div>
+                <div class="page">
+                    <style>
+                        table.table-bordered{
+                        border:1px solid black;
+                        margin-top:20px;
+                        border-collapse: collapse;
+                        width: 100%;
+                        padding:3px;
+                        }
+                        table.table-bordered &gt; thead &gt; tr &gt; th{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        text-align:center;
+                        padding:3px;
+                        }
+                        table.table-bordered &gt; thead &gt; tr &gt; td{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        padding:3px;
+                        }
+                        table.table-bordered &gt; tbody &gt; tr &gt; td{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        padding:3px;
+                        }
+                        table.table-bordered &gt; tfoot &gt; tr &gt; td{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        padding:3px;
+                        }
+                    </style>
+
+                    <div>
+                        <font style="font-size: 14px;">
+                            <span><strong>การประเมินผู้ขาย ปี</strong><strong><span t-esc="year"/></strong></span>
+                        </font>
+                    </div>
+                    <t t-set="industry_supplier_ids" t-value="supplier_ids.filtered(lambda m: m.industry_id)"/>
+                    <t t-if="industry_supplier_ids">
+                        <t t-set="industry_ids" t-value="industry_supplier_ids.mapped('industry_id').sorted(key=lambda m: m.name)"/>
+                    </t>
+                    <t t-set="non_industry_supplier_ids" t-value="supplier_ids.filtered(lambda m: not m.industry_id)"/>
+                    <t t-set="i_supplier" t-value="0"/>
+                    <table width="100%" class="table table-bordered">
+                        <thead>
+                            <tr style="font-size: 12px;">
+                                <th rowspan="2">หมวดสินค้า</th>
+                                <th rowspan="2">ชื่อผู้ขาย</th>
+                                <th colspan="5">1.QUALITY RATING</th>
+                                <th colspan="4">2.DELIVERY RATING</th>
+                                <th rowspan="2">3.QUALITY+<br/>DELIVRY<br/>SCORE</th>
+                                <th colspan="4">เกรด</th>
+                            </tr>
+                            <tr style="font-size: 10px;">
+                                <th>จำนวนครั้ง<br/>การรับทั้งหมด</th>
+                                <th>LOT<br/>ACCEPTED</th>
+                                <th>ส่งคืน<br/>ผู้ขาย</th>
+                                <th>จำนวนครั้งเป็น<br/>ไปตามมาตรฐาน</th>
+                                <th>QUSLITY<br/>RATING</th>
+                                <th>การส่งมอบ<br/>ทั้งหมด</th>
+                                <th>ตรงเวลา<br/> 3 &lt;=วัน</th>
+                                <th>ไม่ตรง <br/> &gt;3วัน</th>
+                                <th>delivery</th>
+                                <th>91-100<br/>A</th>
+                                <th>81-90<br/>B</th>
+                                <th>70-80<br/>C</th>
+                                <th>ต่ำกว่า 70<br/>F</th>
+                            </tr>
+                        </thead>
+                        <tbody class="sale_tbody" style="font-size: 10px; text-align:center;">
+                            <t t-set="i_supplier" t-value="0"/>
+                            <t t-foreach="non_industry_supplier_ids" t-as="supplier">
+                                <t t-set="supplier_evaluation_ids" t-value="evaluation_ids.filtered(lambda x: x.partner_id.id == supplier.id)"/>
+                                <t t-set="score_evaluation" t-value="o.get_score_supplier_evaluation(supplier_evaluation_ids, date_from, date_to)"/>
+                                <t t-set="i_supplier" t-value="i_supplier + 1"/>
+                                <tr>
+                                    <td>
+                                        <span t-esc="industry"/>
+                                        <span t-esc="i_supplier"/>
+                                    </td>
+                                    <td style="font-size: 10px; text-align:left;"><span t-field="supplier.name"/></td>
+                                    <td><span t-esc="score_evaluation['type_quality']"/></td>
+                                    <td><span t-esc="score_evaluation['type_quality']"/></td>
+                                    <td><span t-esc="score_evaluation['return_type_quality']"/></td>
+                                    <td><span t-esc="score_evaluation['pass_type_quality']"/></td>
+                                    <td>
+                                        <span t-esc="'{0:,.2f}'.format(float(score_evaluation['score_quality']))"/>
+                                    </td>
+
+                                    <td><span t-esc="score_evaluation['type_delivery']"/></td>
+                                    <td><span t-esc="score_evaluation['pass_type_delivery']"/></td>
+                                    <td><span t-esc="score_evaluation['fail_type_delivery']"/></td>
+                                    <td>
+                                        <span t-esc="'{0:,.2f}'.format(float(score_evaluation['score_delivery']))"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="'{0:,.2f}'.format(float(score_evaluation['score_total']))"/>
+                                    </td>
+
+                                    <!--grade-->
+                                    <td>
+                                        <t t-if="score_evaluation['grade'] == 'A'">
+                                            <span t-esc="score_evaluation['grade']"/>
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <t t-if="score_evaluation['grade'] == 'B'">
+                                            <span t-esc="score_evaluation['grade']"/>
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <t t-if="score_evaluation['grade'] == 'C'">
+                                            <span t-esc="score_evaluation['grade']"/>
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <t t-if="score_evaluation['grade'] == 'F'">
+                                            <span t-esc="score_evaluation['grade']"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </t>
+                            <t t-foreach="industry_ids" t-as="industry">
+                                <t t-set="i_supplier" t-value="0"/>
+                                <t t-foreach="industry_supplier_ids.filtered(lambda m: m.industry_id == industry)" t-as="supplier">
+                                    <t t-set="supplier_evaluation_ids" t-value="evaluation_ids.filtered(lambda x: x.partner_id.id == supplier.id)"/>
+                                    <t t-set="score_evaluation" t-value="o.get_score_supplier_evaluation(supplier_evaluation_ids, date_from, date_to)"/>
+                                    <t t-set="i_supplier" t-value="i_supplier + 1"/>
+                                    <t t-if="i_supplier == 1">
+                                        <tr>
+                                            <td colspan="16" style="text-align:left; background-color:#cccccc;">
+                                                <span t-esc="industry.name"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <tr>
+                                        <td>
+                                            <span t-esc="i_supplier"/>
+                                        </td>
+                                        <td style="font-size: 10px; text-align:left;"><span t-field="supplier.name"/></td>
+                                        <td><span t-esc="score_evaluation['type_quality']"/></td>
+                                        <td><span t-esc="score_evaluation['type_quality']"/></td>
+                                        <td><span t-esc="score_evaluation['return_type_quality']"/></td>
+                                        <td><span t-esc="score_evaluation['pass_type_quality']"/></td>
+                                        <td>
+                                            <span t-esc="'{0:,.2f}'.format(float(score_evaluation['score_quality']))"/>
+                                        </td>
+
+                                        <td><span t-esc="score_evaluation['type_delivery']"/></td>
+                                        <td><span t-esc="score_evaluation['pass_type_delivery']"/></td>
+                                        <td><span t-esc="score_evaluation['fail_type_delivery']"/></td>
+                                        <td>
+                                            <span t-esc="'{0:,.2f}'.format(float(score_evaluation['score_delivery']))"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="'{0:,.2f}'.format(float(score_evaluation['score_total']))"/>
+                                        </td>
+
+                                        <!--grade-->
+                                        <td>
+                                            <t t-if="score_evaluation['grade'] == 'A'">
+                                                <span t-esc="score_evaluation['grade']"/>
+                                            </t>
+                                        </td>
+                                        <td>
+                                            <t t-if="score_evaluation['grade'] == 'B'">
+                                                <span t-esc="score_evaluation['grade']"/>
+                                            </t>
+                                        </td>
+                                        <td>
+                                            <t t-if="score_evaluation['grade'] == 'C'">
+                                                <span t-esc="score_evaluation['grade']"/>
+                                            </t>
+                                        </td>
+                                        <td>
+                                            <t t-if="score_evaluation['grade'] == 'F'">
+                                                <span t-esc="score_evaluation['grade']"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </t>
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <record id="paperformat_A4_Zero_Margin_supplier_assessment" model="report.paperformat">
+        <field name="name">paperformat_A4_Zero_Margin_supplier_assessment</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">15</field>
+        <field name="margin_bottom">7</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">10</field>
+        <field name="dpi">90</field>
+    </record>
+    <report
+            id="supplier_assessment_report"
+            model="purchase.order"
+            menu="True"
+            report_type="qweb-pdf"
+            string="รายงานการประเมินผู้ขาย"
+            paperformat="paperformat_A4_Zero_Margin_supplier_assessment"
+            name="print_tr_report.supplier_assessment_report_id"
+            file="print_tr_report.supplier_assessment_report_id"
+    />
+
+</odoo>

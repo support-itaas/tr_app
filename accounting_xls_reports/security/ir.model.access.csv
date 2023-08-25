@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+color_xls_theme_user,XLS Color Theme User,model_color_xls_theme,base.group_user,1,1,1,1
+account_report_view_user,Account Report View,model_account_report_view,base.group_user,1,1,1,1
+
+

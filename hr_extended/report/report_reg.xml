@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="paperformat_A4_Zero_Margin_HR" model="report.paperformat">
+            <field name="name">A4_Zero_Margin</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">20</field>
+            <field name="dpi">90</field>
+        </record>
+        <record id="paperformat_A4_L_Zero_Margin_HR" model="report.paperformat">
+            <field name="name">A4_L_Zero_Margin</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">20</field>
+            <field name="dpi">90</field>
+        </record>
+        <report
+                id="employee_report"
+                model="hr.employee"
+                menu="True"
+                report_type="qweb-pdf"
+                paperformat="hr_extended.paperformat_A4_L_Zero_Margin_HR"
+                string="ข้อมูลพนักงาน (รายเดือน)"
+                name="hr_extended.employee_report_id"
+                file="hr_extended.employee_report_id"
+        />
+
+        <report
+                id="employee01_report"
+                model="hr.employee"
+                menu="True"
+                report_type="qweb-pdf"
+                paperformat="hr_extended.paperformat_A4_L_Zero_Margin_HR"
+                string="ข้อมูลพนักงาน (รายวัน)"
+                name="hr_extended.employee01_report_id"
+                file="hr_extended.employee01_report_id"
+        />
+
+        <report
+                id="sps6-09_report"
+                model="hr.employee"
+                menu="True"
+                report_type="qweb-pdf"
+                paperformat="hr_extended.paperformat_A4_L_Zero_Margin_HR"
+                string="สปส.6-09"
+                name="hr_extended.sps6-09_report_id"
+                file="hr_extended.sps6-09_report_id"
+        />
+
+        <report
+                id="sps1-03-1_report"
+                model="hr.employee"
+                menu="True"
+                report_type="qweb-pdf"
+                paperformat="hr_extended.paperformat_A4_Zero_Margin_HR"
+                string="สปส.1-03"
+                name="hr_extended.sps1-03-1_report_id"
+                file="hr_extended.sps1-03-1_report_id"
+        />
+
+        <report
+                id="sps1-02_report"
+                model="hr.employee"
+                menu="True"
+                report_type="qweb-pdf"
+                paperformat="hr_extended.paperformat_A4_L_Zero_Margin_HR"
+                string="สปส.1-02"
+                name="hr_extended.sps1-02_report_id"
+                file="hr_extended.sps1-02_report_id"
+        />
+
+        <report
+                id="sps1-10-1_report"
+                model="hr.employee"
+                menu="True"
+                report_type="qweb-pdf"
+                paperformat="hr_extended.paperformat_A4_L_Zero_Margin_HR"
+                string="สปส.1-10 ส่วน 1"
+                name="hr_extended.sps1-10-1_report_id"
+                file="hr_extended.sps1-10-1_report_id"
+        />
+
+        <report
+                id="sps1-10-2_report"
+                model="hr.employee"
+                menu="True"
+                report_type="qweb-pdf"
+                paperformat="hr_extended.paperformat_A4_L_Zero_Margin_HR"
+                string="สปส.1-10 ส่วน 2"
+                name="hr_extended.sps1-10-2_report_id"
+                file="hr_extended.sps1-10-2_report_id"
+        />
+
+        <report
+                id="sps1-03-2_report"
+                model="hr.employee"
+                menu="True"
+                report_type="qweb-pdf"
+                paperformat="hr_extended.paperformat_A4_L_Zero_Margin_HR"
+                string="สปส.1-03 (สำหรับผู้เคยยื่นแล้ว)"
+                name="hr_extended.sps1-03-2_report_id"
+                file="hr_extended.sps1-03-2_report_id"
+        />
+
+        <report
+                id="pngd91_report"
+                model="hr.employee"
+                menu="True"
+                report_type="qweb-pdf"
+                paperformat="hr_extended.paperformat_A4_Zero_Margin_HR"
+                string="ภ.ง.ด. 91"
+                name="hr_extended.pngd91_report_id"
+                file="hr_extended.pngd91_report_id"
+        />
+        <report
+                id="report_payslip"
+                model="hr.payslip"
+                string="Payslip"
+                report_type="qweb-pdf"
+                paperformat="hr_extended.paperformat_A4_Zero_Margin_HR"
+                name="hr_extended.report_payslip_id"
+                file="hr_extended.report_payslip_id"
+        />
+        <!--50 ทวิ-->
+        <!--<report-->
+        <!--id="pngd91_report"-->
+        <!--model="hr.employee"-->
+        <!--menu="True"-->
+        <!--report_type="qweb-pdf"-->
+        <!--string="ภ.ง.ด. 91"-->
+        <!--name="hr_extended.pngd91_report_id"-->
+        <!--file="hr_extended.pngd91_report_id"-->
+        <!--/>-->
+
+    </data>
+</openerp>

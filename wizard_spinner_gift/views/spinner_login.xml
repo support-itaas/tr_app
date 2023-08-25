@@ -2,14 +2,6 @@
 <odoo>
     <template id="my_spinner_login" name="Spinner Login Page">
         <t t-call="website.layout">
-            <style>
-                header{
-                display: none !important;
-                }
-                footer{
-                display: none !important;
-                }
-            </style>
             <section class="main">
                 <div class="container-fluid wrap">
                     <div class="row">

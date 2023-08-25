@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<!--<data noupdate="1">-->
+	<!--&lt;!&ndash; inherit menu: Inventory at Date &ndash;&gt;-->
+	<!--<delete model="ir.ui.menu" id="stock_account.menu_action_wizard_valuation_history" />-->
+	<!--</data>-->
+	<!--inherit inventory at date form -->
+	<record id="view_stock_quantity_history_itaas" model="ir.ui.view">
+		<field name="name">Inventory at Date IT</field>
+		<field name="model">stock.quantity.history</field>
+		<!--		<field name="inherit_id" ref="stock_account.view_wizard_valuation_history"/>-->
+		<field name="arch" type="xml">
+
+			<form string="Choose your date">
+				<group>
+					<group col="4" colspan="4">
+						<field name="compute_at_date" widget="radio"/>
+						<field name="date" attrs="{'invisible': [('compute_at_date', '=', 0)]}"/>
+						<field name="restrict_locations" invisible="1"/>
+						<field name="location_id" domain="[('id', 'in', restrict_locations)]" string="Warehouse"/>
+						<field name="category_id" string="Product Category" widget="many2many_tags"/>
+						<field name="product_code_form" attrs="{'invisible': [('count_category', '>', 0)]}"/>
+						<field name="product_code_to" attrs="{'invisible': [('count_category', '>', 0)]}"/>
+						<field name="product_form" attrs="{'invisible': [('count_category', '>', 0)]}"/>
+						<field name="product_to" attrs="{'invisible': [('count_category', '>', 0)]}"/>
+						<field name="report_type" required="1"/>
+						<field name="account_id"/>
+						<field name="count_category" invisible="1"/>
+						<field name="is_show_location" groups="base.group_no_one"/>
+					</group>
+					<!--					<group>-->
+					<!--						<field name="product_code_form" readonly="1" attrs="{'invisible': [('count_category', '>', 0)]}"/>-->
+					<!--						<field name="product_code_to" readonly="1" attrs="{'invisible': [('count_category', '>', 0)]}"/>-->
+					<!--						<field name="product_form" attrs="{'invisible': [('count_category', '>', 0)]}"/>-->
+					<!--						<field name="product_to" attrs="{'invisible': [('count_category', '>', 0)]}"/>-->
+					<!--					</group>-->
+				</group>
+				<footer>
+					<button name="print_inventory_value" string="Print" type="object" class="btn-primary"/>
+					<button name="print_inventory_value_excel" groups="stock.group_stock_manager" string="Print Excel" type="object" class="btn-primary"/>
+					<!--					<button name="open_table_inventory_value" string="Print Test" type="object" class="btn-primary"/>-->
+					<button string="Cancel" class="btn-default" special="cancel" />
+				</footer>
+			</form>
+		</field>
+	</record>
+
+
+	<record id="action_stock_quantity_history_itaas" model="ir.actions.act_window">
+		<field name="name">Inventory at Date</field>
+		<field name="res_model">stock.quantity.history</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">form</field>
+		<field name="view_id" ref="view_stock_quantity_history_itaas"/>
+		<field name="target">new</field>
+		<field name="context">{'default_compute_at_date': 0}</field>
+	</record>
+
+	<menuitem id="menu_action_wizard_valuation_history_thailand"
+			  action="action_stock_quantity_history_itaas" name="รายงานสินค้าคงเหลือ" parent="stock.menu_warehouse_report" sequence="1"/>
+	<menuitem id="menu_action_wizard_valuation_history_thailand_account"
+			  action="action_stock_quantity_history_itaas" name="รายงานสินค้าคงเหลือ" parent="account.menu_finance_reports" sequence="23"/>
+</odoo>

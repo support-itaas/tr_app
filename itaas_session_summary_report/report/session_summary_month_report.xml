@@ -1,0 +1,659 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="session_summary_report_id">
+            <t t-foreach="docs" t-as="doc">
+                <t t-foreach="branch_ids" t-as="br">
+                    <t t-call="web.internal_layout">
+                        <div class="page">
+                            <div class="oe_structure"/>
+                            <h2>
+                                <!--                            <span t-field="doc.name"/>-->
+                            </h2>
+                            <div class="row mt32 mb32">
+                                <div class="col-xs-3">
+                                    <strong>Point Of Sale:</strong>
+                                    <p t-esc="br.name"/>
+                                </div>
+                                <div class="col-xs-3">
+                                    <strong>Responsible Person:</strong>
+                                    <p t-esc="user_id.name"/>
+                                </div>
+                                <div class="col-xs-3">
+                                    <strong>Opening Date:</strong>
+                                    <p t-esc="date_from"/>
+                                </div>
+                                <div class="col-xs-3">
+                                    <strong>Closing Date:</strong>
+                                    <p t-esc="date_to"/>
+                                </div>
+                            </div>
+                            <t t-set="session_summary" t-value="doc.get_session_summary(br)"/>
+                            <t t-set="new_session" t-value="False"/>
+                            <t t-set="old_session" t-value="False"/>
+                            <t t-if="session_summary">
+                                <t t-set="new_session" t-value="doc.get_session_summary(br)[0]"/>
+                                <t t-set="old_session" t-value="doc.get_session_summary(br)[-1]"/>
+                            </t>
+
+                            <t t-set="statement_ids" t-value="session_summary.filtered(lambda x: x.statement_ids).mapped('statement_ids').filtered(lambda x: x.total_entry_encoding &gt; 0.0)"/>
+                            <t t-if="statement_ids">
+                                <!--<h2>Summary By Payment Methods</h2>-->
+                                <h2>สรุปการชำระเงิน</h2>
+                                <table class="table table-condensed table-striped">
+                                    <!--<t t-set="bank" t-value="False"/>-->
+                                    <!--<t t-set="transfer" t-value="False"/>-->
+                                    <!--<t t-set="cash" t-value="False"/>-->
+                                    <t t-set="sum_bank" t-value="0.00"/>
+                                    <t t-set="sum_transfer" t-value="0.00"/>
+                                    <t t-set="sum_cash" t-value="0.00"/>
+                                    <t t-set="sum_total" t-value="0.00"/>
+                                    <thead>
+                                        <tr>
+                                            <th>Reference</th>
+                                            <th class="text-right">Transactions Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                        <!--<t t-foreach="statement_ids" t-as="record">-->
+                                        <!--    <t t-set="bank" t-value="statement_ids.filtered(lambda x:x.journal_id.type_pos_order == 'bank')"/>-->
+                                        <!--    <t t-set="transfer" t-value="statement_ids.filtered(lambda x:x.journal_id.type_pos_order == 'transfer')"/>-->
+                                        <!--    <t t-set="cash" t-value="statement_ids.filtered(lambda x:x.journal_id.type_pos_order == 'cash')"/>-->
+                                        <!--    <t t-set="sum_bank" t-value="sum(bank.mapped('total_entry_encoding'))"/>-->
+                                        <!--    <t t-set="sum_transfer" t-value="sum(transfer.mapped('total_entry_encoding'))"/>-->
+                                        <!--    <t t-set="sum_cash" t-value="sum(cash.mapped('total_entry_encoding'))"/>-->
+
+
+
+                                        <!--</t>-->
+                                        <t t-set="bank" t-value="statement_ids.filtered(lambda x:x.journal_id.type_pos_order == 'bank')"/>
+                                        <t t-set="transfer" t-value="statement_ids.filtered(lambda x:x.journal_id.type_pos_order == 'transfer')"/>
+                                        <t t-set="cash" t-value="statement_ids.filtered(lambda x:x.journal_id.type_pos_order == 'cash')"/>
+                                        <t t-set="sum_bank" t-value="sum(bank.mapped('total_entry_encoding'))"/>
+                                        <t t-set="sum_transfer" t-value="sum(transfer.mapped('total_entry_encoding'))"/>
+                                        <t t-set="sum_cash" t-value="sum(cash.mapped('total_entry_encoding'))"/>
+
+                                        <t t-if="sum_bank">
+                                            <tr>
+                                                <td>
+                                                    <span>บัตรเครดิต</span>
+                                                    <!--                                                    <span t-field="record.name"/>-->
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="'{0:,.0f}'.format(sum_bank)"/>
+                                                    <t t-set="sum_total" t-value="sum_total + sum_bank"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <t t-if="sum_transfer">
+                                            <tr>
+                                                <td>
+                                                    <span>เงินโอน</span>
+                                                    <!--                                                    <span t-field="record.name"/>-->
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="'{0:,.0f}'.format(sum_transfer)"/>
+                                                    <t t-set="sum_total" t-value="sum_total + sum_transfer"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <t t-if="sum_cash">
+                                            <tr>
+                                                <td>
+                                                    <span>เงินสด</span>
+                                                    <!--                                                    <span t-field="record.name"/>-->
+                                                </td>
+                                                <td class="text-right">
+                                                    <span t-esc="'{0:,.0f}'.format(sum_cash)"/>
+                                                    <t t-set="sum_total" t-value="sum_total + sum_cash"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <t t-if="sum_total">
+                                            <tr>
+                                                <td>
+                                                    <u><span>รวมเงินทั้งสิ้น</span></u>
+                                                    <!--                                                    <span t-field="record.name"/>-->
+                                                </td>
+                                                <td class="text-right">
+                                                    <u><span t-esc="'{0:,.0f}'.format(sum_total)"/></u>
+
+                                                </td>
+                                            </tr>
+                                        </t>
+
+                                        <!--    <td>-->
+                                        <!--        <span>รวมเงินทั้งสิ้น</span>-->
+                                        <!--    </td>-->
+                                        <!--    <td class="text-right">-->
+                                        <!--        <span t-esc="'{0:,.0f}'.format(sum_total)"/>-->
+                                        <!--    </td>-->
+                                        <!--</tr>-->
+
+                                    </tbody>
+                                </table>
+                            </t>
+
+                            <t t-set="session_by_product" t-value="doc.get_order_by_product_summary(br)"/>
+                            <t t-if="session_by_product">
+                                <!--<h2>Summary By Order</h2>-->
+                                <h2>สรุปการขาย</h2>
+                                <table class="table table-condensed table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>QTY</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="total_amount" t-value="0.00"/>
+                                        <t t-set="sum_qty" t-value="0.00"/>
+                                        <t t-foreach="session_by_product" t-as="session_by">
+                                            <!--                                        <tr>-->
+                                            <!--                                            <td colspan="3"><span t-esc="session_by['date_order']" t-options="{'widget': 'date'}"/></td>-->
+                                            <!--                                        </tr>-->
+                                            <t t-foreach="session_by['order_line']" t-as="line">
+                                                <tr>
+                                                    <td>
+                                                        <span t-esc="line['product_name']"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="'{0:,.0f}'.format(line['total_qty'])"/>
+                                                        <t t-set="sum_qty" t-value="sum_qty + line['total_qty']"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="'{0:,.0f}'.format(line['total_amount'])"/>
+                                                        <t t-set="total_amount" t-value="total_amount + line['total_amount']"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </t>
+                                        <tr>
+                                            <td>
+                                                <span>Summary</span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.0f}'.format(sum_qty)"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.0f}'.format(total_amount)"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </t>
+
+                            <t t-set="get_task_by_product" t-value="doc.get_task_by_product_summary(br)"/>
+                            <t t-if="get_task_by_product">
+                                <h2>จำนวนรถเข้าใช้บริการ</h2>
+                                <table class="table table-condensed table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Service</th>
+                                            <th>QTY</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="total_qty" t-value="0"/>
+                                        <t t-foreach="get_task_by_product" t-as="task_by">
+                                            <!--                                        <tr>-->
+                                            <!--                                            <td colspan="2"><span t-esc="task_by['date_deadline']" t-options="{'widget': 'date'}"/></td>-->
+                                            <!--                                        </tr>-->
+                                            <t t-foreach="task_by['task_ids']" t-as="line">
+                                                <tr>
+                                                    <td>
+                                                        <span t-esc="line['product_name']"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="total_qty" t-value="total_qty + line['total_qty']"/>
+                                                        <span t-esc="'{0:,.0f}'.format(line['total_qty'])"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </t>
+                                        <tr>
+                                            <td>
+                                                <span>Summary</span>
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.0f}'.format(total_qty)"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </t>
+
+                            <t t-set="stock_bom_ids" t-value="doc.get_stock_bom_summary(br)"/>
+                            <t t-if="stock_bom_ids">
+                                <h2>Summary By Stock</h2>
+                                <table class="table table-condensed table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>รหัส</th>
+                                            <th>ชื่อ</th>
+                                            <th>จำนวน</th>
+                                            <th>หน่วย</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!--                                    <t t-set="product_ids" t-value="stock_bom_ids.filtered(lambda x: x.product_id).mapped('product_id')"/>-->
+                                        <!--                            <t t-set="qty" t-value="sum(stock_bom.filtered(lambda x: x.product_id).mapped('product_qty'))"/>-->
+                                        <!--                            <span t-esc="product_ids"/>-->
+                                        <!--                            <span t-esc="qty"/>-->
+
+                                        <!--                                        <t t-set="stock_bom_id" t-value="stock_bom_ids.filtered(lambda x: x.product_id.id == product.id).mapped('product_id')"/>-->
+                                        <!--                                        <t t-set="qty" t-value="sum(stock_bom_id.mapped('qty'))"/>-->
+                                        <!--                                        <span t-esc="stock_bom"/>-->
+                                        <!--                                        <span t-esc="qty"/>-->
+                                        <t t-foreach="stock_bom_ids" t-as="stock_bom">
+                                            <tr>
+                                                <td>
+                                                    <span t-esc="stock_bom['product_id'].default_code"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="stock_bom['product_id'].name"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="stock_bom['qty']"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="stock_bom['product_uom_id'].name"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </t>
+
+                            <t t-set="check_product_by_meter" t-value="doc.check_product_by_meter_summary(br)"/>
+                            <t t-if="check_product_by_meter">
+                                <h2>Summary By Meter</h2>
+                                <table class="table table-condensed table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>ชื่อมิเตอร์</th>
+                                            <th>จำนวนรถเข้า</th>
+                                            <th>จำนวนคูปองที่ใช้</th>
+                                            <th>ผลต่าง</th>
+                                            <th class="text-right">เงินสด</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="sum_total" t-value="0"/>
+                                        <t t-set="count_car_in_sum67" t-value="0.0"/>
+                                        <t t-set="count_sum67" t-value="0.0"/>
+                                        <t t-set="difference_sum67" t-value="0.0"/>
+                                        <t t-set="sum_total_67" t-value="0.0"/>
+                                        <t t-foreach="check_product_by_meter" t-as="product">
+                                            <!--P1 -->
+                                            <t t-if="product['meter_type'] == 'P1'">
+                                                <tr>
+                                                    <td>
+                                                        <span>P1</span>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="count_car_in_p1" t-value="new_session.meter_1_end - old_session.meter_1_start"/>
+                                                        <span t-esc="'{0:,.2f}'.format(count_car_in_p1)"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="count_p1" t-value="product['qty']"/>
+                                                        <span t-esc="'{0:,.2f}'.format(count_p1)"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="difference_p1" t-value="count_car_in_p1 - count_p1"/>
+                                                        <span t-esc="'{0:,.2f}'.format(difference_p1)"/>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <t t-set="sum_total_p1" t-value="difference_p1 * 200"/>
+                                                        <t t-set="sum_total" t-value="sum_total + sum_total_p1"/>
+                                                        <span t-esc="'{0:,.2f}'.format(sum_total_p1)"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+
+                                            <!--P2 -->
+                                            <t t-if="product['meter_type'] == 'P2'">
+                                                <tr>
+                                                    <td>
+                                                        <span>P2</span>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="count_car_in_p2" t-value="new_session.meter_2_end - old_session.meter_2_start"/>
+                                                        <span t-esc="'{0:,.2f}'.format(count_car_in_p2)"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="count_p2" t-value="product['qty']"/>
+                                                        <span t-esc="'{0:,.2f}'.format(count_p2)"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="difference_p2" t-value="count_car_in_p2 - count_p2"/>
+                                                        <span t-esc="'{0:,.2f}'.format(difference_p2)"/>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <t t-set="sum_total_p2" t-value="difference_p2 * 600"/>
+                                                        <t t-set="sum_total" t-value="sum_total + sum_total_p2"/>
+                                                        <span t-esc="'{0:,.2f}'.format(sum_total_p2)"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+
+                                            <!--P3 -->
+                                            <t t-if="product['meter_type'] == 'P3'">
+                                                <tr>
+                                                    <td>
+                                                        <span>P3</span>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="count_car_in_p3" t-value="new_session.meter_3_end - old_session.meter_3_start"/>
+                                                        <span t-esc="'{0:,.2f}'.format(count_car_in_p3)"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="count_p3" t-value="product['qty']"/>
+                                                        <span t-esc="'{0:,.2f}'.format(count_p3)"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="difference_p3" t-value="count_car_in_p3 - count_p3"/>
+                                                        <span t-esc="'{0:,.2f}'.format(difference_p3)"/>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <t t-set="sum_total_p3" t-value="difference_p3 * 590"/>
+                                                        <t t-set="sum_total" t-value="sum_total + sum_total_p3"/>
+                                                        <span t-esc="'{0:,.2f}'.format(sum_total_p3)"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+
+                                            <!--P4 -->
+                                            <t t-if="product['meter_type'] == 'P4'">
+                                                <tr>
+                                                    <td>
+                                                        <span>P4</span>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="count_car_in_p4" t-value="new_session.meter_4_end - old_session.meter_4_start"/>
+                                                        <span t-esc="'{0:,.2f}'.format(count_car_in_p4)"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="count_p4" t-value="product['qty']"/>
+                                                        <span t-esc="'{0:,.2f}'.format(count_p4)"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="difference_p4" t-value="count_car_in_p4 - count_p4"/>
+                                                        <span t-esc="'{0:,.2f}'.format(difference_p4)"/>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <t t-set="sum_total_p4" t-value="difference_p4 * 140"/>
+                                                        <t t-set="sum_total" t-value="sum_total + sum_total_p4"/>
+                                                        <span t-esc="'{0:,.2f}'.format(sum_total_p4)"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+
+                                            <!--ล้างรถรวม-->
+                                            <t t-if="product['meter_type'] == 'มิเตอร์รวม'">
+                                                <tr>
+                                                    <td>
+                                                        <span>มิเตอร์รวม</span>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="count_car_in_p5" t-value="new_session.meter_5_end - old_session.meter_5_start"/>
+                                                        <span t-esc="'{0:,.2f}'.format(count_car_in_p5)"/>
+                                                    </td>
+                                                    <td>
+                                                        <!--                                            <t t-set="count_claim_coupon_p5" t-value="len(claim_coupon_p5_ids)"/>-->
+                                                        <!--                                            <span t-esc="'{0:,.2f}'.format(count_claim_coupon_p5)"/>-->
+                                                    </td>
+                                                    <td>
+                                                        <!--                                            <t t-set="difference_p5" t-value="count_car_in_p5 - count_claim_coupon_p5"/>-->
+                                                        <!--                                            <span t-esc="'{0:,.2f}'.format(difference_p4)"/>-->
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <!--                                            <t t-set="sum_total_p5" t-value="difference_p5 * 200"/>-->
+                                                        <!--                                            <span t-esc="'{0:,.2f}'.format(sum_total_p5)"/>-->
+                                                    </td>
+                                                </tr>
+                                            </t>
+
+                                            <!--ดูดฝุ่น 1-->
+                                            <t t-if="product['meter_type'] == 'ดูดฝุ่น 1'">
+                                                <tr>
+                                                    <td>
+                                                        <span>ดูดฝุ่น 1</span>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="count_car_in_p6" t-value="new_session.meter_6_end - old_session.meter_6_start"/>
+                                                        <span t-esc="'{0:,.2f}'.format(count_car_in_p6)"/>
+                                                        <t t-set="count_car_in_sum67" t-value="count_car_in_sum67 + count_car_in_p6"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="count_p6" t-value="product['qty']"/>
+                                                        <span t-esc="'{0:,.2f}'.format(count_p6)"/>
+                                                        <t t-set="count_sum67" t-value="count_sum67 + count_p6"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="difference_p6" t-value="count_car_in_p6 - count_p6"/>
+                                                        <!--                                                    <span t-esc="'{0:,.2f}'.format(difference_p6)"/>-->
+                                                        <t t-set="difference_sum67" t-value="difference_sum67 + difference_p6"/>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <t t-set="sum_total_p6" t-value="difference_p6 * 80"/>
+                                                        <t t-set="sum_total" t-value="sum_total + sum_total_p6"/>
+                                                        <!--                                                    <span t-esc="'{0:,.2f}'.format(sum_total_p6)"/>-->
+                                                        <t t-set="sum_total_67" t-value="sum_total_67 + sum_total_p6"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+
+                                            <!--ดูดฝุ่น 2 -->
+                                            <t t-if="product['meter_type'] == 'ดูดฝุ่น 2'">
+                                                <tr>
+                                                    <td>
+                                                        <span>ดูดฝุ่น 2</span>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="count_car_in_p7" t-value="new_session.meter_7_end - old_session.meter_7_start"/>
+                                                        <span t-esc="'{0:,.2f}'.format(count_car_in_p7)"/>
+                                                        <t t-set="count_car_in_sum67" t-value="count_car_in_sum67 + count_car_in_p7"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="count_p7" t-value="product['qty']"/>
+                                                        <span t-esc="'{0:,.2f}'.format(count_p7)"/>
+                                                        <t t-set="count_sum67" t-value="count_sum67 + count_p7"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="difference_p7" t-value="count_car_in_p7 - count_p7"/>
+                                                        <!--                                                    <span t-esc="'{0:,.2f}'.format(difference_p7)"/>-->
+                                                        <t t-set="difference_sum67" t-value="difference_sum67 + difference_p7"/>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <t t-set="sum_total_p7" t-value="difference_p7 * 80"/>
+                                                        <t t-set="sum_total" t-value="sum_total + sum_total_p7"/>
+                                                        <!--                                                    <span t-esc="'{0:,.2f}'.format(sum_total_p7)"/>-->
+                                                        <t t-set="sum_total_67" t-value="sum_total_67 + sum_total_p7"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+
+                                            <!--รวมดูดฝุ่น-->
+                                            <t t-if="product['meter_type'] == 'รวมดูดฝุ่น'">
+                                                <tr>
+                                                    <td>
+                                                        <span>รวมดูดฝุ่น</span>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="'{0:,.2f}'.format(count_car_in_sum67)"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="'{0:,.2f}'.format(count_sum67)"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="'{0:,.2f}'.format(difference_sum67)"/>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <span t-esc="'{0:,.2f}'.format(sum_total_67)"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+
+                                            <!--ซักพรม -->
+                                            <t t-if="product['meter_type'] == 'ซักพรม'">
+                                                <tr>
+                                                    <td>
+                                                        <span>ซักพรม</span>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="count_car_in_p8" t-value="new_session.meter_8_end - old_session.meter_8_start"/>
+                                                        <span t-esc="'{0:,.2f}'.format(count_car_in_p8)"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="count_p8" t-value="product['qty']"/>
+                                                        <span t-esc="'{0:,.2f}'.format(count_p8)"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-set="difference_p8" t-value="count_car_in_p8 - count_p8"/>
+                                                        <span t-esc="'{0:,.2f}'.format(difference_p8)"/>
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <t t-set="sum_total_p8" t-value="difference_p8 * 200"/>
+                                                        <t t-set="sum_total" t-value="sum_total + sum_total_p8"/>
+                                                        <span t-esc="'{0:,.2f}'.format(sum_total_p8)"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </t>
+
+
+
+                                        <!--Meter 9 -->
+                                        <!--                                        <t t-if="product['meter_type'] == 'Meter 9'">-->
+                                        <!--                                    <tr>-->
+                                        <!--                                        <td>-->
+                                        <!--                                            <span>Meter 9</span>-->
+                                        <!--                                        </td>-->
+                                        <!--                                        <td>-->
+                                        <!--                                            <t t-set="count_car_in_p9" t-value="doc.meter_9_end - doc.meter_9_start"/>-->
+                                        <!--                                            <span t-esc="'{0:,.2f}'.format(count_car_in_p9)"/>-->
+                                        <!--                                        </td>-->
+                                        <!--                                        <td>-->
+                                        <!--                                            &lt;!&ndash;<t t-set="count_p9" t-value="product['qty']"/>&ndash;&gt;-->
+                                        <!--                                            &lt;!&ndash;<span t-esc="'{0:,.2f}'.format(count_p9)"/>&ndash;&gt;-->
+                                        <!--                                        </td>-->
+                                        <!--                                        <td>-->
+                                        <!--                                            &lt;!&ndash;<t t-set="difference_p9" t-value="count_car_in_p9 - count_p9"/>&ndash;&gt;-->
+                                        <!--                                            &lt;!&ndash;<span t-esc="'{0:,.2f}'.format(difference_p9)"/>&ndash;&gt;-->
+                                        <!--                                        </td>-->
+                                        <!--                                        <td class="text-right">-->
+                                        <!--                                            &lt;!&ndash;<t t-set="sum_total_p9" t-value="difference_p9 * 200"/>&ndash;&gt;-->
+                                        <!--                                            &lt;!&ndash;<t t-set="sum_total" t-value="sum_total + sum_total_p9"/>&ndash;&gt;-->
+                                        <!--                                            &lt;!&ndash;<span t-esc="'{0:,.2f}'.format(sum_total_p9)"/>&ndash;&gt;-->
+                                        <!--                                        </td>-->
+                                        <!--                                    </tr>-->
+                                        <!--                                        </t>-->
+
+                                        <!--Meter 10 -->
+                                        <!--                                        <t t-if="product['meter_type'] == 'Meter 10'">-->
+                                        <!--                                    <tr>-->
+                                        <!--                                        <td>-->
+                                        <!--                                            <span>Meter 10</span>-->
+                                        <!--                                        </td>-->
+                                        <!--                                        <td>-->
+                                        <!--                                            <t t-set="count_car_in_p10" t-value="doc.meter_10_end - doc.meter_10_start"/>-->
+                                        <!--                                            <span t-esc="'{0:,.2f}'.format(count_car_in_p10)"/>-->
+                                        <!--                                        </td>-->
+                                        <!--                                        <td>-->
+                                        <!--                                            &lt;!&ndash;<t t-set="count_p10" t-value="product['qty']"/>&ndash;&gt;-->
+                                        <!--                                            &lt;!&ndash;<span t-esc="'{0:,.2f}'.format(count_p10)"/>&ndash;&gt;-->
+                                        <!--                                        </td>-->
+                                        <!--                                        <td>-->
+                                        <!--                                            &lt;!&ndash;<t t-set="difference_p10" t-value="count_car_in_p10 - count_p10"/>&ndash;&gt;-->
+                                        <!--                                            &lt;!&ndash;<span t-esc="'{0:,.2f}'.format(difference_p9)"/>&ndash;&gt;-->
+                                        <!--                                        </td>-->
+                                        <!--                                        <td class="text-right">-->
+                                        <!--                                            &lt;!&ndash;<t t-set="sum_total_p10" t-value="difference_p10 * 200"/>&ndash;&gt;-->
+                                        <!--                                            &lt;!&ndash;<t t-set="sum_total" t-value="sum_total + sum_total_p10"/>&ndash;&gt;-->
+                                        <!--                                            &lt;!&ndash;<span t-esc="'{0:,.2f}'.format(sum_total_p10)"/>&ndash;&gt;-->
+                                        <!--                                        </td>-->
+                                        <!--                                    </tr>-->
+                                        <!--                                        </t>-->
+
+                                        <tr>
+                                            <td colspan="4" class="text-right">
+                                                <span>Summary</span>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="'{0:,.2f}'.format(sum_total)"/>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </t>
+
+                            <t t-set="claim_coupon_ids" t-value="session_summary.filtered(lambda x: x.claim_coupon_ids).mapped('claim_coupon_ids')"/>
+                            <t t-if="claim_coupon_ids">
+                                <h2>เคลมคูปองระหว่างสาขา</h2>
+                                <t t-set="product_ids" t-value="claim_coupon_ids.filtered(lambda x: x.product_id and x.product_id.related_service_id).mapped('product_id').mapped('related_service_id')"/>
+                                <t t-set="sum_product_count_type_pape" t-value="sum(claim_coupon_ids.filtered(lambda x: x.product_id and x.product_id.related_service_id).mapped('count_type_paper'))"/>
+                                <t t-set="sum_product_count_type_e_coupon" t-value="sum(claim_coupon_ids.filtered(lambda x: x.product_id and x.product_id.related_service_id).mapped('count_type_e_coupon'))"/>
+                                <t t-set="sum_product_branch_amount" t-value="sum(claim_coupon_ids.filtered(lambda x: x.product_id and x.product_id.related_service_id).mapped('branch_amount'))"/>
+                                <table class="table table-condensed table-striped">
+                                    <thead>
+                                        <tr>
+                                            <!--                                        <th>Product</th>-->
+                                            <th>Coupon Paper</th>
+                                            <th>E-coupon</th>
+                                            <th class="text-right">Destination Branch Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="sum_count_type_paper" t-value="0"/>
+                                        <t t-set="sum_count_type_e_coupon" t-value="0.0"/>
+                                        <t t-set="sum_branch_amount" t-value="0.0"/>
+                                        <t t-foreach="product_ids" t-as="product">
+                                            <tr>
+                                                <!--                                            <td>-->
+                                                <!--                                                <span t-esc="product.name"/>-->
+                                                <!--                                            </td>-->
+                                                <td style="border:1px solid white">
+                                                    <!--                                                <span t-esc="'{0:,.2f}'.format(sum_product_count_type_pape)"/>-->
+                                                    <t t-set="sum_count_type_paper" t-value="sum_count_type_paper + sum_product_count_type_pape"/>
+                                                </td>
+                                                <td style="border:1px solid white">
+                                                    <!--                                                <span t-esc="'{0:,.2f}'.format(sum_product_count_type_e_coupon)"/>-->
+                                                    <t t-set="sum_count_type_e_coupon" t-value="sum_count_type_e_coupon + sum_product_count_type_e_coupon"/>
+                                                </td>
+                                                <td class="text-right" style="border:1px solid white">
+                                                    <!--                                                <span t-esc="'{0:,.2f}'.format(sum_product_branch_amount)"/>-->
+                                                    <t t-set="sum_branch_amount" t-value="sum_branch_amount + sum_product_branch_amount"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <tr>
+                                            <!--                                        <td>-->
+                                            <!--                                            <span>Summary</span>-->
+                                            <!--                                        </td>-->
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(sum_count_type_paper)"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="'{0:,.2f}'.format(sum_count_type_e_coupon)"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="'{0:,.2f}'.format(sum_branch_amount)"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
+

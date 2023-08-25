@@ -16,9 +16,12 @@ class WizardCoupon(models.Model):
     def button_redeem(self, plate_id=None, branch_id=None, order_date=None, car_clean=None, barcode=None):
         for rec in self:
             # print ('button_redeem')
-            if rec.product_id.is_limit_branch and rec.order_branch_id.id != branch_id:
-                raise UserError(_('This coupon only use the same with order branch'))
-            super(WizardCoupon, self).button_redeem(plate_id,branch_id,order_date,car_clean,barcode)
+            # print ('rec.package_id.is_limit_branch',rec.package_id.is_limit_branch)
+            # print('button_redeem-1',rec.order_branch_id)
+            # print('button_redeem-2', branch_id)
+            # if rec.package_id.is_limit_branch and rec.order_branch_id.id != branch_id and rec.purchase_date > '2022-04-01':
+            #     raise UserError(_('This coupon only use the same with order branch'))
+            return super(WizardCoupon, self).button_redeem(plate_id,branch_id,order_date,car_clean,barcode)
 
 
 

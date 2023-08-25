@@ -1,0 +1,12 @@
+<odoo>
+    <record id="hr_holidays_form_itaas_inherit" model="ir.ui.view">
+        <field name="name">hr.holidays.form.itaas.inherit</field>
+        <field name="model">hr.holidays</field>
+        <field name="inherit_id" ref="hr_holidays.edit_holiday_new"/>
+        <field name="arch" type="xml">
+            <field name="employee_id" position="before">
+                <field name="image" widget='image' class="oe_avatar" options='{"preview_image":"image_medium"}'/>
+            </field>
+        </field>
+    </record>
+</odoo>

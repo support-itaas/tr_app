@@ -12,7 +12,7 @@ class ProductProduct(models.Model):
     start_date = fields.Date(string='Start Date')
     end_date = fields.Date(string='End Date')
     is_limit_branch = fields.Boolean(string='Limited Branch')
-    available_branch = fields.Many2many('project.project',string='Available Branch')
+    available_branch = fields.Many2many('operating.unit',string='Available Branch')
     maximum_order_branch = fields.Integer(string='Maximum Order per Branch')
     maximum_order_customer = fields.Integer(string='Maximum Order per Customer')
 

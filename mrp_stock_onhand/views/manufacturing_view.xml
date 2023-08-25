@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="mrp_production_form_view_add_stock_onhand" model="ir.ui.view">
+        <field name="name">mrp.production.add.stock.qty</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//notebook/page/field[@name='move_raw_ids']/tree/field[@name='reserved_availability']" position="after">
+                <field name="onhand_qty" readonly="1"/>
+                <field name="forecast_qty" readonly="1"/>
+                <field name="incomming_qty" readonly="1"/>
+                <field name="outgoing_qty" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+
+
+
+
+
+</odoo>

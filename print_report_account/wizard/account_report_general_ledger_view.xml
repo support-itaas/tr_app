@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <!--#add department condition to the gl report-->
+    <record id="account_report_general_ledger_view_inherit_itaas" model="ir.ui.view">
+        <field name="name">General Ledger</field>
+        <field name="model">account.report.general.ledger</field>
+        <field name="inherit_id" ref="account.account_report_general_ledger_view"/>
+        <field name="arch" type="xml">
+
+            <field name="initial_balance" position="after">
+
+                <field name="operating_unit_id"/>
+                <field name="show_operating_unit"/>
+                <field name="department_id"/>
+                <field name="show_department"/>
+                <field name="analytic_account_id"/>
+                <field name="show_analytic_account"/>
+
+            </field>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+dealer_purchase_order_line_user,dealer_purchase_order_line_user,model_dealer_purchase_order_line,base.group_user,1,1,1,0
+dealer_purchase_order_line_manager,dealer_purchase_order_line_manager,model_dealer_purchase_order_line,project.group_project_manager,1,1,1,1
+dealer_purchase_order_user,dealer_purchase_order_user,model_dealer_purchase_order,base.group_user,1,1,1,0
+dealer_purchase_order_manager,dealer_purchase_order_manager,model_dealer_purchase_order,project.group_project_manager,1,1,1,1

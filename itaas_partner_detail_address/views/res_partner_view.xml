@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_address_form" model="ir.ui.view">
+
+        <field name="name">res.partner.address.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='street2']" position="after">
+                <field name="sub_district_id" placeholder="Sub District" options='{"no_open": True}'
+                       attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                <field name="district_id" placeholder="District" options='{"no_open": True}'
+                       attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='city']" position="replace">
+                <field name="city" placeholder="City" invisible="1"/>
+            </xpath>
+             <xpath expr="//field[@name='state_id']" position="attributes">
+                <attribute name="options">{'no_create': True, 'no_open': True, 'no_create_edit': True}</attribute>
+            </xpath>
+<!--            <xpath expr="//field[@name='state_id']" position="replace">-->
+<!--                <field name="state_id" class="o_address_state" placeholder="State" options='{"no_open": True}'-->
+<!--                       attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"-->
+<!--                       context="{'country_id': country_id, 'zip': zip}" style="width:158px;"/>-->
+<!--            </xpath>-->
+        </field>
+    </record>
+</odoo>

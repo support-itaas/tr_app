@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <report
+                id="ucw_report_xls"
+                model="using.car.wash.report"
+                string="รายงานการใช้น้ำยาล้างรถ"
+                report_type="xlsx"
+                name="itaas_using_car_wash_report.ucw_report_xls"
+                file="itaas_using_car_wash_report.ucw_report_xls"
+                menu="False"
+                attachment_use="False"/>
+
+
+    </data>
+</odoo>

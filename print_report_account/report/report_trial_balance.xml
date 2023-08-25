@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_trial_balance" inherit_id="account.report_trialbalance">
+        <xpath expr="//t[@t-call='web.html_container']" position="replace">
+            <!--<xpath expr="//div[@class='page']" position="replace">-->
+
+            <t t-call="web.basic_layout">
+                <div class="page">
+
+                    <style>
+                        .header{width:100%; height:80px;}
+                        .content{width:100%; height:1000px;}
+                        .footer{width:100%; height:200px;}
+                        table.table-bordered1{
+                        border:1px solid black;
+                        margin-top:20px;
+                        border-collapse: collapse;
+                        width: 100%;
+                        }
+                        table.table-bordered1 &gt; thead &gt; tr &gt; th{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered1 &gt; thead &gt; tr &gt; td{
+                        border:1px solid black;
+                        border-left: 1px solid black;
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered1 &gt; tbody &gt; tr &gt; td{
+                        border:1px solid black;
+                        border-left: 1px solid black;
+                        border-collapse: collapse;
+                        height: 40px;
+                        }
+                        table.table-bordered1 &gt; tfoot &gt; tr &gt; td{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered &gt; thead &gt; tr &gt; th{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered &gt; tbody &gt; tr &gt; td{
+                        border:1px solid black;
+                        <!--border-left: 1px solid;-->
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered &gt; tfoot &gt; tr &gt; td{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                    </style>
+
+                    <t t-if="data['date_to']" >
+                        <t t-set="date_to" t-value="time.strptime(data['date_to'],'%Y-%m-%d' )"/>
+                    </t>
+                    <t t-if="data['date_from']" >
+                        <t t-set="date_from" t-value="time.strptime(data['date_from'],'%Y-%m-%d' )"/>
+                    </t>
+                    <t t-set="summary_debit_before" t-value="0.00"/>
+                    <t t-set="summary_credit_before" t-value="0.00"/>
+                    <t t-set="summary_debit" t-value="0.00"/>
+                    <t t-set="summary_credit" t-value="0.00"/>
+                    <t t-set="summary_debit_all" t-value="0.00"/>
+                    <t t-set="summary_credit_all" t-value="0.00"/>
+
+                    <h4 t-esc="res_company.name" style="text-align: center"/>
+                    <h4 style="text-align: center">งบทดลอง</h4>
+
+                    <h4 style="text-align: center">จากวันที่&amp;nbsp;&amp;nbsp;<span t-esc="date_from.tm_mday"/>&amp;nbsp;&amp;nbsp;
+                        <span t-if="date_from.tm_mon == 1">มกราคม</span>
+                        <span t-if="date_from.tm_mon == 2">กุมภาพันธ์</span>
+                        <span t-if="date_from.tm_mon == 3">มีนาคม</span>
+                        <span t-if="date_from.tm_mon == 4">เมษายน</span>
+                        <span t-if="date_from.tm_mon == 5">พฤษภาคม</span>
+                        <span t-if="date_from.tm_mon == 6">มิถุนายน</span>
+                        <span t-if="date_from.tm_mon == 7">กรกฎาคม</span>
+                        <span t-if="date_from.tm_mon == 8">สิงหาคม</span>
+                        <span t-if="date_from.tm_mon == 9">กันยายน</span>
+                        <span t-if="date_from.tm_mon == 10">ตุลาคม</span>
+                        <span t-if="date_from.tm_mon == 11">พฤศจิกายน</span>
+                        <span t-if="date_from.tm_mon == 12">ธันวาคม</span>
+                        &amp;nbsp;&amp;nbsp;<span t-esc="date_from.tm_year+543"/>
+                        <span>&amp;nbsp;&amp;nbsp;ถึงวันที่&amp;nbsp;&amp;nbsp;<span t-esc="date_to.tm_mday"/>&amp;nbsp;&amp;nbsp;</span>
+
+                        <span t-if="date_to.tm_mon == 1">มกราคม</span>
+                        <span t-if="date_to.tm_mon == 2">กุมภาพันธ์</span>
+                        <span t-if="date_to.tm_mon == 3">มีนาคม</span>
+                        <span t-if="date_to.tm_mon == 4">เมษายน</span>
+                        <span t-if="date_to.tm_mon == 5">พฤษภาคม</span>
+                        <span t-if="date_to.tm_mon == 6">มิถุนายน</span>
+                        <span t-if="date_to.tm_mon == 7">กรกฎาคม</span>
+                        <span t-if="date_to.tm_mon == 8">สิงหาคม</span>
+                        <span t-if="date_to.tm_mon == 9">กันยายน</span>
+                        <span t-if="date_to.tm_mon == 10">ตุลาคม</span>
+                        <span t-if="date_to.tm_mon == 11">พฤศจิกายน</span>
+                        <span t-if="date_to.tm_mon == 12">ธันวาคม</span>
+                        &amp;nbsp;&amp;nbsp;<span t-esc="date_to.tm_year+543"/>
+                    </h4>
+
+
+                    <table class="table table-bordered1">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" style="text-align: center; vertical-align: middle;">ชื่อบัญชี</th>
+                                <th rowspan="2" style="text-align: center; vertical-align: middle;">เลขที่บัญชี</th>
+                                <t t-if="not data['is_only_summary']">
+                                    <th colspan="2" class="text-center">ยอดยกมา</th>
+                                    <th colspan="2" class="text-center">ยอดประจำงวด</th>
+                                </t>
+                                <th colspan="2" class="text-center">ยอดสะสม</th>
+                                <!--<th></th>-->
+                                <!--<th colspan="2" class="text-center">เดบิต</th>-->
+                                <!--<th colspan="2" class="text-center">เครดิต</th>-->
+                                <!--<th class="text-right">Balance</th>-->
+                            </tr>
+                            <tr>
+                                <t t-if="not data['is_only_summary']">
+                                    <td colspan="1" class="text-center">เดบิต</td>
+                                    <td colspan="1" class="text-center">เครดิต</td>
+                                    <td colspan="1" class="text-center">เดบิต</td>
+                                    <td colspan="1" class="text-center">เครดิต</td>
+                                </t>
+                                <td colspan="1" class="text-center">เดบิต</td>
+                                <td colspan="1" class="text-center">เครดิต</td>
+                            </tr>
+                            <!--<tr>-->
+                            <!--<td class="text-center">บาท</td>-->
+                            <!--<td class="text-center">ส.ต.</td>-->
+                            <!--<td class="text-center">บาท</td>-->
+                            <!--<td class="text-center">ส.ต.</td>-->
+                            <!--<td class="text-center">บาท</td>-->
+                            <!--<td class="text-center">ส.ต.</td>-->
+                            <!--<td class="text-center">บาท</td>-->
+                            <!--<td class="text-center">ส.ต.</td>-->
+                            <!--<td class="text-center">บาท</td>-->
+                            <!--<td class="text-center">ส.ต.</td>-->
+                            <!--<td class="text-center">บาท</td>-->
+                            <!--<td class="text-center">ส.ต.</td>-->
+                            <!--</tr>-->
+                        </thead>
+                        <tbody>
+
+                            <t t-set="i" t-value="0"/>
+                            <tr t-foreach="Accounts" t-as="account">
+                                <td class="text-left">
+                                    <span t-att-style="style" t-esc="account['name']"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-att-style="style" t-esc="account['code']"/>
+                                </td>
+
+                                <!--บัญชี 5 หมวดแสดงยอดดังนี้-->
+                                <!--หมวดที่ 1        สินทรัพย์                 จะมียอดคงเหลือด้าน  เดบิต -->
+                                <!--หมวดที่ 2        หนี้สิน                    จะมียอดคงเหลือด้าน เครดิต -->
+                                <!--หมวดที่ 3        ส่วนของเจ้าของ        จะมียอดคงเหลือด้าน  เครดิต -->
+                                <!--หมวดที่ 4        รายได้                    จะมียอดคงเหลือด้าน  เครดิต -->
+                                <!--หมวดที่ 5        ค่าใช้จ่าย                จะมียอดคงเหลือด้าน  เดบิต-->
+
+                                <!--################################# balance #####################-->
+                                <!--###################################### asset and expense ###########################-->
+                                <!--################# this native should positive in debit site-->
+
+                                <!--##############before period since first day of fiscal year until last month-->
+                                <t t-set="account_new" t-value="docs.with_context(data.get('used_context'))._get_accounts_before(account['code'],display_account,date_start_year,date_to_before,target_move,is_first_year)"/>
+                                <t t-if="account_new[0]['code'][0] == '1' or account_new[0]['code'][0] == '5' or account_new[0]['code'][0] == '6'">
+                                    <t t-if="int(account_new[0]['balance']) &gt;= 0">
+                                        <t t-if="not data['is_only_summary']">
+                                            <td class="text-right">
+                                                <span t-esc="'{0:,.2f}'.format(float(account_new[0]['balance']))"/>
+                                            </td>
+                                            <td></td>
+                                        </t>
+                                        <t t-set="summary_debit_before" t-value="summary_debit_before + float(abs(account_new[0]['balance']))"/>
+                                        <!--<t t-set="summary_account_debit" t-value="float(abs(account_new[0]['balance']))"/>-->
+                                    </t>
+                                    <t t-if="int(account_new[0]['balance']) &lt; 0">
+                                        <t t-if="not data['is_only_summary']">
+                                            <td></td>
+                                            <td class="text-right">
+                                                <span t-esc="'{0:,.2f}'.format(abs(float(account_new[0]['balance'])))"/>
+                                            </td>
+                                        </t>
+                                        <t t-set="summary_credit_before" t-value="summary_credit_before + float(abs(account_new[0]['balance']))"/>
+
+                                    </t>
+                                </t>
+
+                                <!--###################################### dept, equity and income ###############################-->
+                                <!--#################### this is for credit section then balance should be negative ##############-->
+                                <t t-if="account_new[0]['code'][0] == '2' or account_new[0]['code'][0] == '3' or account_new[0]['code'][0] == '4' or account_new[0]['code'][0] == '9'">
+                                    <t t-if="int(account_new[0]['balance']) &gt;= 0">
+                                        <t t-if="not data['is_only_summary']">
+                                            <td class="text-right">
+                                                <span t-esc="'{0:,.2f}'.format(float(account_new[0]['balance']))"/>
+                                            </td>
+                                            <td></td>
+                                        </t>
+                                        <t t-set="summary_debit_before" t-value="summary_debit_before + float(abs(account_new[0]['balance']))"/>
+                                    </t>
+                                    <t t-if="int(account_new[0]['balance']) &lt; 0">
+                                        <t t-if="not data['is_only_summary']">
+                                            <td></td>
+                                            <td class="text-right">
+                                                <span t-esc="'{0:,.2f}'.format(abs(float(account_new[0]['balance'])))"/>
+                                            </td>
+                                        </t>
+                                        <t t-set="summary_credit_before" t-value="summary_credit_before + float(abs(account_new[0]['balance']))"/>
+
+                                    </t>
+                                </t>
+
+                                <!--###########this period##########3-->
+                                <t t-if="account['code'][0] == '1' or account['code'][0] == '5' or account['code'][0] == '6'">
+                                    <t t-if="not data['is_only_summary']">
+                                        <td class="text-right">
+                                            <span t-esc="'{0:,.2f}'.format(float(account['debit']))"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="'{0:,.2f}'.format(float(account['credit']))"/>
+                                        </td>
+                                    </t>
+                                    <t t-set="summary_debit" t-value="summary_debit + float(abs(account['debit']))"/>
+                                    <t t-set="summary_credit" t-value="summary_credit + float(abs(account['credit']))"/>
+
+                                </t>
+
+                                <!--###################################### dept, equity and income ###############################-->
+                                <!--#################### this is for credit section then balance should be negative ##############-->
+                                <t t-if="account['code'][0] == '2' or account['code'][0] == '3' or account['code'][0] == '4' or account['code'][0] == '9'">
+
+                                    <t t-if="not data['is_only_summary']">
+                                        <td class="text-right">
+                                            <span t-esc="'{0:,.2f}'.format(float(account['debit']))"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="'{0:,.2f}'.format(float(account['credit']))"/></td>
+                                    </t>
+                                    <t t-set="summary_debit" t-value="summary_debit + float(abs(account['debit']))"/>
+                                    <t t-set="summary_credit" t-value="summary_credit + float(abs(account['credit']))"/>
+
+
+                                </t>
+
+
+                                <!--#################accomodate period-->
+                                <t t-if="account['code'][0] == '1' or account['code'][0] == '5' or account['code'][0] == '6'">
+                                    <t t-if="int(account['balance'] + account_new[0]['balance']) &gt;= 0">
+                                        <td class="text-right">
+                                            <span t-esc="'{0:,.2f}'.format(float(account['balance'] + account_new[0]['balance']))"/>
+                                        </td>
+                                        <td></td>
+                                        <t t-set="summary_debit_all" t-value="summary_debit_all + float(abs(account['balance'] + account_new[0]['balance']))"/>
+                                    </t>
+                                    <t t-if="int(account['balance'] + account_new[0]['balance']) &lt; 0">
+                                        <td></td>
+                                        <td class="text-right">
+                                            <span t-esc="'{0:,.2f}'.format(abs(float(account['balance'] + account_new[0]['balance'])))"/>
+                                        </td>
+                                        <t t-set="summary_credit_all" t-value="summary_credit_all + float(abs(account['balance'] + account_new[0]['balance']))"/>
+
+                                    </t>
+                                </t>
+
+                                <!--###################################### dept, equity and income ###############################-->
+                                <!--#################### this is for credit section then balance should be negative ##############-->
+                                <t t-if="account['code'][0] == '2' or account['code'][0] == '3' or account['code'][0] == '4' or account['code'][0] == '9'">
+                                    <t t-if="int(account['balance'] + account_new[0]['balance']) &gt;= 0">
+
+                                        <td class="text-right">
+                                            <span t-esc="'{0:,.2f}'.format(float(account['balance'] + account_new[0]['balance']))"/>
+                                        </td>
+                                        <td></td>
+                                        <t t-set="summary_debit_all" t-value="summary_debit_all + float(abs(account['balance'] + account_new[0]['balance']))"/>
+                                    </t>
+                                    <t t-if="int(account['balance'] + account_new[0]['balance']) &lt; 0">
+                                        <td></td>
+                                        <td class="text-right">
+                                            <span t-esc="'{0:,.2f}'.format(abs(float(account['balance'] + account_new[0]['balance'])))"/>
+                                        </td>
+                                        <t t-set="summary_credit_all" t-value="summary_credit_all + float(abs(account['balance'] + account_new[0]['balance']))"/>
+
+                                    </t>
+                                </t>
+
+                                <t t-set="i" t-value="i+1"/>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="text-center">รวม</td>
+                                <t t-if="not data['is_only_summary']">
+                                    <td class="text-right" colspan="1"><span t-esc="'{0:,.2f}'.format(abs(float(summary_debit_before)))"/></td>
+                                    <td class="text-right" colspan="1"><span t-esc="'{0:,.2f}'.format(abs(float(summary_credit_before)))"/></td>
+                                    <td class="text-right" colspan="1"><span t-esc="'{0:,.2f}'.format(abs(float(summary_debit)))"/></td>
+                                    <td class="text-right" colspan="1"><span t-esc="'{0:,.2f}'.format(abs(float(summary_credit)))"/></td>
+                                </t>
+                                <td class="text-right" colspan="1"><span t-esc="'{0:,.2f}'.format(abs(float(summary_debit_all)))"/></td>
+                                <td class="text-right" colspan="1"><span t-esc="'{0:,.2f}'.format(abs(float(summary_credit_all)))"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>

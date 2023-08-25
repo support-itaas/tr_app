@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="employee01_report_id">
+            <!--t t-foreach="docs" t-as="o"-->
+                <div class="page">
+                    <div style="text-align:center">
+                        <font style="font-size: 20px;">
+                            <!--<strong><span t-field="o.company_id.name"/></strong>-->
+                        </font>
+                    </div><br/>
+                    <div style="text-align:center">
+                        <font style="font-size: 16px;">
+                            <strong><span>ทะเบียนลูกจ้าง ตาม พรบ.คุ้มครองแรงงาน พ.ศ.2541 (รายวัน)</span></strong>
+                        </font>
+                    </div><br/>
+                    <h4>
+                        <table class="table table-responsive">
+                            <tr>
+                                <td style="text-align:center"><strong>ลำดับ</strong></td>
+                                <td style="text-align:center"><strong>ชื่อ - นามสกุล</strong></td>
+                                <td style="text-align:center"><strong>เพศ</strong></td>
+                                <td style="text-align:center"><strong>สัญชาติ</strong></td>
+                                <td style="text-align:center"><strong>วัน/เดือน/ปีเกิด<br/>หรืออายุ</strong></td>
+                                <td style="text-align:center"><strong>ที่อยู่ปัจจุบัน</strong></td>
+                                <td style="text-align:center"><strong>เลขที่ประจำตัวประชาชน</strong></td>
+                                <td style="text-align:center"><strong>วันที่เริ่มจ้าง</strong></td>
+                                <td style="text-align:center"><strong>ตำแหน่งงาน<br/>หรือในหน้าที่</strong></td>
+                                <td style="text-align:center"><strong>อัตราค่าจ้าง</strong></td>
+                                <td style="text-align:center"><strong>ประโยชน์ตอบแทน<br/>อย่างอื่น</strong></td>
+                                <td style="text-align:center"><strong>วันสิ้นสุด<br/>การจ้าง</strong></td>
+                            </tr>
+                                <t t-set="i" t-value="1"/>
+                                <t t-foreach="docs" t-as="o">
+                            <tr>
+                                <td style="text-align:center"><span t-esc="i"/></td>
+                                <td style="text-align:center"><span t-field="o.name"/></td>
+                                <td style="text-align:center"><span t-field="o.gender"/></td>
+                                <td style="text-align:center"><span t-field="o.country_id.name"/></td>
+                                <td style="text-align:center"><span t-field="o.birthday"/></td>
+                                <td style="text-align:center"><span t-field="o.home_address" /></td>
+                                <td style="text-align:center"><span t-field="o.identification_id"/></td>
+                                <td style="text-align:center"><span t-field="o.contract_ids.date_start"/></td>
+                                <td style="text-align:center"><span t-field="o.job_id.name"/></td>
+                                <td style="text-align:center"><span t-field="o.contract_ids.wage"/></td>
+                                <td style="text-align:center"><span t-field="o.contract_ids.advantages"/></td>
+                                <td style="text-align:center"><span t-field="o.contract_ids.date_end"/></td>
+                                 <t t-set="i" t-value="i+1"/>
+                            </tr>
+                                </t>
+                        </table>
+                    </h4>
+                </div>
+            <!--/t-->
+        </template>
+    </data>
+</openerp>
+

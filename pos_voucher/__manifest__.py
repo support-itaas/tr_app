@@ -1,0 +1,25 @@
+# -*- coding: utf-8 -*-
+{
+    'name': 'POS Vouchers/Coupons',
+    'sequence': 0,
+    'version': '2.0.0',
+    'author': 'TL Technology',
+    'description': 'POS Voucher',
+    'category': 'Point of Sale',
+    'depends': ['pos_base'],
+    'data': [
+        'security/ir.model.access.csv',
+        'import/template.xml',
+        'views/pos_config.xml',
+        'views/product.xml',
+        'views/pos_voucher.xml',
+        'views/account_journal.xml',
+    ],
+    'qweb': ['static/src/xml/*.xml'],
+    'application': True,
+    'price': '100',
+    'website': 'http://posodoo.com',
+    "currency": 'EUR',
+    'images': ['static/description/icon.png'],
+    'support': 'thanhchatvn@gmail.com',
+}

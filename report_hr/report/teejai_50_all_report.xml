@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="teejai_50_all_report_id">
+            <t t-foreach="contract_ids" t-as="o">
+                <t t-set="company_vat" t-value="o.company_id.vat"/>
+                <t t-set="ident_vat" t-value="o.identification_id"/>
+                <t t-set="payroll_year_record" t-value="o.payroll_year_record_ids.filtered(lambda x:x.year == year)"/>
+                <t t-call="web.basic_layout">
+                    <div class="page" t-attf-style="background-image:url('/report_hr/static/description/50-tax.jpg'); background-size:360mm 520mm; width:360mm; height:520mm; font-family:Tahoma; src:url(/report_hr/static/tahoma.ttf);">
+
+                        <div style="position: absolute; top: 200px; left: 64%;">
+                            <font style="font-size: 20px;">
+                                <t t-if="company_vat">
+                                    <span t-esc="company_vat[0]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="company_vat[1]"/>&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="company_vat[2]"/>&amp;nbsp;
+                                    <span t-esc="company_vat[3]"/>&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="company_vat[4]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="company_vat[5]"/>&amp;nbsp;
+                                    <span t-esc="company_vat[6]"/>&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="company_vat[7]"/>&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="company_vat[8]"/>&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="company_vat[9]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="company_vat[10]"/>&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="company_vat[11]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="company_vat[12]"/>
+                                </t>
+                            </font>
+                        </div>
+
+                        <div style="position: absolute; left: 10%; top:240px; width:600px;">
+                            <font style="font-size: 20px;">
+                                <span t-field="o.employee_id.company_id.name"/>
+                            </font>
+                        </div>
+
+                        <div class="col-xs-12" style="position: absolute; left: 10%; top: 290px; width:1000px;">
+                            <font style="font-size: 20px;">
+                                <t t-set="company_address" t-value="o.company_id.get_company_full_address()"/>
+                                <span t-esc="' '.join([ address for address in company_address ])"/>
+                            </font>
+                        </div>
+
+                        <div style="position: absolute; left: 64%; top: 360px;">
+                            <font style="font-size: 20px;">
+                                <t t-if="ident_vat">
+                                    <span t-esc="ident_vat[0]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="ident_vat[1]"/>&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="ident_vat[2]"/>&amp;nbsp;
+                                    <span t-esc="ident_vat[3]"/>&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="ident_vat[4]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="ident_vat[5]"/>&amp;nbsp;
+                                    <span t-esc="ident_vat[6]"/>&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="ident_vat[7]"/>&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="ident_vat[8]"/>&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="ident_vat[9]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="ident_vat[10]"/>&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="ident_vat[11]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="ident_vat[12]"/>
+                                </t>
+                            </font>
+                        </div>
+
+                        <div style="position: absolute; left: 10%; width:500px; top:400px;">
+                            <font style="font-size: 20px;">
+                                <span t-field="o.employee_id.title.name"/>&amp;nbsp;<span t-field="o.name"/>
+                            </font>
+                        </div>
+
+                        <div class="col-xs-12" style="position: absolute; left: 11%;  width:1000px; top:470px;">
+                            <font style="font-size: 20px;">
+                                <span t-field="o.employee_id.home_address"/>
+                            </font>
+                        </div>
+
+                        <div style="position: absolute; left: 36%; top:520px;">
+                            <font style="font-size:37px;">
+                                <span>X</span>
+                            </font>
+                        </div>
+
+                        <!--(1)-->
+                        <t t-set="date_today" t-value="datetime.datetime.now().strftime('%d-%m-%Y')"/>
+                        <div style="position: absolute; left: 57%; top:690px;">
+                            <font style="font-size: 20px;">
+                                <span  t-if="payroll_year_record" t-esc="int(payroll_year_record.year + 543)"/>
+                            </font>
+                        </div>
+                        <div style="position: absolute; right: 18%; top:690px;">
+                            <font style="font-size: 20px;">
+                                <span  t-if="payroll_year_record" t-esc="'{0:,.2f}'.format(abs(float(payroll_year_record.total_revenue_summary_for_tax)))"/>
+                            </font>
+                        </div>
+                        <div style="position: absolute; right: 6%; top:690px;">
+                            <font style="font-size: 20px;">
+                                <span  t-if="payroll_year_record" t-esc="'{0:,.2f}'.format(abs(float(payroll_year_record.total_tax_paid)))"/>
+                            </font>
+                        </div>
+
+                        <!--(2)-->
+                        <div style="position: absolute; right: 18%; top:1520px;">
+                            <font style="font-size: 20px;">
+                                <span  t-if="payroll_year_record" t-esc="'{0:,.2f}'.format(abs(float(payroll_year_record.total_revenue_summary_for_tax)))"/>
+                            </font>
+                        </div>
+                        <div style="position: absolute; right: 6%; top:1520px;">
+                            <font style="font-size: 20px;">
+                                <span  t-if="payroll_year_record" t-esc="'{0:,.2f}'.format(abs(float(payroll_year_record.total_tax_paid)))"/>
+                            </font>
+                        </div>
+
+                        <!--(3) summary-->
+                        <div style="position: absolute; left: 35%; top:1565px;">
+                            <font style="font-size: 20px;">
+                                <span  t-if="payroll_year_record" t-esc="'{0:,.2f}'.format(abs(float(payroll_year_record.total_tax_paid)))"/>
+                            </font>
+                        </div>
+
+                        <!--(4)-->
+                        <div style="position: absolute; right: 32%; top:1605px;">
+                            <font style="font-size: 20px;">
+                                <span  t-if="payroll_year_record" t-esc="'{0:,.2f}'.format(abs(float(payroll_year_record.total_sso_paid)))"/>
+                            </font>
+                        </div>
+                        <div style="position: absolute; right: 9%; top:1605px;">
+                            <font style="font-size: 20px;">
+                                <span t-esc="'{0:,.2f}'.format(abs(float(o.summary_pvd)))"/>
+                            </font>
+                        </div>
+
+                        <div style="position: absolute; left: 15%; top:1645px;">
+                            <font style="font-size:37px;">
+                                <span>X</span>
+                            </font>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -27,3 +27,4 @@ class ProductTemplate(models.Model):
     is_pack = fields.Boolean('Combo/Pack', default=False)
     is_deliverable_product = fields.Boolean('Deliverable Product?', default=False)
     product_pack_id = fields.One2many('product.pack', 'product_template_id', 'Items in the pack')
+

@@ -1,0 +1,63 @@
+<odoo>
+
+    <record id="view_hr_contract_form_itaas_inherit" model="ir.ui.view">
+        <field name="name">hr.contract.itaas.inherit</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_extended.view_employee_contract_itaas_form"/>
+        <field name="arch" type="xml">
+
+            <field name="exclude_sso" position="before">
+                <field name="is_manager"/>
+            </field>
+
+            <field name="total_tax_paid" position="after">
+                <field name="total_revenue_summary_for_tax_one"/>
+                <field name="total_tax_one_paid"/>
+            </field>
+
+            <xpath expr="//page[@name='payroll_yearly_record']/field[@name='payroll_year_record_ids']/tree" position="inside">
+                <field name="total_revenue_summary_for_tax_one"/>
+                <field name="total_tax_one_paid"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_contract_branch_form_itaas_address" model="ir.ui.view">
+        <field name="name">contract.branch.form.itaas.address</field>
+        <field name="model">contract.branch</field>
+        <field name="inherit_id" ref="hr_extended.view_contract_branch_form_itaas"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//sheet" position="inside">
+                <group>
+                    <group>
+                        <field name="description"/>
+                        <field name="partner_id"/>
+                        <field name="bank_ac"/>
+                        <label for="street" string="Address"/>
+                        <div class="o_address_format">
+                            <field name="building" string="อาคาร" placeholder="อาคาร.." class="o_address_street"/>
+                            <field name="roomnumber" string="ห้องเลขที่" placeholder="ห้องเลขที่.." class="o_address_zip"/>
+                            <field name="floornumber" string="ชั้นที่" placeholder="ชั้นที่.." class="o_address_zip"/>
+                            <field name="village" string="หมู่บ้าน" placeholder="หมู่บ้าน.." class="o_address_city" />
+                            <field name="house_number" string="เลขที่" placeholder="เลขที่.." class="o_address_zip"/>
+                            <field name="moo_number" string="หมู่ที่" placeholder="หมู่ที่.." class="o_address_zip"/>
+                            <field name="soi_number" string="ซอย" placeholder="ซอย.." class="o_address_city"/>
+                            <field name="street" placeholder="Street..." class="o_address_street"/>
+                            <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                            <field name="tumbon" string="ตำบล" placeholder="ตำบล.." class="o_address_zip"/>
+                            <field name="city" placeholder="City" class="o_address_city"/>
+                            <field name="state_id" class="o_address_state" placeholder="State"
+                                   options="{'no_open': True}" on_change="1" can_create="true" can_write="true"/>
+                            <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                            <field name="country_id" placeholder="Country" class="o_address_country"
+                                   options="{'no_open': True}" on_change="1" can_create="true" can_write="true"/>
+                        </div>
+                    </group>
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

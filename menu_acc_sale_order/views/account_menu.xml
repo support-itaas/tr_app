@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="assets_location_search" model="ir.ui.view">
+            <field name="name">assets.location.search</field>
+            <field name="model">assets.location</field>
+            <field name="arch" type="xml">
+                <search string="Accounts">
+<!--                    <field name="company_id"/>-->
+<!--                    <field name="parent_id"/>-->
+                    <field name="name_location"/>
+                    <field name="analytic_account_id"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="assets_location_views" model="ir.ui.view">
+            <field name="name">assets.location.views</field>
+            <field name="model">assets.location</field>
+            <field name="arch" type="xml">
+                <tree>
+<!--                    <field name="company_id"/>-->
+<!--                    <field name="parent_id"/>-->
+                    <field name="name_location"/>
+                    <field name="analytic_account_id"/>
+                </tree>
+            </field>
+        </record>
+
+
+
+        <record id="action_account_type" model="ir.actions.act_window">
+            <field name="name">Assets Location</field>
+            <field name="res_model">assets.location</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="assets_location_search"/>
+            <field name="view_id" ref="assets_location_views"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add an account.
+                </p>
+            </field>
+        </record>
+
+
+        <menuitem id="menu_acc_type1"
+                  action="action_account_type"
+                  parent="account.menu_finance_entries"
+                  sequence="11"
+                  name="Assest Location "/>
+
+
+
+
+
+
+
+
+
+
+    </data>
+</odoo>

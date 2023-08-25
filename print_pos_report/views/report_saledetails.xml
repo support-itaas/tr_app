@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- point_of_sale.report_saledetails : inherit report -->
+    <template id="report_saledetails_inherit_config" inherit_id="point_of_sale.report_saledetails">
+        <xpath expr="//div[hasclass('text-center')]" position="replace">
+            <div class="text-center">
+                <h2>Sales Details</h2>
+                <strong><t t-esc="date_start" t-options="{'widget': 'datetime'}"/> - <t t-esc="date_stop" t-options="{'widget': 'datetime'}"/></strong>
+                <br/>
+                <span t-esc="data"/>
+                <br/>
+                <t t-set="config_i" t-value="1"/>
+                <t t-foreach="config_ids" t-as="con">
+                    <t t-set="config" t-value="env['pos.config'].browse(con)"/>
+                    <t t-if="config_i == 1">
+                        <span t-esc="config.name"/>
+                    </t>
+                    <t t-if="config_i != 1">
+                        ,<span t-esc="config.name"/>
+                    </t>
+                    <t t-set="config_i" t-value="config_i + 1"/>
+                </t>
+
+            </div>
+
+        </xpath>
+    </template>
+
+</odoo>

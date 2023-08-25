@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_import_po_purchase_import_so_user,import_po_purchase_import_so,import_po.model_purchase_import_so,,1,1,1,1

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="project_task_tree_view" model="ir.ui.view">
+            <field name="name">project.task.form.inherit</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//kanban/templates/t[@t-name='kanban-box']/div/div/div/div" position="after">
+                    <field name="plate_number_id"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

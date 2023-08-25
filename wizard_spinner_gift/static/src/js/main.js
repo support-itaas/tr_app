@@ -39,8 +39,8 @@ function spin() {
       }, 5000);
       setTimeout(function() {
         swal({
-          title: "Congratulations",
-          text: "You Won " + SelectedItem + " !",
+          title: "ขอบคุณที่ร่วมสนุกกับ Wizard นะคะ คุณ " + data.customer,
+          text: SelectedItem + " !",
           imageUrl: 'https://media.giphy.com/media/1itd8X8whi3eOgZSRW/giphy.gif'
         });
       }, 5000);

@@ -9,6 +9,16 @@ class ResPartner(models.Model):
     available_coupon_count = fields.Integer(string='Available Coupons', compute='_compute_available_coupon_count')
     total_coupon_count = fields.Integer(string='Total Coupons', compute='_compute_total_coupon_count')
     device_token = fields.Char(string='Device Token')
+    property_claim_account_payable_id = fields.Many2one('account.account', company_dependent=True,
+        string="Claim Account Payable", oldname="property_account_payable",domain=False)
+    total_expire_coupon_count = fields.Integer(string='Expired Coupons', compute='_compute_expired_coupon_count')
+
+
+    @api.multi
+    def _compute_expired_coupon_count(self):
+        for partner in self:
+            total_count = self.env['wizard.coupon'].search([('partner_id', '=', partner.id),('state', '=', 'expire')])
+            partner.total_expire_coupon_count = len(total_count)
 
     @api.multi
     def _compute_total_coupon_count(self):
@@ -29,6 +39,14 @@ class ResPartner(models.Model):
         action = self.env.ref('wizard_coupon.wizard_coupon_action').read()[0]
         action['domain'] = [('partner_id', '=', self.id)]
         return action
+
+    @api.multi
+    def action_view_expire_coupons(self):
+        self.ensure_one()
+        action = self.env.ref('wizard_coupon.wizard_coupon_action').read()[0]
+        action['domain'] = [('partner_id', '=', self.id),('state', '=', 'expire')]
+        return action
+
 
     def get_fcm_token(self, PARTNER_ID, FCM_TOKEN):
         if PARTNER_ID:

@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="supplier_billing_report">
+            <t t-call="report.internal_layout">
+                <div class="page">
+                    <t t-set="company_id" t-value="company_id"/>
+                    <t t-set="date_form" t-value="date_form"/>
+                    <t t-set="date_to" t-value="date_to"/>
+                    <t t-set="bank_ids" t-value="bank_ids"/>
+                    <style>
+                        <style>
+                            .header{width:100%; height:200px;}
+                            .content{width:100%; height:600px;}
+                            .footer{width:100%; height:400px;}
+                            .doubleUnderline{border-bottom: 3px double;}
+                            table.table-bordered1{
+                            border:1px solid black;
+                            margin-top:20px;
+                            border-collapse: collapse;
+                            width: 100%;
+                            }
+                            table.table-bordered1 &gt; thead &gt; tr &gt; th{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            }
+                            table.table-bordered1 &gt; tbody &gt; tr &gt; td{
+                            border:0px solid white;
+                            border-left:1px solid black;
+                            border-collapse: collapse;
+                            height: 40px;
+                            }
+                            table.table-bordered1 &gt; tfoot &gt; tr &gt; td{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            }
+
+                            table.table-bordered{
+                            border:1px solid black;
+                            margin-top:20px;
+                            border-collapse: collapse;
+                            width: 100%;
+                            }
+                            table.table-bordered &gt; thead &gt; tr &gt; th{
+                            border:0px solid white;
+                            border-collapse: collapse;
+                            }
+                            table.table-bordered &gt; tbody &gt; tr &gt; td{
+                            border:0px solid black;
+                            border-collapse: collapse;
+                            }
+                            table.table-bordered &gt; tfoot &gt; tr &gt; td{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            }
+                        </style>
+                    </style>
+
+                    <!--title-->
+                    <t t-set="i" t-value="0" />
+                    <t t-set="total" t-value="0" />
+                    <div class="title" style="text-align:center">
+                        <font style="font-size: 16px;">
+                            <h><span t-esc="company_id.name" /></h><br/>
+                            <h><span>รายงานสรุปใบขออนุมัติจ่าย</span></h>
+                        </font>
+                        <br/>
+                        <font style="font-size: 12px;">
+                            <strong>จากวันที่:</strong>
+                            <span t-esc="date_from" />
+                            <strong>ถึงวันที่</strong>
+                            <span t-esc="date_to" />
+                        </font>
+                    </div>
+                    <br/>
+
+
+
+                    <div>
+
+                        <div class="col-xs-12">
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th class="col-xs-1" style="text-align:center">
+                                            <font style="font-size: 12px;">วันที่เอกสาร</font>
+                                        </th>
+                                        <th class="col-xs-2" style="text-align:center">
+                                            <font style="font-size: 12px;">เลขที่เอกสาร</font>
+                                        </th>
+                                        <th class="col-xs-1" style="text-align:right">
+                                            <font style="font-size: 12px;">รหัสเจ้าหนี้</font>
+                                        </th>
+                                        <th class="col-xs-3" style="text-align:right">
+                                            <font style="font-size: 12px;">ชื่อเจ้าหนี้</font>
+                                        </th>
+                                        <th class="col-xs-2" style="text-align:right">
+                                            <font style="font-size: 12px;">ธนาคาร</font>
+                                        </th>
+                                        <th class="col-xs-1" style="text-align:right">
+                                            <font style="font-size: 12px;">ยอดเงินสุทธิ</font>
+                                        </th>
+                                        <th class="col-xs-1" style="text-align:right">
+                                            <font style="font-size: 12px;">วันที่โอน</font>
+                                        </th>
+                                        <th class="col-xs-1" style="text-align:right">
+                                            <font style="font-size: 12px;">หมายเหตุ</font>
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody class="sale_tbody">
+
+                                    <t t-foreach="docs" t-as="o">
+                                        <t t-set="i" t-value="i+1" />
+                                        <tr>
+                                            <td style="text-align:center">
+                                                <font style="font-size: 12px;">
+                                                    <span t-field="o.date_billing"/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:center">
+                                                <font style="font-size: 12px;">
+                                                    <span t-field="o.name"/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:right">
+                                                <font style="font-size: 12px;">
+                                                    <span t-field="o.partner_id.ref"/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:right">
+                                                <font style="font-size: 12px;">
+                                                    <span t-field="o.partner_id.name"/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:right">
+                                                <font style="font-size: 12px;">
+                                                    <t t-if="o.partner_id.bank_account_count != 0">
+                                                        <span t-field="o.partner_id.bank_ids[0].bank_id.name"/>
+                                                        <span t-field="o.partner_id.bank_ids[0].acc_number"/>
+                                                    </t>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:right">
+                                                <font style="font-size: 12px;">
+                                                    <span t-field="o.amount_total"/>
+                                                    <t t-set="total" t-value="total + o.amount_total" />
+                                                </font>
+                                            </td>
+                                            <td style="text-align:right">
+                                                <font style="font-size: 12px;">
+                                                    <span>________________</span>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:right">
+                                                <font style="font-size: 12px;">
+                                                    <span>________________</span>
+                                                </font>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                     <tr>
+                                            <td style="text-align:center">
+                                                <font style="font-size: 12px;">
+                                                    <span/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:center">
+                                                <font style="font-size: 12px;">
+                                                    <span/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:right">
+                                                <font style="font-size: 12px;">
+                                                     <strong>รวม</strong>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:right">
+                                                <font style="font-size: 12px;">
+                                                    <strong>เอกสารใช้งาน </strong>
+                                                    <span t-esc="i"/>
+                                                    <span> รายการ</span>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:right">
+                                                <font style="font-size: 12px;">
+                                                    <span/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:right">
+                                                <font style="font-size: 12px;">
+                                                    <span t-esc="total"/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:right">
+                                                <font style="font-size: 12px;">
+                                                    <span/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:right">
+                                                <font style="font-size: 12px;">
+                                                    <span/>
+                                                </font>
+                                            </td>
+                                        </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td class="col-xs-3" style="text-align:right">
+                                <font style="font-size: 12px;">
+                                    <span/>
+                                </font>
+                            </td>
+                            <td class="col-xs-3" style="text-align:right">
+                                <font style="font-size: 12px;">
+                                    <span/>
+                                </font>
+                            </td>
+                            <td class="col-xs-3" style="text-align:right">
+                                <font style="font-size: 12px;">
+                                    <span>จำนวนเงิน</span>
+                                </font>
+                            </td>
+                        </tr>
+                        <t t-set="bank_total" t-value="0" />
+                        <t t-foreach="bank_ids" t-as="bank">
+                            <tr>
+                                <td class="col-xs-2" style="text-align:right">
+                                    <font style="font-size: 12px;">
+                                        <span t-esc="bank['bank_name']"/>
+                                    </font>
+                                </td>
+                                <td class="col-xs-2" style="text-align:right">
+                                    <font style="font-size: 12px;">
+                                        <span t-esc="bank['bank_acc_number']"/>
+                                    </font>
+                                </td>
+                                <td class="col-xs-2" style="text-align:right">
+                                    <font style="font-size: 12px;">
+                                        <span t-esc="bank['amount']"/>
+                                        <t t-set="bank_total" t-value="bank_total + bank['amount']" />
+                                    </font>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td class="col-xs-2" style="text-align:right">
+                                    <font style="font-size: 12px;">
+                                        <span/>
+                                    </font>
+                                </td>
+                                <td class="col-xs-2" style="text-align:right">
+                                    <font style="font-size: 12px;">
+                                        <span>รวมทั้งสิ้น</span>
+                                    </font>
+                                </td>
+                                <td class="col-xs-2" style="text-align:right">
+                                    <font style="font-size: 12px;">
+                                        <span t-esc="bank_total"/>
+                                    </font>
+                                </td>
+                            </tr>
+                        </t>
+                    </table>
+
+
+                </div>
+            </t>
+        </template>
+    </data>
+</openerp>

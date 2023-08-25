@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="wizard_coupon_delivery_report_id">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.basic_layout">
+                <div class="header">
+                    <style>
+                        @font-face
+                        {
+                        font-family: SarabunPSK;
+                        src: local('United'), url("/print_wizard_coupon/static/THSarabun.ttf") format('opentype');
+                        }
+                        .font_fam{
+                        font-family: SarabunPSK;
+                        src: local('United'), url("/print_wizard_coupon/static/THSarabun.ttf") format('opentype');
+                        }
+                        table.table-bordered-head {
+                        border:1px solid black;
+                        padding:3px;
+                        font-family: SarabunPSK;
+                        src: local('United'), url("/print_wizard_coupon/static/THSarabun.ttf") format('opentype');
+                        }
+                        table.table-bordered-head &gt; thead &gt; tr &gt; th{
+                        border:1px solid white;
+                        padding:3px;
+                        }
+                        table.table-bordered-head &gt; tbody &gt; tr &gt; td{
+                        border:1px solid white;
+                        padding:3px;
+                        }
+                        table.table-bordered-head &gt; tfoot &gt; tr &gt; td{
+                        border:1px solid white;
+                        padding:3px;
+                        }
+                    </style>
+
+                    <div class="col-xs-12 font_fam" style="text-align:right; font-size: 16px;">
+                        <span>หน้า</span>
+                        <span class="page"/>/<span class="topage"/>
+                    </div>
+
+                    <div style="padding-top:10px;">
+                        <table width="100%" class="table table-bordered-head" style="font-size:20px; line-height:18px;">
+                            <tr>
+                                <td colspan="4" align="center" style="font-size:24px;"><B><span t-field="o.env.user.company_id"/></B></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" align="center" style="font-size:24px;"><B><span>ใบส่งสินค้าชั่วคราว</span></B></td>
+                            </tr>
+                            <tr>
+                                <td width="15%" rowspan="2"><span>สาขาที่ผลิตให้</span></td>
+                                <td width="35%" rowspan="2">: <span t-field="o.operating_unit_id"/></td>
+                                <td width="15%"><span>เลขที่เอกสาร</span></td>
+                                <td width="35%">: <span t-field="o.name"/></td>
+                            </tr>
+                            <tr>
+                                <td><span>วันที่</span></td>
+                                <td>: <span t-field="o.date_order" t-options="{'widget':'date'}"/></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+
+                <div class="page">
+                    <style>
+                        @font-face
+                        {
+                        font-family: SarabunPSK;
+                        src: local('United'), url("/print_wizard_coupon/static/THSarabun.ttf") format('opentype');
+                        }
+                        .font_fam{
+                        font-family: SarabunPSK;
+                        src: local('United'), url("/print_wizard_coupon/static/THSarabun.ttf") format('opentype');
+                        }
+
+                        table.table-bordered {
+                        border:1px solid black;
+                        padding:3px;
+                        font-family: SarabunPSK;
+                        src: local('United'), url("/print_wizard_coupon/static/THSarabun.ttf") format('opentype');
+                        }
+                        table.table-bordered &gt; thead &gt; tr &gt; th{
+                        border:1px solid black;
+                        padding:3px;
+                        text-align:center;
+                        }
+                        table.table-bordered &gt; tbody &gt; tr &gt; td{
+                        border:0px solid white;
+                        border-left: 1px solid black;
+                        padding:3px;
+                        }
+                        table.table-bordered &gt; tfoot &gt; tr &gt; td{
+                        border:1px solid black;
+                        padding:3px;
+                        }
+
+                        table.table-bordered-foot {
+                        border:1px solid black;
+                        padding:3px;
+                        font-family: SarabunPSK;
+                        src: local('United'), url("/print_wizard_coupon/static/THSarabun.ttf") format('opentype');
+                        }
+                        table.table-bordered-foot &gt; thead &gt; tr &gt; th{
+                        border:1px solid black;
+                        padding:3px;
+                        text-align:center;
+                        }
+                        table.table-bordered-foot &gt; tbody &gt; tr &gt; td{
+                        border:1px solid black;
+                        padding:3px;
+                        }
+                        table.table-bordered-foot &gt; tfoot &gt; tr &gt; td{
+                        border:1px solid black;
+                        padding:3px;
+                        }
+                    </style>
+
+                    <t t-set="max_body_height" t-value="170"/>
+                    <t t-set="new_line_height" t-value="4"/>
+                    <t t-set="row_line_height" t-value="5"/>
+                    <t t-set="max_line_lenght" t-value="35"/>
+
+                    <t t-set="break_line" t-value="o.get_break_wizard_coupon_delivery(o.package_line,max_body_height,new_line_height,row_line_height,max_line_lenght)"/>
+                    <t t-set="start" t-value="0"/>
+                    <t t-set="end" t-value="0"/>
+
+                    <t t-foreach="range(0,len(break_line),1)" t-as="x">
+                        <table width="100%"  style="font-size:20px; line-height:18px; height:205mm;" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th width="5%">No.</th>
+                                    <th width="75%">รานการสินค้า</th>
+                                    <th width="20%">จำนวน</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="range(start,break_line[x],1)" t-as="y">
+                                    <t t-if="(y+1)!=(break_line[x])">
+                                        <tr style="height:40px;">
+                                            <td align="center">
+                                                <span t-esc="y+1"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.package_line[y].package_id"/>
+                                            </td>
+                                            <td align="center">
+                                                <span t-field="o.package_line[y].quantity"/>
+                                                <span t-field="o.package_line[y].package_id.uom_id"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-if="(y+1)==(break_line[x])">
+                                        <tr>
+                                            <td align="center">
+                                                <span t-esc="y+1"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="o.package_line[y].package_id"/>
+                                            </td>
+                                            <td align="center">
+                                                <span t-field="o.package_line[y].quantity"/>
+                                                <span t-field="o.package_line[y].package_id.uom_id"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                                <t t-if="not o.package_line">
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <table width="100%" class="font_fam"
+                               style="font-size: 20px; line-height:18px; margin-top:-21px; text-align:center;">
+                            <tr style="height:180px;">
+                                <td width="50%">
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <span>ลงชื่อ__________________________________________ผู้ส่ง</span><br/><br/>
+                                    <span>วันที่__________________________________________      </span><br/>
+                                </td>
+                                <td width="50%">
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <span>ลงชื่อ__________________________________________ผู้รับ</span><br/><br/>
+                                    <span>วันที่__________________________________________      </span><br/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <t t-set="start" t-value="break_line[x]"/>
+                        <p style="page-break-after:always;"/>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <record id="paperformat_A4_zero_margin_coupon_delivery" model="report.paperformat">
+        <field name="name">paperformat_A4_zero_margin_coupon_delivery</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">60</field>
+        <field name="margin_bottom">5</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">55</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <!--wizard.coupon.production-->
+    <report
+            id="wizard_coupon_delivery_report"
+            model="wizard.coupon.production"
+            menu="True"
+            report_type="qweb-pdf"
+            paperformat="print_wizard_coupon.paperformat_A4_zero_margin_coupon_delivery"
+            string="ใบส่งสินค้าชั่วคราว"
+            name="print_wizard_coupon.wizard_coupon_delivery_report_id"
+            file="print_wizard_coupon.wizard_coupon_delivery_report_id"
+    />
+
+</odoo>

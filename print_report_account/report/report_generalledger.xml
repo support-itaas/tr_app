@@ -1,0 +1,2023 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_generalledger_itaas" inherit_id="account.report_generalledger">
+        <xpath expr="//t[@t-call='web.html_container']" position="replace">
+            <t t-set="sum_line_debit" t-value="0"/>
+            <t t-set="sum_line_credit" t-value="0"/>
+            <t t-set="sum_line_balance" t-value="0"/>
+            <t t-set="sum_1" t-value="0"/>
+            <t t-set="sum_2" t-value="0"/>
+            <t t-set="sum_3" t-value="0"/>
+            <t t-set="sum_4" t-value="0"/>
+
+
+            <t t-call="web.html_container">
+                <t t-set="data_report_margin_top" t-value="12"/>
+                <t t-set="data_report_header_spacing" t-value="9"/>
+                <t t-set="data_report_dpi" t-value="110"/>
+
+                <t t-call="web.internal_layout">
+                    <div class="page">
+                        <h2><span t-esc="res_company.name"/>: General ledger</h2>
+
+                        <div class="row mt32">
+<!--                            <div class="col-xs-4">-->
+<!--                                <strong>Journals:</strong>-->
+<!--                                <p t-esc="', '.join([ lt or '' for lt in print_journal ])"/>-->
+<!--                            </div>-->
+                            <div class="col-xs-4">
+                                <strong>Display Account</strong>
+                                <p>
+                                    <span t-if="data['display_account'] == 'all'">All accounts'</span>
+                                    <span t-if="data['display_account'] == 'movement'">With movements</span>
+                                    <span t-if="data['display_account'] == 'not_zero'">With balance not equal to zero</span>
+                                </p>
+                            </div>
+                            <div class="col-xs-4">
+                                <strong>Target Moves:</strong>
+                                <p t-if="data['target_move'] == 'all'">All Entries</p>
+                                <p t-if="data['target_move'] == 'posted'">All Posted Entries</p>
+                            </div>
+                        </div>
+                        <div class="row mb32">
+                            <div class="col-xs-4">
+                                <strong>Sorted By:</strong>
+                                <p t-if="data['sortby'] == 'sort_date'">Date</p>
+                                <p t-if="data['sortby'] == 'sort_journal_partner'">Journal and Partner</p>
+                            </div>
+                            <div class="col-xs-4">
+                                <t t-if="data['date_from']"><strong>Date from :</strong>
+                                    <span t-esc="data['date_from']" t-esc-options="{&quot;widget&quot;: &quot;date&quot; , 'format': 'dd/MM/yyyy' }"/>
+                                    <br/>
+                                </t>
+                                <t t-if="data['date_to']"><strong>Date to :</strong>
+                                    <span t-esc="data['date_to']" t-esc-options="{&quot;widget&quot;: &quot;date&quot;}"/>
+                                </t>
+                            </div>
+                        </div>
+                        <t t-if="data['initial_balance']">
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>Date</th>
+                                        <!--<th>JRNL</th>-->
+                                        <th>Partner</th>
+                                        <th>Department</th>
+                                        <th>Ref</th>
+                                        <th>Cheque Number</th>
+                                        <th>Move</th>
+                                        <th>Entry Label</th>
+                                        <th t-if="show[0]">Operating Unit</th>
+                                        <th t-if="show[1]">Analytic Account</th>
+                                        <th t-if="show[2]">Department</th>
+                                        <th>Debit</th>
+                                        <th>Credit</th>
+                                        <th>Balance</th>
+                                        <!--<th groups="base.group_multi_currency">Currency</th>-->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="Accounts" t-as="account">
+                                        <t t-set="count" t-value="0"/>
+                                        <tr style="font-weight: bold;">
+                                            <t t-if="len_show == 0">
+                                                <td colspan="5">
+                                                    <span style="color: white;" t-esc="'..'"/>
+                                                    <span t-esc="account['code']"/>
+                                                    <span t-esc="account['name']"/>
+                                                </td>
+                                            </t>
+                                            <t t-if="len_show == 1">
+                                                <td colspan="6">
+                                                    <span style="color: white;" t-esc="'..'"/>
+                                                    <span t-esc="account['code']"/>
+                                                    <span t-esc="account['name']"/>
+                                                </td>
+                                            </t>
+                                            <t t-if="len_show == 2">
+                                                <td colspan="7">
+                                                    <span style="color: white;" t-esc="'..'"/>
+                                                    <span t-esc="account['code']"/>
+                                                    <span t-esc="account['name']"/>
+                                                </td>
+                                            </t>
+                                            <t t-if="len_show == 3">
+                                                <td colspan="8">
+                                                    <span style="color: white;" t-esc="'..'"/>
+                                                    <span t-esc="account['code']"/>
+                                                    <span t-esc="account['name']"/>
+                                                </td>
+                                            </t>
+                                        </tr>
+                                        <t t-set="index" t-value="0"/>
+                                        <tr t-foreach="account['move_lines']" t-as="line">
+                                            <t t-set="count" t-value="count + 1"/>
+                                            <td><span t-esc="line['ldate']" t-esc-options="{&quot;widget&quot;: &quot;date&quot; , 'format': 'dd/MM/yyyy' }"/></td>
+                                            <!--<td><span t-esc="line['lcode']"/></td>-->
+                                            <td><span t-esc="line['partner_name']"/></td>
+                                            <td><span t-esc="line['department_id']"/></td>
+                                            <!--t-if="line['lref']"-->
+                                            <td><span t-esc="line['lref']"/></td>
+                                            <td><span t-esc="line['cheque_number']"/></td>
+                                            <td><span t-esc="line['move_name']"/></td>
+                                            <td><span t-esc="line['lname']"/></td>
+
+                                            <td t-if="show[0]"><span t-esc="account['id'][index].operating_unit_id.name"/></td>
+                                            <td t-if="show[1]"><span t-esc="account['id'][index].analytic_account_id.name"/></td>
+                                            <td t-if="show[2]"><span t-esc="account['id'][index].department_id.name"/></td>
+                                            <t t-set="index" t-value="index+1"/>
+
+                                            <td class="text-right">
+                                                <span t-esc="line['debit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                <t t-set="sum_line_debit" t-value="sum_line_debit + line['debit']"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="line['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/><t t-set="sum_line_credit" t-value="0"/>
+                                                <t t-set="sum_line_credit" t-value="sum_line_credit + line['credit']"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="line['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <span>รวม <span t-esc="count - 1"/> รายการ</span>
+                                            </td>
+                                            <td colspan="5" align="right">
+                                                <span style="color: white;" t-esc="'..'"/>
+                                                <span>ยอดประจำงวด </span>
+                                            </td>
+                                            <td class="text-right" style="padding-left:5px;">
+                                                <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                <span t-esc="account['debit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                            </td>
+                                            <td class="text-right">
+                                                <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                <!--                                            <span t-esc="'{0:,.2f}'.format(float(sum_line_credit))"/>-->
+                                                <span t-esc="account['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                            </td>
+                                            <td class="text-right">
+                                                <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                            </td>
+                                        </tr>
+                                        <t t-set="sum_credit" t-value="account['credit'] + account['balance']"/>
+                                        <t t-set="sum_debit" t-value="account['debit'] + account['balance']"/>
+                                        <t t-if="account['fcode'] == '1' ">
+                                            <t t-if="account['balance'] &lt; 0">
+                                                <tr>
+                                                    <t t-set="sum_1" t-value="(account['init_demand'] + account['debit'])"/>
+                                                    <t t-set="sum_2" t-value="(account['credit_sum'] + account['credit'])"/>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมยอดยกไป</span>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span t-esc="sum_1" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="sum_2" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดยกไป</span>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมทั้งสิ้นvvvvvv</span>
+                                                    </td>
+                                                    <t t-set="sum_3" t-value="(sum_2 + account['balance'])"/>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span t-esc="sum_1" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+
+                                                    </td>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+                                                    </td>
+
+                                                </tr>
+                                            </t>
+
+
+                                            <t t-if="account['balance'] &gt; 0">
+                                                <tr>
+                                                    <t t-set="sum_1" t-value="(account['init_demand'] + account['debit'])"/>
+                                                    <t t-set="sum_2" t-value="(account['credit_sum'] + account['credit'])"/>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมยอดยกไป</span>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span t-esc="sum_1" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="sum_2" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดยกไป</span>
+                                                    </td>
+                                                    <t t-if="sum_1 &gt; sum_2">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="sum_2 &gt; sum_1">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมทั้งสิ้น</span>
+                                                    </td>
+                                                    <t t-if="sum_1 &gt; sum_2 ">
+                                                        <td align="right" style="padding-left:5px;">
+
+                                                            <span t-esc="sum_1" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <t t-set="sum_3" t-value="sum_2 + account['balance']"/>
+                                                            <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="sum_2 &gt; sum_1 ">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <t t-set="sum_4" t-value="sum_1 + account['balance']"/>
+                                                            <span t-esc="sum_4" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+                                                    </td>
+
+                                                </tr>
+                                            </t>
+                                            <!--account code 2 -->
+                                        </t>
+                                        <t t-if="account['fcode'] == '2' ">
+                                            <t t-if="account['balance'] &lt; 0">
+                                                <tr>
+                                                    <t t-set="sum_1" t-value="(account['init_demand'] + account['debit'])"/>
+                                                    <t t-set="sum_2" t-value="(account['credit_sum'] + account['credit'])"/>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมยอดยกไป</span>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span t-esc="sum_1" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="sum_2" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดยกไป</span>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมทั้งสิ้นvvvvvv</span>
+                                                    </td>
+                                                    <t t-set="sum_3" t-value="(sum_2 + account['balance'])"/>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span t-esc="sum_1" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+
+                                                    </td>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+                                                    </td>
+
+                                                </tr>
+                                            </t>
+
+
+                                            <t t-if="account['balance'] &gt; 0">
+                                                <tr>
+                                                    <t t-set="sum_1" t-value="(account['init_demand'] + account['debit'])"/>
+                                                    <t t-set="sum_2" t-value="(account['credit_sum'] + account['credit'])"/>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมยอดยกไป</span>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span t-esc="sum_1" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="sum_2" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดยกไป</span>
+                                                    </td>
+                                                    <t t-if="sum_1 &gt; sum_2 ">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="sum_2 &gt; sum_1">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมทั้งสิ้น</span>
+                                                    </td>
+                                                    <t t-if="sum_1 &gt; sum_2 ">
+                                                        <td align="right" style="padding-left:5px;">
+
+                                                            <span t-esc="sum_1" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <t t-set="sum_3" t-value="sum_2 + account['balance']"/>
+                                                            <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="sum_2 &gt; sum_1 ">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <t t-set="sum_4" t-value="sum_1 + account['balance']"/>
+                                                            <span t-esc="sum_4" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+                                                    </td>
+
+                                                </tr>
+                                            </t>
+                                        </t>
+                                        <t t-if="account['fcode'] == '3' ">
+                                            <t t-if="account['balance'] &lt; 0">
+                                                <tr>
+                                                    <t t-set="sum_1" t-value="(account['init_demand'] + account['debit'])"/>
+                                                    <t t-set="sum_2" t-value="(account['credit_sum'] + account['credit'])"/>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมยอดยกไป</span>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span t-esc="sum_1" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="sum_2" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดยกไป</span>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมทั้งสิ้น</span>
+                                                    </td>
+                                                    <t t-set="sum_3" t-value="(sum_2 + account['balance'])"/>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span t-esc="sum_1" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+
+                                                    </td>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+                                                    </td>
+
+                                                </tr>
+                                            </t>
+                                            <t t-if="account['balance'] &gt; 0">
+                                                <tr>
+                                                    <t t-set="sum_1" t-value="(account['init_demand'] + account['debit'])"/>
+                                                    <t t-set="sum_2" t-value="(account['credit_sum'] + account['credit'])"/>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมยอดยกไป</span>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span t-esc="sum_1" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="sum_2" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดยกไป</span>
+                                                    </td>
+                                                    <t t-if="sum_1 &gt; sum_2">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="sum_2 &gt; sum_1">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมทั้งสิ้น</span>
+                                                    </td>
+                                                    <t t-if="sum_1 &gt; sum_2 ">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="sum_1" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <t t-set="sum_3" t-value="sum_2 + account['balance']"/>
+                                                            <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="sum_2 &gt; sum_1 ">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <t t-set="sum_4" t-value="sum_1 + account['balance']"/>
+                                                            <span t-esc="sum_4" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+                                                    </td>
+
+                                                </tr>
+                                            </t>
+                                        </t>
+                                        <t t-if="account['fcode'] == '4' ">
+                                            <t t-if="account['balance'] &lt; 0">
+                                                <tr>
+                                                    <t t-set="sum_1" t-value="(account['init_demand'] + account['debit'])"/>
+                                                    <t t-set="sum_2" t-value="(account['credit_sum'] + account['credit'])"/>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมยอดยกไป</span>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span t-esc="sum_1" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="sum_2" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดยกไป</span>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมทั้งสิ้น</span>
+                                                    </td>
+                                                    <t t-set="sum_3" t-value="(sum_2 + account['balance'])"/>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span t-esc="sum_1" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+
+                                                    </td>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+                                                    </td>
+
+                                                </tr>
+                                            </t>
+                                            <t t-if="account['balance'] &gt; 0">
+                                                <tr>
+                                                    <t t-set="sum_1" t-value="(account['init_demand'] + account['debit'])"/>
+                                                    <t t-set="sum_2" t-value="(account['credit_sum'] + account['credit'])"/>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมยอดยกไป</span>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span t-esc="sum_1" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="sum_2" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดยกไป</span>
+                                                    </td>
+                                                    <t t-if="sum_1 &gt; sum_2">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="sum_2 &gt; sum_1">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมทั้งสิ้น</span>
+                                                    </td>
+                                                    <t t-if="sum_1 &gt; sum_2 ">
+                                                        <td align="right" style="padding-left:5px;">
+
+                                                            <span t-esc="sum_1" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <t t-set="sum_3" t-value="sum_2 + account['balance']"/>
+                                                            <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="sum_2 &gt; sum_1 ">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <t t-set="sum_4" t-value="sum_1 + account['balance']"/>
+                                                            <span t-esc="sum_4" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+                                                    </td>
+
+                                                </tr>
+                                            </t>
+                                        </t>
+                                        <t t-if="account['fcode'] == '5' ">
+                                            <t t-if="account['balance'] &lt; 0">
+                                                <tr>
+                                                    <t t-set="sum_1" t-value="(account['init_demand'] + account['debit'])"/>
+                                                    <t t-set="sum_2" t-value="(account['credit_sum'] + account['credit'])"/>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมยอดยกไป</span>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span t-esc="sum_1" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="sum_2" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดยกไป</span>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมทั้งสิ้น</span>
+                                                    </td>
+                                                    <t t-set="sum_3" t-value="(sum_2 + account['balance'])"/>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span t-esc="sum_1" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+
+                                                    </td>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+                                                    </td>
+
+                                                </tr>
+                                            </t>
+                                            <t t-if="account['balance'] &gt; 0">
+                                                <tr>
+                                                    <t t-set="sum_1" t-value="(account['init_demand'] + account['debit'])"/>
+                                                    <t t-set="sum_2" t-value="(account['credit_sum'] + account['credit'])"/>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมยอดยกไป</span>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span t-esc="sum_1" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="sum_2" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดยกไป</span>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมทั้งสิ้น</span>
+                                                    </td>
+                                                    <t t-if="sum_1 &gt; sum_2 ">
+                                                        <td align="right" style="padding-left:5px;">
+
+                                                            <span t-esc="sum_1" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <t t-set="sum_3" t-value="sum_2 + account['balance']"/>
+                                                            <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="sum_2 &gt; sum_1 ">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <t t-set="sum_4" t-value="sum_1 + account['balance']"/>
+                                                            <span t-esc="sum_4" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+                                                    </td>
+
+                                                </tr>
+                                            </t>
+                                        </t>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <t t-if="not data['initial_balance']">
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>Date</th>
+                                        <!--<th>JRNL</th>-->
+                                        <th>Partner</th>
+                                        <th>Department</th>
+                                        <th>Ref</th>
+                                        <th>Cheque Number</th>
+                                        <th>Move</th>
+                                        <th>Entry Label</th>
+                                        <th t-if="show[0]">Operating Unit</th>
+                                        <th t-if="show[1]">Analytic Account</th>
+                                        <th t-if="show[2]">Department</th>
+                                        <th>Debit</th>
+                                        <th>Credit</th>
+                                        <th>Balance</th>
+                                        <!--<th groups="base.group_multi_currency">Currency</th>-->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="Accounts" t-as="account">
+                                        <t t-set="count" t-value="0"/>
+                                        <tr style="font-weight: bold;">
+                                            <t t-if="len_show == 0">
+                                                <td colspan="5">
+                                                    <span style="color: white;" t-esc="'..'"/>
+                                                    <span t-esc="account['code']"/>
+                                                    <span t-esc="account['name']"/>
+                                                </td>
+                                            </t>
+                                            <t t-if="len_show == 1">
+                                                <td colspan="6">
+                                                    <span style="color: white;" t-esc="'..'"/>
+                                                    <span t-esc="account['code']"/>
+                                                    <span t-esc="account['name']"/>
+                                                </td>
+                                            </t>
+                                            <t t-if="len_show == 2">
+                                                <td colspan="7">
+                                                    <span style="color: white;" t-esc="'..'"/>
+                                                    <span t-esc="account['code']"/>
+                                                    <span t-esc="account['name']"/>
+                                                </td>
+                                            </t>
+                                            <t t-if="len_show == 3">
+                                                <td colspan="8">
+                                                    <span style="color: white;" t-esc="'..'"/>
+                                                    <span t-esc="account['code']"/>
+                                                    <span t-esc="account['name']"/>
+                                                </td>
+                                            </t>
+                                        </tr>
+                                        <t t-set="index" t-value="0"/>
+                                        <tr t-foreach="account['move_lines']" t-as="line">
+                                            <t t-set="count" t-value="count + 1"/>
+                                            <td><span t-esc="line['ldate']" t-esc-options="{&quot;widget&quot;: &quot;date&quot; , 'format': 'dd/MM/yyyy' }"/></td>
+                                            <!--<td><span t-esc="line['lcode']"/></td>-->
+                                            <td><span t-esc="line['partner_name']"/></td>
+                                            <td><span t-esc="line['department_id']"/></td>
+                                            <!--t-if="line['lref']"-->
+                                            <td><span t-esc="line['lref']"/></td>
+                                            <td><span t-esc="line['cheque_number']"/></td>
+                                            <td><span t-esc="line['move_name']"/></td>
+                                            <td><span t-esc="line['lname']"/></td>
+
+                                            <td t-if="show[0]"><span t-esc="account['id'][index].operating_unit_id.name"/></td>
+                                            <td t-if="show[1]"><span t-esc="account['id'][index].analytic_account_id.name"/></td>
+                                            <td t-if="show[2]"><span t-esc="account['id'][index].department_id.name"/></td>
+                                            <t t-set="index" t-value="index+1"/>
+
+                                            <td class="text-right">
+                                                <span t-esc="line['debit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                <t t-set="sum_line_debit" t-value="sum_line_debit + line['debit']"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="line['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/><t t-set="sum_line_credit" t-value="0"/>
+                                                <t t-set="sum_line_credit" t-value="sum_line_credit + line['credit']"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="line['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <span>รวม <span t-esc="count - 1"/> รายการ</span>
+                                            </td>
+                                            <td colspan="5" align="right">
+                                                <span style="color: white;" t-esc="'..'"/>
+                                                <span>ยอดประจำงวด </span>
+                                            </td>
+                                            <td class="text-right" style="padding-left:5px;">
+                                                <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                <span t-esc="account['debit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                            </td>
+                                            <td class="text-right">
+                                                <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                <!--                                            <span t-esc="'{0:,.2f}'.format(float(sum_line_credit))"/>-->
+                                                <span t-esc="account['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                            </td>
+                                            <td class="text-right">
+                                                <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                            </td>
+                                        </tr>
+                                        <t t-set="sum_credit" t-value="account['credit'] + account['balance']"/>
+                                        <t t-set="sum_debit" t-value="account['debit'] + account['balance']"/>
+                                        <t t-if="account['fcode'] == '1' ">
+                                            <t t-if="account['balance'] &lt; 0">
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดยกไป</span>
+                                                    </td>
+                                                    <t t-if="account['debit'] &gt; account['credit']">
+                                                        <td align="right" style="padding-left:5px;">
+
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="account['credit'] &gt; account['debit']">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                    </t>
+
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมทั้งสิ้น</span>
+                                                    </td>
+                                                    <t t-if="account['debit'] &gt; account['credit']">
+                                                        <t t-set="sum_3" t-value="(account['debit'] - account['balance'])"/>
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="account['credit'] &gt; account['debit']">
+                                                        <t t-set="sum_3" t-value="(account['credit'] + account['balance'])"/>
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="account['debit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                    </t>
+
+
+                                                </tr>
+                                            </t>
+
+
+                                            <t t-if="account['balance'] &gt; 0">
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดยกไป</span>
+                                                    </td>
+                                                    <t t-if="account['debit'] &gt; account['credit']">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="account['credit'] &gt; account['debit']">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมทั้งสิ้น</span>
+                                                    </td>
+                                                    <t t-if="account['debit'] &gt; account['credit'] ">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="account['debit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <t t-set="sum_3" t-value="account['credit'] + account['balance']"/>
+                                                            <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="account['credit'] &gt; account['debit'] ">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <t t-set="sum_4" t-value="account['credit'] + account['balance']"/>
+                                                            <span t-esc="sum_4" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+                                                    </td>
+
+                                                </tr>
+                                            </t>
+                                            <!--account code 2 -->
+                                        </t>
+                                        <t t-if="account['fcode'] == '2' ">
+                                            <t t-if="account['balance'] &lt; 0">
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดยกไป</span>
+                                                    </td>
+                                                    <t t-if="account['debit'] &gt; account['credit']">
+                                                        <td align="right" style="padding-left:5px;">
+
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="account['credit'] &gt; account['debit']">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                    </t>
+
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมทั้งสิ้น</span>
+                                                    </td>
+                                                    <t t-if="account['debit'] &gt; account['credit']">
+                                                        <t t-set="sum_3" t-value="(account['debit'] - account['balance'])"/>
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="account['credit'] &gt; account['debit']">
+                                                        <t t-set="sum_3" t-value="(account['credit'] + account['balance'])"/>
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="account['debit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                    </t>
+
+
+                                                </tr>
+                                            </t>
+
+
+                                            <t t-if="account['balance'] &gt; 0">
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดยกไป</span>
+                                                    </td>
+                                                    <t t-if="account['debit'] &gt; account['credit'] ">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="account['credit'] &gt; account['debit']">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมทั้งสิ้น</span>
+                                                    </td>
+                                                    <t t-if="account['debit'] &gt; account['credit'] ">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="account['debit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <t t-set="sum_3" t-value="account['credit'] + account['balance']"/>
+                                                            <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="account['credit'] &gt; account['debit'] ">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <t t-set="sum_4" t-value="account['credit'] + account['balance']"/>
+                                                            <span t-esc="sum_4" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+                                                    </td>
+
+                                                </tr>
+                                            </t>
+                                        </t>
+                                        <t t-if="account['fcode'] == '3' ">
+                                            <t t-if="account['balance'] &lt; 0">
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดยกไป</span>
+                                                    </td>
+                                                    <t t-if="account['debit'] &gt; account['credit']">
+                                                        <td align="right" style="padding-left:5px;">
+
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="account['credit'] &gt; account['debit']">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                    </t>
+
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมทั้งสิ้น</span>
+                                                    </td>
+                                                    <t t-if="account['debit'] &gt; account['credit']">
+                                                        <t t-set="sum_3" t-value="(account['debit'] - account['balance'])"/>
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="account['credit'] &gt; account['debit']">
+                                                        <t t-set="sum_3" t-value="(account['credit'] + account['balance'])"/>
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="account['debit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                    </t>
+
+
+                                                </tr>
+                                            </t>
+
+                                            <t t-if="account['balance'] &gt; 0">
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดยกไป</span>
+                                                    </td>
+                                                    <t t-if="account['debit'] &gt; account['credit']">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="account['credit'] &gt; account['debit']">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมทั้งสิ้น</span>
+                                                    </td>
+                                                    <t t-if="account['debit'] &gt; account['credit'] ">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="account['debit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <t t-set="sum_3" t-value="account['credit'] + account['balance']"/>
+                                                            <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="account['credit'] &gt; account['debit'] ">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <t t-set="sum_4" t-value="account['credit'] + account['balance']"/>
+                                                            <span t-esc="sum_4" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+                                                    </td>
+
+                                                </tr>
+                                            </t>
+                                        </t>
+                                        <t t-if="account['fcode'] == '4' ">
+                                            <t t-if="account['balance'] &lt; 0">
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดยกไป</span>
+                                                    </td>
+                                                    <t t-if="account['debit'] &gt; account['credit']">
+                                                        <td align="right" style="padding-left:5px;">
+
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="account['credit'] &gt; account['debit']">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                    </t>
+
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมทั้งสิ้น</span>
+                                                    </td>
+                                                    <t t-if="account['debit'] &gt; account['credit']">
+                                                        <t t-set="sum_3" t-value="(account['debit'] - account['balance'])"/>
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="account['credit'] &gt; account['debit']">
+                                                        <t t-set="sum_3" t-value="(account['credit'] + account['balance'])"/>
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="account['debit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                    </t>
+
+
+                                                </tr>
+                                            </t>
+                                            <t t-if="account['balance'] &gt; 0">
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดยกไป</span>
+                                                    </td>
+                                                    <t t-if="account['debit'] &gt; account['credit']">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="account['credit'] &gt; account['debit']">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมทั้งสิ้น</span>
+                                                    </td>
+                                                    <t t-if="account['debit'] &gt; account['credit'] ">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="account['debit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <t t-set="sum_3" t-value="account['credit'] + account['balance']"/>
+                                                            <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="account['credit'] &gt; account['debit'] ">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <t t-set="sum_4" t-value="account['credit'] + account['balance']"/>
+                                                            <span t-esc="sum_4" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+                                                    </td>
+
+                                                </tr>
+                                            </t>
+                                        </t>
+                                        <t t-if="account['fcode'] == '5' ">
+                                            <t t-if="account['balance'] &lt; 0">
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดยกไป</span>
+                                                    </td>
+                                                    <t t-if="account['debit'] &gt; account['credit']">
+                                                        <td align="right" style="padding-left:5px;">
+
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="account['credit'] &gt; account['debit']">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        </td>
+                                                    </t>
+
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมทั้งสิ้น</span>
+                                                    </td>
+                                                    <t t-if="account['debit'] &gt; account['credit']">
+                                                        <t t-set="sum_3" t-value="(account['debit'] - account['balance'])"/>
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="account['credit'] &gt; account['debit']">
+                                                        <t t-set="sum_3" t-value="(account['credit'] + account['balance'])"/>
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="account['debit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+
+                                                        </td>
+                                                        <td align="right">
+                                                            <span><font style="color:white">1</font></span>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                    </t>
+
+
+                                                </tr>
+                                            </t>
+                                            <t t-if="account['balance'] &gt; 0">
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดยกไป</span>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span t-esc="account['balance']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                    <td align="right" style="padding-left:5px;">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="7" align="right">
+                                                        <span>ยอดรวมทั้งสิ้น</span>
+                                                    </td>
+                                                    <t t-if="account['debit'] &gt; account['credit'] ">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <span t-esc="account['debit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <t t-set="sum_3" t-value="account['credit'] + account['balance']"/>
+                                                            <span t-esc="sum_3" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                    </t>
+                                                    <t t-if="account['credit'] &gt; account['debit'] ">
+                                                        <td align="right" style="padding-left:5px;">
+                                                            <t t-set="sum_4" t-value="account['credit'] + account['balance']"/>
+                                                            <span t-esc="sum_4" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+                                                        </td>
+                                                        <td align="right">
+                                                            <span t-esc="account['credit']" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                                            <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                            <div width="100%" style="border:1px solid black;"/>
+
+                                                        </td>
+                                                    </t>
+                                                    <td align="right">
+                                                        <span><font style="color:white">1</font></span>
+                                                        <div width="100%" style="border:1px solid black; margin-bottom:2px"/>
+                                                        <div width="100%" style="border:1px solid black;"/>
+                                                    </td>
+
+                                                </tr>
+                                            </t>
+                                        </t>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+
+
+
+                    </div>
+                </t>
+            </t>
+        </xpath>
+
+        <!--<xpath expr="//t[@t-call='report.html_container']" position="replace">-->
+        <!--<t t-set="sum_debit" t-value="0.00"/>-->
+        <!--<t t-set="sum_credit" t-value="0.00"/>-->
+        <!--<div class="header">-->
+        <!--<h3><span t-esc="res_company.name"/>: General ledger</h3>-->
+        <!--<div class="row mt32">-->
+        <!--<div class="col-xs-4">-->
+        <!--<strong>Journals:</strong>-->
+        <!--<p t-esc="', '.join([ lt or '' for lt in print_journal ])"/>-->
+        <!--</div>-->
+        <!--<div class="col-xs-2">-->
+        <!--<strong>Display Account</strong>-->
+        <!--<p>-->
+        <!--<span t-if="data['display_account'] == 'all'">All accounts'</span>-->
+        <!--<span t-if="data['display_account'] == 'movement'">With movements</span>-->
+        <!--<span t-if="data['display_account'] == 'not_zero'">With balance not equal to zero</span>-->
+        <!--</p>-->
+        <!--</div>-->
+        <!--<div class="col-xs-2">-->
+        <!--<strong>Target Moves:</strong>-->
+        <!--<p t-if="data['target_move'] == 'all'">All Entries</p>-->
+        <!--<p t-if="data['target_move'] == 'posted'">All Posted Entries</p>-->
+        <!--</div>-->
+        <!--<div class="col-xs-1">-->
+        <!--<strong>Sorted By:</strong>-->
+        <!--<p t-if="data['sortby'] == 'sort_date'">Date</p>-->
+        <!--<p t-if="data['sortby'] == 'sort_journal_partner'">Journal and Partner</p>-->
+        <!--</div>-->
+        <!--<div class="col-xs-2">-->
+        <!--&lt;!&ndash;<t t-if="data['date_from']"><strong>Date from :</strong> <span t-esc="date_from"/><br/></t>&ndash;&gt;-->
+        <!--<t t-if="data['date_from']"><strong>Date from :</strong> <sapn t-esc="datetime.datetime.strptime(data['date_from'], '%Y-%m-%d').strftime('%d/%m/%Y')"/><br/></t>-->
+        <!--<t t-if="data['date_to']"><strong>Date to :</strong> <sapn t-esc="datetime.datetime.strptime(data['date_to'], '%Y-%m-%d').strftime('%d/%m/%Y')"/></t>-->
+
+
+
+        <!--</div>-->
+        <!--<div class="col-xs-1" style="text-align: right;">-->
+        <!--<font style="font-size: 16px;">-->
+        <!--<span>หน้า </span>-->
+        <!--<span class="page"/>-->
+        <!--<span>/</span>-->
+        <!--<span class="topage"/>-->
+        <!--</font>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;<div class="row mb32">&ndash;&gt;-->
+        <!--&lt;!&ndash;&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--</div>-->
+        <!--<div class="page">-->
+        <!--<table class="table table-condensed">-->
+        <!--<thead>-->
+        <!--<tr class="text-center">-->
+        <!--<th>Date</th>-->
+        <!--<th>JRNL</th>-->
+        <!--<th>Partner</th>-->
+        <!--<th>Department</th>-->
+        <!--<th>Ref</th>-->
+        <!--<th>Move</th>-->
+        <!--<th>Entry Label</th>-->
+        <!--<th class="text-right">Debit</th>-->
+        <!--<th class="text-right">Credit</th>-->
+        <!--<th class="text-right">Balance</th>-->
+        <!--<th groups="base.group_multi_currency">Currency</th>-->
+        <!--</tr>-->
+        <!--</thead>-->
+        <!--<tbody>-->
+        <!--<t t-foreach="Accounts" t-as="account">-->
+        <!--<tr style="font-weight: bold;">-->
+        <!--<td colspan="11">-->
+        <!--<span style="color: white;" t-esc="'..'"/>-->
+        <!--<span t-esc="account['code']"/>-->
+        <!--<span t-esc="account['name']"/>-->
+        <!--</td>-->
+        <!--</tr>-->
+        <!--<tr t-foreach="account['move_lines']" t-as="line">-->
+        <!--<td><span t-esc="line['ldate']"/></td>-->
+        <!--<td><span t-esc="line['lcode']"/></td>-->
+        <!--<td><span t-esc="line['partner_name']"/></td>-->
+        <!--<td><span t-esc="line['dept_name']"/></td>-->
+        <!--<td><span t-if="line['lref']" t-esc="line['lref']"/></td>-->
+        <!--<td><span t-esc="line['move_name']"/></td>-->
+        <!--<td><span t-esc="line['lname']"/></td>-->
+        <!--<td class="text-right">-->
+        <!--<span t-esc="'{0:,.2f}'.format(float(line['debit']))"/>-->
+        <!--<t t-set="sum_debit" t-value="sum_debit + line['debit']"/>-->
+        <!--</td>-->
+        <!--<td class="text-right">-->
+        <!--<span t-esc="'{0:,.2f}'.format(float(line['credit']))"/>-->
+        <!--<t t-set="sum_credit" t-value="sum_credit + line['credit']"/>-->
+        <!--</td>-->
+        <!--<td class="text-right">-->
+        <!--<span t-esc="'{0:,.2f}'.format(float(line['balance']))"/>-->
+        <!--</td>-->
+        <!--<td class="text-right" groups="base.group_multi_currency">-->
+        <!--<span t-esc="line['amount_currency'] if line['amount_currency'] > 0.00 else ''"/>-->
+        <!--<span t-esc="line['currency_code'] if line['amount_currency'] > 0.00 else ''"/>-->
+        <!--</td>-->
+        <!--</tr>-->
+        <!--<tr style="font-weight: bold;">-->
+        <!--<td colspan="7">-->
+        <!--<span style="color: white;" t-esc="'..'"/>-->
+        <!--<span>รวม </span>-->
+        <!--<span t-esc="account['code']"/>-->
+        <!--<span t-esc="account['name']"/>-->
+        <!--</td>-->
+        <!--<td class="text-right">-->
+        <!--<span t-esc="'{0:,.2f}'.format(float(account['debit']))"/>-->
+        <!--</td>-->
+        <!--<td class="text-right">-->
+        <!--<span t-esc="'{0:,.2f}'.format(float(account['credit']))"/>-->
+        <!--</td>-->
+        <!--<td class="text-right">-->
+        <!--<span t-esc="'{0:,.2f}'.format(float(account['balance']))"/>-->
+        <!--</td>-->
+        <!--<td groups="base.group_multi_currency"/>-->
+        <!--</tr>-->
+        <!--<tr>-->
+        <!--<td colspan="11">-->
+        <!--<span style="color: white;" t-esc="'..'"/>-->
+        <!--</td>-->
+        <!--</tr>-->
+        <!--</t>-->
+
+        <!--</tbody>-->
+        <!--</table>-->
+        <!--</div>-->
+        <!--<div class="footer">-->
+        <!--<div class="last-page">-->
+        <!--<table class="table table-condensed">-->
+        <!--<tr style="font-weight: bold;">-->
+        <!--<td width="70%" class="text-center">-->
+        <!--<font style="font-size: 20px;">-->
+        <!--<span style="color: white;" t-esc="'..'"/>-->
+        <!--<span>รวม </span>-->
+        <!--</font>-->
+        <!--</td>-->
+        <!--<td width="10%" class="text-center">-->
+        <!--<font style="font-size: 20px;">-->
+        <!--<span t-esc="'{0:,.2f}'.format(float(sum_debit))"/>-->
+        <!--</font>-->
+        <!--</td>-->
+        <!--<td width="10%" class="text-center">-->
+        <!--<font style="font-size: 20px;">-->
+        <!--<span t-esc="'{0:,.2f}'.format(float(sum_credit))"/>-->
+        <!--</font>-->
+        <!--</td>-->
+        <!--<td width="5%" class="text-center"/>-->
+        <!--<td width="5%" class="text-center"/>-->
+        <!--</tr>-->
+        <!--</table>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</xpath>-->
+    </template>
+</odoo>

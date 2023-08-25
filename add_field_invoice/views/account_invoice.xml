@@ -1,0 +1,18 @@
+<odoo>
+    <!-- inherit account journal form -->
+    <record id="account_invoice_form_itaas_inherit_cash_journal" model="ir.ui.view">
+        <field name="name">account.invoice.form.itaas.cash</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='name']" position="after">
+                <field name="new_name_for_1_case"/>
+            </xpath>
+
+
+        </field>
+    </record>
+
+
+
+</odoo>

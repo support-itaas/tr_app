@@ -16,10 +16,37 @@
                         <span class="o_stat_text">Coupons</span>
                     </div>
                 </button>
+                <button type="object" class="oe_stat_button" icon="fa-ticket" name="action_view_expire_coupons">
+                    <div class="o_form_field o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="total_expire_coupon_count"/>
+                        </span>
+                        <span class="o_stat_text">Expire Coupons</span>
+                    </div>
+                </button>
             </div>
             <field name="lang" position="after">
                 <field name="device_token" invisible="1" readonly="1"/>
             </field>
+
+            <group name="purchase" position="inside">
+                <field name="property_claim_account_payable_id" />
+            </group>
         </field>
     </record>
+
+<!--    <record id="res_partner_view_form_claim_coupon_inherit" model="ir.ui.view">-->
+<!--        <field name="name">res.partner.view.form.inherit.claim.coupon.account</field>-->
+<!--        <field name="model">res.partner</field>-->
+<!--        <field name="inherit_id" ref="account.view_partner_property_form"/>-->
+<!--        <field name="arch" type="xml">-->
+
+<!--            <field name="property_payment_term_id" position="after">-->
+<!--                <field name="property_account_payable_id" />-->
+<!--            </field>-->
+<!--        </field>-->
+<!--    </record>-->
+
+
+
 </odoo>

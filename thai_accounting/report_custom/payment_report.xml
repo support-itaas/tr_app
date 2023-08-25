@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <template id="payment_report_id">
+          <t t-foreach="docs" t-as="o">
+             <t t-call="report.internal_layout">
+                <div class="page">
+                    <style>
+                        .header{width:100%; height:80px;}
+                        .content{width:100%; height:900px; border:0px solid #000000;}
+                        .footer{width:100%; height:200px;}
+                    </style>
+                    <div class="header">
+                        <div class="col-xs-10">
+                            <font style="font-size: 16px;">
+                                <h><span t-field="o.company_id.name" /></h>
+                            </font>
+                            <br/>
+                            <font style="font-size: 12px;">
+                                <!--span t-field="o.company_id.house_number" />&amp;nbsp;
+                                <span t-field="o.company_id.soi_number" /-->
+                                <span t-field="o.company_id.street" />&amp;nbsp;
+                                <span t-field="o.company_id.street2" />&amp;nbsp;
+                                <span t-field="o.company_id.city" />&amp;nbsp;
+                                <span t-field="o.company_id.state_id.name" />&amp;nbsp;
+                                <span t-field="o.company_id.zip" />
+                            </font>
+                            <br/>
+                            <font style="font-size: 12px;">
+                                <span t-field="o.company_id.phone" />&amp;nbsp;
+                                <span>FAX:</span>&amp;nbsp;
+                                <span t-field="o.company_id.fax" />
+                            </font>
+                            <br/>
+                            <font style="font-size: 12px;">
+                                <span>เลขประจำตัวผู้เสียภาษี</span>&amp;nbsp;
+                                <span t-field="o.company_id.vat" />
+                                &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                <span>สำนักงานใหญ่</span>
+                            </font>
+                        </div>
+                        <div class="col-xs-2">
+                            <font style="font-size: 12px;">
+                                <span>ORIGINAL (ต้นฉบับ)</span>
+                            </font>
+                            <br/><br/>
+                            <font style="font-size: 16px;">
+                                <h><span>ใบเสร็จรับเงิน</span></h>
+                            </font>
+                        </div>
+                        <br/>
+                    </div>
+
+                    <div class="content">
+                        <div class="col-xs-7">
+                            <br/>
+                            <font style="font-size: 12px;">
+                                &amp;nbsp;&amp;nbsp;&amp;nbsp;<span>ลูกค้า</span>&amp;nbsp;<span>ยังไม่มีข้อมูล</span><br/>
+                                &amp;nbsp;&amp;nbsp;&amp;nbsp;<span t-field="o.partner_id.name" /><br/>
+                                &amp;nbsp;&amp;nbsp;&amp;nbsp;<span t-field="o.partner_id.street" /><span t-field="o.partner_id.street2" /><br/>
+                                &amp;nbsp;&amp;nbsp;&amp;nbsp;<span t-field="o.partner_id.city" />&amp;nbsp;<span t-field="o.partner_id.state_id.name" />&amp;nbsp;<span t-field="o.partner_id.zip" /><br/>
+                                &amp;nbsp;&amp;nbsp;&amp;nbsp;<span>เลขประจำตัวผู้เสียภาษี</span>&amp;nbsp;<span t-field="o.partner_id.vat" />
+                            </font>
+                        </div>
+                        <div class="col-xs-2">
+                            <br/>
+                            <font style="font-size: 12px;">
+                                <span>เลขที่ใบเสร็จ</span><br/>
+                                <span>วันที่</span><br/><br/>
+                                <span>พนักงานขาย</span>
+                            </font>
+                        </div>
+                        <div class="col-xs-3">
+                            <br/>
+                            <font style="font-size: 12px;">
+                                <span t-field="o.name"/><br/>
+                                <span t-field="o.payment_date"/><br/><br/>
+                                <span t-field="o.partner_id.user_ids.name"/>
+                            </font>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <br/>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th class="col-xs-0.5">
+                                            <font style="font-size: 12px;">No.</font>
+                                        </th>
+                                        <th class="col-xs-2">
+                                            <font style="font-size: 12px;">เลขที่ใบกำกับภาษี</font>
+                                        </th>
+                                        <th class="col-xs-2">
+                                            <font style="font-size: 12px;">วันที่</font>
+                                        </th>
+                                        <th class="col-xs-2">
+                                            <font style="font-size: 12px;">ครบกำหนด</font>
+                                        </th>
+                                        <th class="col-xs-2">
+                                            <font style="font-size: 12px;">จำนวนเงิน</font>
+                                        </th>
+                                        <th class="col-xs-2">
+                                            <font style="font-size: 12px;">ยอดคงค้าง</font>
+                                        </th>
+                                        <th class="col-xs-2">
+                                            <font style="font-size: 12px;">ยอดชำระ</font>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="sale_tbody">
+                                    <t t-set="i" t-value="1"/>
+                                    <!--t t-foreach="o.move_lines" t-as="l"-->
+                                        <tr>
+                                            <td>
+                                                <font style="font-size: 12px;">
+                                                    <span t-esc="i"/>
+                                                </font>
+                                            </td>
+                                                <t t-set="i" t-value="i+1"/>
+                                            <font style="font-size: 12px;">
+                                            	<td><span t-field="o.communication" /></td>
+                                                <td><span t-field="o.invoice_ids.date_invoice"/></td>
+                                                <td><span t-field="o.invoice_ids.date_due" /></td>
+                                                <td><span t-field="o.invoice_ids.amount_total" /></td>
+                                                <td><span t-field="o.invoice_ids.residual"></span></td>
+                                                <td><span t-field="o.amount" /></td>
+                                            </font>
+                                            <!--td class="text-left">
+                                                <font style="font-size: 12px;">
+                                                    <span t-field="l.product_id.code"/>
+                                                </font>
+                                            </td>
+                                            <td class="text-left">
+                                                <font style="font-size: 12px;">
+                                                    <span t-field="l.product_id.name"/>
+                                                </font>
+                                            </td>
+                                            <td class="text-center">
+                                                <font style="font-size: 12px;">
+                                                    <span t-field="l.product_qty"/>
+                                                </font>
+                                            </td-->
+                                        </tr>
+                                    <!--/t-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row" style="page-break-inside: avoid">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td>
+                                    <div class="col-xs-8">
+                                        <font style="font-size: 12px;">
+                                            <span>ตัวอักษร:</span>&amp;nbsp;<span>(ยังไม่มีข้อมูล).</span>
+                                        </font>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <font style="font-size: 12px;">
+                                            <span>รวมเป็นเงิน</span>
+                                        </font>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <font style="font-size: 12px;">
+                                            <span t-field="o.amount" />
+                                        </font>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <font style="font-size: 12px;">
+                                        <span>ใบเสร็จรับเงินจะสมบูรณ์ต่อเมื่อบริษัทฯ ได้รับเงินตามเช็ค หรือเงินโอนเข้าบัญชีเรียบร้อยแล้ว</span><br/>
+                                        &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;<span>เงินสด</span>
+                                        &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                        <span>____________</span>
+                                    </font>
+                                    <br/>
+                                    <div class="col-xs-3" style="text-center">
+                                        <font style="font-size: 12px;">
+                                            <span>เช็คธนาคาร ____________</span><br/>
+                                            <span>เช็คธนาคาร ____________</span>
+                                        </font>
+                                    </div>
+                                    <div class="col-xs-3" style="text-center">
+                                        <font style="font-size: 12px;">
+                                            <span>เช็คเลขที่ ____________</span><br/>
+                                            <span>เช็คเลขที่ ____________</span>
+                                        </font>
+                                    </div>
+                                    <div class="col-xs-3" style="text-center">
+                                        <font style="font-size: 12px;">
+                                            <span>ลงวันที่ ___/___/___</span><br/>
+                                            <span>ลงวันที่ ___/___/___</span>
+                                        </font>
+                                    </div>
+                                    <div class="col-xs-3" style="text-center">
+                                        <font style="font-size: 12px;">
+                                            <span>จำนวนเงิน ____________</span><br/>
+                                            <span>จำนวนเงิน ____________</span>
+                                        </font>
+                                    </div><br/><br/>
+                                    <div class="col-xs-5"> </div>
+                                    <div class="col-xs-7">
+                                        <font style="font-size: 12px;">
+                                            <span>ในนาม บริษัท เซ็นทรัล ไบค์ จำกัด</span>
+                                        </font>
+                                    </div><br/>
+                                    <div class="col-xs-6" style="text-center">
+                                        <font style="font-size: 12px;">
+                                            <span>ผู้รับเงิน ___________________</span>&amp;nbsp;<span>วันที่ ___/___/___</span>
+                                        </font>
+                                    </div>
+                                    <div class="col-xs-6" style="text-center">
+                                        <font style="font-size: 12px;">
+                                            <span>ผู้รับมอบอำนาจ ___________________</span>
+                                        </font>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="page">
+                    <style>
+                        .header{width:100%; height:80px;}
+                        .content{width:100%; height:900px; border:0px solid #000000;}
+                        .footer{width:100%; height:200px;}
+                    </style>
+                    <div class="header">
+                        <div class="col-xs-10">
+                            <font style="font-size: 16px;">
+                                <h><span t-field="o.company_id.name" /></h>
+                            </font>
+                            <br/>
+                            <font style="font-size: 12px;">
+                                <!--span t-field="o.company_id.house_number" />&amp;nbsp;
+                                <span t-field="o.company_id.soi_number" /-->
+                                <span t-field="o.company_id.street" />&amp;nbsp;
+                                <span t-field="o.company_id.street2" />&amp;nbsp;
+                                <span t-field="o.company_id.city" />&amp;nbsp;
+                                <span t-field="o.company_id.state_id.name" />&amp;nbsp;
+                                <span t-field="o.company_id.zip" />
+                            </font>
+                            <br/>
+                            <font style="font-size: 12px;">
+                                <span t-field="o.company_id.phone" />&amp;nbsp;
+                                <span>FAX:</span>&amp;nbsp;
+                                <span t-field="o.company_id.fax" />
+                            </font>
+                            <br/>
+                            <font style="font-size: 12px;">
+                                <span>เลขประจำตัวผู้เสียภาษี</span>&amp;nbsp;
+                                <span t-field="o.company_id.vat" />
+                                &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                <span>สำนักงานใหญ่</span>
+                            </font>
+                        </div>
+                        <div class="col-xs-2">
+                            <font style="font-size: 12px;">
+                                <span>COPY (สำเนา)</span>
+                            </font>
+                            <br/><br/>
+                            <font style="font-size: 16px;">
+                                <h><span>ใบเสร็จรับเงิน</span></h>
+                            </font>
+                        </div>
+                        <br/>
+                    </div>
+
+                    <div class="content">
+                        <div class="col-xs-7">
+                            <br/>
+                            <font style="font-size: 12px;">
+                                &amp;nbsp;&amp;nbsp;&amp;nbsp;<span>ลูกค้า</span>&amp;nbsp;<span>ยังไม่มีข้อมูล</span><br/>
+                                &amp;nbsp;&amp;nbsp;&amp;nbsp;<span t-field="o.partner_id.name" /><br/>
+                                &amp;nbsp;&amp;nbsp;&amp;nbsp;<span t-field="o.partner_id.street" /><span t-field="o.partner_id.street2" /><br/>
+                                &amp;nbsp;&amp;nbsp;&amp;nbsp;<span t-field="o.partner_id.city" />&amp;nbsp;<span t-field="o.partner_id.state_id.name" />&amp;nbsp;<span t-field="o.partner_id.zip" /><br/>
+                                &amp;nbsp;&amp;nbsp;&amp;nbsp;<span>เลขประจำตัวผู้เสียภาษี</span>&amp;nbsp;<span t-field="o.partner_id.vat" />
+                            </font>
+                        </div>
+                        <div class="col-xs-2">
+                            <br/>
+                            <font style="font-size: 12px;">
+                                <span>เลขที่ใบเสร็จ</span><br/>
+                                <span>วันที่</span><br/><br/>
+                                <span>พนักงานขาย</span>
+                            </font>
+                        </div>
+                        <div class="col-xs-3">
+                            <br/>
+                            <font style="font-size: 12px;">
+                                <span t-field="o.name"/><br/>
+                                <span t-field="o.payment_date"/><br/><br/>
+                                <span t-field="o.partner_id.user_ids.name"/>
+                            </font>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <br/>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th class="col-xs-0.5">
+                                            <font style="font-size: 12px;">No.</font>
+                                        </th>
+                                        <th class="col-xs-2">
+                                            <font style="font-size: 12px;">เลขที่ใบกำกับภาษี</font>
+                                        </th>
+                                        <th class="col-xs-2">
+                                            <font style="font-size: 12px;">วันที่</font>
+                                        </th>
+                                        <th class="col-xs-2">
+                                            <font style="font-size: 12px;">ครบกำหนด</font>
+                                        </th>
+                                        <th class="col-xs-2">
+                                            <font style="font-size: 12px;">จำนวนเงิน</font>
+                                        </th>
+                                        <th class="col-xs-2">
+                                            <font style="font-size: 12px;">ยอดคงค้าง</font>
+                                        </th>
+                                        <th class="col-xs-2">
+                                            <font style="font-size: 12px;">ยอดชำระ</font>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="sale_tbody">
+                                    <t t-set="i" t-value="1"/>
+                                    <!--t t-foreach="o.move_lines" t-as="l"-->
+                                        <tr>
+                                            <td>
+                                                <font style="font-size: 12px;">
+                                                    <span t-esc="i"/>
+                                                </font>
+                                            </td>
+                                                <t t-set="i" t-value="i+1"/>
+                                            <font style="font-size: 12px;">
+                                            	<td><span t-field="o.communication" /></td>
+                                                <td><span t-field="o.invoice_ids.date_invoice"/></td>
+                                                <td><span t-field="o.invoice_ids.date_due" /></td>
+                                                <td><span t-field="o.invoice_ids.amount_total" /></td>
+                                                <td><span t-field="o.invoice_ids.residual"></span></td>
+                                                <td><span t-field="o.amount" /></td>
+                                            </font>
+                                            <!--td class="text-left">
+                                                <font style="font-size: 12px;">
+                                                    <span t-field="l.product_id.code"/>
+                                                </font>
+                                            </td>
+                                            <td class="text-left">
+                                                <font style="font-size: 12px;">
+                                                    <span t-field="l.product_id.name"/>
+                                                </font>
+                                            </td>
+                                            <td class="text-center">
+                                                <font style="font-size: 12px;">
+                                                    <span t-field="l.product_qty"/>
+                                                </font>
+                                            </td-->
+                                        </tr>
+                                    <!--/t-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row" style="page-break-inside: avoid">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td>
+                                    <div class="col-xs-8">
+                                        <font style="font-size: 12px;">
+                                            <span>ตัวอักษร:</span>&amp;nbsp;<span>(ยังไม่มีข้อมูล).</span>
+                                        </font>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <font style="font-size: 12px;">
+                                            <span>รวมเป็นเงิน</span>
+                                        </font>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <font style="font-size: 12px;">
+                                            <span t-field="o.amount" />
+                                        </font>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <font style="font-size: 12px;">
+                                        <span>ใบเสร็จรับเงินจะสมบูรณ์ต่อเมื่อบริษัทฯ ได้รับเงินตามเช็ค หรือเงินโอนเข้าบัญชีเรียบร้อยแล้ว</span><br/>
+                                        &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;<span>เงินสด</span>
+                                        &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                        <span>____________</span>
+                                    </font>
+                                    <br/>
+                                    <div class="col-xs-3" style="text-center">
+                                        <font style="font-size: 12px;">
+                                            <span>เช็คธนาคาร ____________</span><br/>
+                                            <span>เช็คธนาคาร ____________</span>
+                                        </font>
+                                    </div>
+                                    <div class="col-xs-3" style="text-center">
+                                        <font style="font-size: 12px;">
+                                            <span>เช็คเลขที่ ____________</span><br/>
+                                            <span>เช็คเลขที่ ____________</span>
+                                        </font>
+                                    </div>
+                                    <div class="col-xs-3" style="text-center">
+                                        <font style="font-size: 12px;">
+                                            <span>ลงวันที่ ___/___/___</span><br/>
+                                            <span>ลงวันที่ ___/___/___</span>
+                                        </font>
+                                    </div>
+                                    <div class="col-xs-3" style="text-center">
+                                        <font style="font-size: 12px;">
+                                            <span>จำนวนเงิน ____________</span><br/>
+                                            <span>จำนวนเงิน ____________</span>
+                                        </font>
+                                    </div><br/><br/>
+                                    <div class="col-xs-5"> </div>
+                                    <div class="col-xs-7">
+                                        <font style="font-size: 12px;">
+                                            <span>ในนาม บริษัท เซ็นทรัล ไบค์ จำกัด</span>
+                                        </font>
+                                    </div><br/>
+                                    <div class="col-xs-6" style="text-center">
+                                        <font style="font-size: 12px;">
+                                            <span>ผู้รับเงิน ___________________</span>&amp;nbsp;<span>วันที่ ___/___/___</span>
+                                        </font>
+                                    </div>
+                                    <div class="col-xs-6" style="text-center">
+                                        <font style="font-size: 12px;">
+                                            <span>ผู้รับมอบอำนาจ ___________________</span>
+                                        </font>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+              </t>
+          </t>
+        </template>
+        
+    </data>
+</openerp>

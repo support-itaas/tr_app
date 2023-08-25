@@ -1,0 +1,14 @@
+<odoo>
+
+    <record id="view_partner_form_expire_extension" model="ir.ui.view">
+        <field name="name">res.partner.</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <field name="lang" position="after">
+                <field name="number_of_day_extend" groups="project.group_project_manager"/>
+                <button name="update_coupon_day_extension" type="object" string="Update Coupon Expire" groups="project.group_project_manager"/>
+            </field>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,102 @@
+<odoo>
+    <data>
+
+        <record id="view_personal_income_tax_form_itaas" model="ir.ui.view">
+            <field name="name">personal.income.tax.form_itaas</field>
+            <field name="model">personal.income.tax</field>
+            <field name="arch" type="xml">
+                <form string="Personal Income Tax">
+                    <header>
+                        <!-- Buttons go here-->
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="year" required="True"/>
+                        </group>
+                        <group>
+                            <field name="deduct_general_expense_percent"/>
+                            <field name="deduct_general_expense_max"/>
+                            <field name="deduction_after_expense_amount"/>
+                        </group>
+                        <notebook colspan="4">
+                            <page string="Personal Income Tax">
+                                <field name="personal_tax_line_ids" colspan="4" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="personal_tax_id" invisible="1"/>
+                                            <field name="rate_no"/>
+                                            <field name="minimum_rate"/>
+                                            <field name="maximum_rate"/>
+                                            <field name="tax_rate"/>
+                                    </tree>
+                                    <!--<form string="Personal Income Tax Line">-->
+                                        <!--<group>-->
+                                            <!--<field name="personal_tax_id" invisible="1"/>-->
+                                            <!--<field name="rate_no"/>-->
+                                            <!--<field name="minimum_rate"/>-->
+                                            <!--<field name="maximum_rate"/>-->
+                                            <!--<field name="tax_rate"/>-->
+                                        <!--</group>-->
+                                    <!--</form>-->
+                                </field>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="view_personal_income_tax_line_tree" model="ir.ui.view">
+            <field name="name">personal.income.tax.line.tree</field>
+            <field name="model">personal.income.tax.line</field>
+            <field name="arch" type="xml">
+                <tree string="Personal Income Tax Line">
+                    <field name="rate_no"/>
+                    <field name="minimum_rate"/>
+                    <field name="maximum_rate"/>
+                    <field name="tax_rate"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_personal_income_tax_tree" model="ir.ui.view">
+            <field name="name">personal.income.tax.tree</field>
+            <field name="model">personal.income.tax</field>
+            <field name="arch" type="xml">
+                <tree string="Personal Income Tax">
+                    <field name="year"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--<record id="view_hr_medical_chack_up_tree" model="ir.ui.view">-->
+            <!--<field name="name">hr.medical.chack.up.tree</field>-->
+            <!--<field name="model">hr.medical.chack.up</field>-->
+            <!--<field name="arch" type="xml">-->
+                <!--<tree string="Medical Check-up">-->
+                <!---->
+                <!--</tree>-->
+            <!--</field>-->
+        <!--</record>-->
+
+        <record id="action_personal_income_tax" model="ir.actions.act_window">
+            <field name="name">Personal Income Tax</field>
+            <field name="res_model">personal.income.tax</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p>
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="personal_tax_management.menu_personal_income_tax"
+                  name="Personal Income Tax"
+                  parent="hr.menu_human_resources_configuration"
+                  action="action_personal_income_tax"
+                  sequence="210"/>
+
+    </data>
+
+
+</odoo>

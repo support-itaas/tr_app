@@ -1,0 +1,2 @@
+id,name,model,function,interval_number,interval_type,numbercall,active
+check_over_due,check_over_due,account.cheque.statement,check_over_due,1,days,-1,True

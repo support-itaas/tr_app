@@ -10,7 +10,7 @@ class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
     operating_unit_id = fields.Many2one('operating.unit', 'Operating Unit')
-
+    category_id = fields.Many2one('account.asset.category',string="Category")
     @api.model
     def create(self, vals):
         if vals.get('move_id', False):

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="product_report_id">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                <div class="page">
+                    <style>
+                            .header{width:100%; height:50px;}
+                            .content{width:100%; height:700px;}
+                            .footer{width:100%; height:200px;}
+                            .doubleUnderline{border-bottom: 3px double;}
+                            table.table-bordered1{
+                            border:1px solid black;
+                            margin-top:20px;
+                            border-collapse: collapse;
+                            width: 100%;
+                            }
+                            table.table-bordered1 &gt; thead &gt; tr &gt; th{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            }
+                            table.table-bordered1 &gt; tbody &gt; tr &gt; td{
+                            border:0px solid white;
+                            border-left: 1px solid black;
+                            border-collapse: collapse;
+                            height: 40px;
+                            }
+                            table.table-bordered1 &gt; tfoot &gt; tr &gt; td{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            }
+                            table.table-bordered &gt; thead &gt; tr &gt; th{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            }
+                            table.table-bordered &gt; tbody &gt; tr &gt; td{
+                            border:1px solid black;
+                            <!--border-left: 1px solid;-->
+                            border-collapse: collapse;
+                            }
+                            table.table-bordered &gt; tfoot &gt; tr &gt; td{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            }
+                            table.table-table1 {
+                            border:1px solid black;
+                            margin-top:20px;
+                            border-collapse: collapse;
+                            border-left: 1px solid;
+                            border-right: 1px solid;
+                            border-bottom: 1px solid;
+                            border-top: 1px solid;
+                            width: 100%;
+                            }
+                        </style>
+                    <div style="text-align:center">
+                        <font style="font-size: 18px;">
+                            <strong>รายงานสินค้าและวัตถุดิบ</strong>
+                        </font>
+                    </div><p/>
+                     <div style="text-align:center">
+                        <font style="font-size: 14px;">
+                            <span>ณ วันที่</span><span/>
+                            <span>เดือน</span><span/>
+                            <span>ปี</span><span/>
+                        </font>
+                    </div><p/>
+                    <div class="col-xs-12">
+                        <font style="font-size: 14px;">
+                            <span><b>ชื่อผู้ประกอบการ</b></span>&amp;nbsp;&amp;nbsp;
+                            <span t-field="o.company_id.name" />
+                            <span style="position: absolute;left: 55%;"><b>เลขประจำตัวผู้เสียภาษีอากร</b></span>&amp;nbsp;&amp;nbsp;
+                            <span style="position: absolute;left: 78%;" t-field="o.company_id.vat"/><br/>
+                            <span><b>ชื่อสถานประกอบการ</b></span>&amp;nbsp;&amp;nbsp;
+                            <span t-field="o.company_id.name" />
+                            <span style="position: absolute;left: 55%;">[X]</span>
+                            <span style="position: absolute;left: 58%;"><b>สำนักงานใหญ่</b></span>&amp;nbsp;&amp;nbsp;
+                            <span style="position: absolute;left: 70%;"><b>สาขาที่</b></span>&amp;nbsp;&amp;nbsp;
+                            <span style="position: absolute;left: 77%;">_______</span><br/>
+                            <span><b>ชื่อสินค้า / วัตถุดิบ</b></span>&amp;nbsp;&amp;nbsp;
+                            <span t-field="o.name" /><br/>
+                            <span><b>ชนิด / ขนาด</b></span>&amp;nbsp;&amp;nbsp;
+                            <span t-field="o.categ_id.name"/>
+                            <span style="position: absolute;left: 35%;"><b>ปริมาณนับเป็น</b></span>&amp;nbsp;&amp;nbsp;
+                            <span style="position: absolute;left: 47%;" t-field="o.uom_id.name" />
+                        </font>
+                    </div><br/>
+                    <div class="col-xs-12" style="text-align: right;">
+                        <font style="font-size: 14px;">
+                            <span>หน้าที่</span><span class="page"/>/<span class="topage"/>
+                        </font>
+                    </div>
+                    <br/><br/>
+                    <div class="content">
+                        <div class="col-xs-12">
+                            <table class="table table-bordered1" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="3" style="text-align: center; vertical-align: middle;"><span>ชนิดเอกสาร</span></th>
+                                        <th rowspan="3" style="text-align: center; vertical-align: middle;"><span>เลขที่ใบสำคัญ</span></th>
+                                        <th rowspan="3" style="text-align: center; vertical-align: middle;"><span>เลขที่อ้างอิง</span></th>
+                                        <th rowspan="3" style="text-align: center; vertical-align: middle;"><span>วัน เดือน ปี</span></th>
+                                        <th colspan="9" style="text-align: center; vertical-align: middle;"><span>ปริมาณสินค้าวัตถุดิบ</span></th>
+                                        <th rowspan="3" style="text-align: center; vertical-align: middle;"><span>หมายเหตุ</span></th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="3" style="text-align:center"><span>รับ</span></th>
+                                        <th colspan="3" style="text-align:center"><span>จ่าย</span></th>
+                                        <th colspan="3" style="text-align:center"><span>คงเหลือ</span></th>
+                                    </tr>
+                                    <tr>
+                                        <th style="text-align:center"><span>ปริมาณ</span></th>
+                                        <th style="text-align:center"><span>ราคา/หน่วย</span></th>
+                                        <th style="text-align:center"><span>จำนวนเงิน</span></th>
+                                        <th style="text-align:center"><span>ปริมาณ</span></th>
+                                        <th style="text-align:center"><span>ราคา/หน่วย</span></th>
+                                        <th style="text-align:center"><span>จำนวนเงิน</span></th>
+                                        <th style="text-align:center"><span>ปริมาณ</span></th>
+                                        <th style="text-align:center"><span>ราคา/หน่วย</span></th>
+                                        <th style="text-align:center"><span>จำนวนเงิน</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="sale_tbody">
+                                    <t t-set="i" t-value="1"/>
+                                    <t t-foreach="o.get_stock_move()" t-as="move">
+                                        <t t-set="i" t-value="i+1"/>
+                                        <!--<t t-set="qty" t-value="move['qty']"/>-->
+                                        <tr>
+                                            <td> </td>
+                                            <td style="text-align:center"><span t-esc="move['reference']"/></td>
+                                            <td> </td>
+                                            <td style="text-align:center"><span t-esc="move['date']"/></td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <!--<t t-if="move['move_in']">-->
+                                                <!--<td style="text-align:center"><span t-esc="move['qty']"/></td>-->
+                                                <!--<td style="text-align:center"><span></span></td>-->
+                                            <!--</t>-->
+                                            <!--<t t-if="not move['move_in']">-->
+                                                <!--<td style="text-align:center"><span></span></td>-->
+                                                <!--<td style="text-align:center"><span t-esc="move['qty']"/></td>-->
+                                            <!--</t>-->
+                                            <!--<td style="text-align:center"><span t-esc="move['balance']"/></td>-->
+                                            <td style="text-align:center"><span t-esc="move['remark']"/></td>
+                                        </tr>
+                                    </t>
+                                    <t t-foreach="range(i, 20)" t-as="x">
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                            <td> </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="footer">
+                        <font style="font-size: 14px;">
+                            <span><b>หมายเหตุ</b></span><br/>
+                            <span>1.ช่อง <b>"วัน เดือน ปี"</b> ให้กรอกวัน เดือน ปี ที่เกิดรายการรับ หรือจ่าย สินค้า หรือวัตถุดิบ</span><br/>
+                            <span>2.ช่อง <b>"เลขที่ใบสำคัญ"</b></span><br/>
+                            <span>&amp;nbsp;&amp;nbsp;- ให้กรอกเลขที่ของใบสำคัญรับหรือจ่าย สินค้าหรือวัตถุดิบ โดยที่ใบสำคัญดังกล่าว<br/>
+                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;จะเป็นใบกำกับภาษี หรือไม่ใช่ใบกำกับภาษีก็ได้<br/>
+                            &amp;nbsp;&amp;nbsp;- กรณีลงรายการเป็นยอดรวมของการรับหรือจ่ายสินค้าหรือวัตถุดิบ เป็นรายวันไม่ต้องกรอก<br/>
+                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;เลขที่ใบสำคัญ แต่ให้หมายเหตุว่า"ลงรายการเป็นยอดรวมของการรับหรือจ่ายสินค้าหรือวัตถุดิบ "</span>
+                        </font>
+                    </div>
+                    <!--br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                    <span> The End....................</span-->
+
+                </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>
+

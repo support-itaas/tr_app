@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+
+
+
+        <record id="view_holiday_status_itaas_form" model="ir.ui.view">
+            <field name="name">hr.holidays.status.form.itaas</field>
+            <field name="model">hr.holidays.status</field>
+            <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='active']" position="after">
+                        <field name="number_day_advance"/>
+                        <field name="last_day_req"/>
+                        <field name="back_date"/>
+                        <field name="group_leave"/>
+                        <field name="attendance_record"/>
+                        <field name="change_working_date"/>
+                        <field name="allow_hr"/>
+                        <field name="first_year_holiday_flag"/>
+                        <field name="allow_money_flag"/>
+                        <field name="allow_money_amount"/>
+                        <!--<field name="over_leave_limit"/>-->
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+
+        <!-- Make Leave Requests to Approve viewable to managers with Leave Approval rights -->
+
+        <!--<delete model="ir.ui.menu" id="hr_holidays.menu_request_approve_holidays"/>-->
+        <menuitem name="Leave Requests to Approve" parent="hr_holidays.menu_hr_holidays_root" id="hr_holidays.menu_request_approve_holidays" action="hr_holidays.request_approve_holidays" groups="hr.group_hr_user,hr_extended.group_hr_leave"/>
+
+        <record id="view_leave_request_tree_itaas" model="ir.ui.view">
+            <field name="name">Leave Request Tree</field>
+            <field name="model">hr.holidays</field>
+            <field name="priority">1</field>
+            <field name="inherit_id" ref="hr_holidays.view_holiday_simple"/>
+            <field name="arch" type="xml">
+                <field name="employee_id" position="after">
+                    <field name="request_user"/>
+                    <field name="request_date"/>
+                </field>
+                <field name="date_from" position="after">
+                    <field name="change_working_date_from"/>
+                    <field name="change_working_date_to"/>
+                </field>
+            </field>
+        </record>
+
+        <!--################## remove first and view review later-->
+
+        <!--<record id="view_leave_request_form" model="ir.ui.view">-->
+            <!--<field name="name">Leave Request</field>-->
+            <!--<field name="model">hr.holidays</field>-->
+            <!--<field name="priority">1</field>-->
+            <!--<field name="inherit_id" ref="hr_holidays.edit_holiday_new"/>-->
+            <!--<field name="arch" type="xml">-->
+                <!--&lt;!&ndash;form string="Leave Request" version="7.0"&ndash;&gt;-->
+                <!--<xpath expr="//form/header" position="replace">-->
+                <!--&lt;!&ndash;<header>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<button string="Confirm" name="confirm" states="draft" type="workflow" class="oe_highlight"/>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<button string="Approve" name="validate" states="confirm" type="workflow" groups="hr_extended.group_hr_leave" class="oe_highlight"/>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<button string="Validate" name="second_validate" states="validate1" type="workflow" groups="hr_extended.group_hr_leave" class="oe_highlight"/>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<button string="Refuse" name="refuse" states="confirm,validate" type="workflow" groups="hr_extended.group_hr_leave"/>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<button string="Refuse" name="refuse" states="validate1" type="workflow" groups="hr_extended.group_hr_leave"/>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<button string="Reset to Draft" name="reset" type="workflow"&ndash;&gt;-->
+                            <!--&lt;!&ndash;attrs="{'invisible': ['|', ('can_reset', '=', False), ('state', 'not in', ['confirm', 'refuse'])]}"/>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<field name="state" widget="statusbar" statusbar_visible="draft,confirm,validate,validate1,refuse" statusbar_colors='{"confirm":"blue","validate1":"blue","refuse":"red"}'/>&ndash;&gt;-->
+                <!--&lt;!&ndash;</header>&ndash;&gt;-->
+                    <!--<header>-->
+                    <!--<button string="Confirm" name="confirm" states="draft" type="workflow" class="oe_highlight"/>-->
+                    <!--<button string="Approve" name="validate" states="confirm" type="workflow" groups="hr_extended.group_hr_leave" class="oe_highlight"/>-->
+                    <!--<button string="Validate" name="second_validate" states="validate1" type="workflow" groups="hr_extended.group_hr_leave" class="oe_highlight"/>-->
+                    <!--<button string="Refuse" name="refuse" states="confirm,validate,validate1" type="workflow" groups="hr_extended.group_hr_leave"/>-->
+                    <!--<button string="Reset to Draft" name="reset" type="workflow"-->
+                            <!--attrs="{'invisible': ['|', ('can_reset', '=', False), ('state', 'not in', ['confirm', 'refuse'])]}"/>-->
+                    <!--<field name="state" widget="statusbar" statusbar_visible="draft,confirm,validate" statusbar_colors='{"confirm":"blue","validate1":"blue","refuse":"red"}'/>-->
+                <!--</header>-->
+
+                <!--</xpath>-->
+                <!--<field name="employee_id" position="replace">-->
+                    <!--&lt;!&ndash;<field name="employee_id" attrs="{'required':[('holiday_type','=','employee')],'invisible':[('holiday_type','=','category')]}" groups="hr_extended.group_hr_leave"/>&ndash;&gt;-->
+                    <!--<field name="employee_id" attrs="{'required':[('holiday_type','=','employee')],'invisible':[('holiday_type','=','category')]}"/>-->
+                    <!--<field name="request_user" attrs="{'invisible': True, 'readonly': [('state', '=', 'approve')],'required':[('type', '=', 'remove')]}"/>-->
+                    <!--<field name="request_date" attrs="{'invisible': True, 'readonly': [('state', '=', 'approve')]}"/>-->
+
+
+                <!--</field>-->
+                <!--<field name="date_from" position="replace">-->
+                    <!--<field name="date_from" on_change="onchange_date_from(date_to, date_from)" attrs="{'required':[('type', '=', 'remove')],'invisible': [('change_working_date_flag', '=', True)]}" class="oe_inline"/>-->
+                    <!--<field name="change_working_date_from" placeholder="่สลับวันหยุดจากวันที่" attrs="{'invisible': [('change_working_date_flag', '=', False)]}" class="oe_inline"/>-->
+                <!--</field>-->
+
+                <!--<field name="date_to" position="replace">-->
+                    <!--<field name="date_to" on_change="onchange_date_to(date_to, date_from)"  attrs="{'required':[('type', '=', 'remove')],'invisible': [('change_working_date_flag', '=', True)]}" class="oe_inline"/>-->
+                    <!--<field name="change_working_date_to" placeholder="่สลับวันหยุดเป็นวันที่" attrs="{'invisible': [('change_working_date_flag', '=', False)]}" class="oe_inline"/>-->
+                    <!--<field name="change_working_date_flag" attrs="{'invisible': True}"/>-->
+                    <!--<field name="attendance_record_flag" attrs="{'invisible': True}" readonly="1"/>-->
+                    <!--<field name="leave_time_hr_flag" attrs="{'invisible': True}"/>-->
+                    <!--<field name="first_year_holiday_flag" attrs="{'invisible': True}"/>-->
+                    <!--<field name="five_year_holiday_flag" attrs="{'invisible': True}"/>-->
+                    <!--<field name="allow_money_flag" attrs="{'invisible': True}" readonly="1"/>-->
+
+
+                    <!--&lt;!&ndash;<field name="change_working_date_flag" />&ndash;&gt;-->
+                    <!--&lt;!&ndash;<field name="attendance_record_flag" />&ndash;&gt;-->
+
+                <!--</field>-->
+                <!--<xpath expr="//sheet/group/group[1]/div/div[2]" position="replace">-->
+                    <!--<div>-->
+                        <!--<field name="number_of_days_temp" class="oe_inline"/> days-->
+                    <!--</div>-->
+                    <!--<div attrs="{'invisible': [('leave_time_hr_flag', '!=', True)]}">-->
+                        <!--&lt;!&ndash;<field name="leave_time" class="oe_inline"/> hour(s)&ndash;&gt;-->
+                        <!--<field name="leave_time" class="oe_inline"/> hour(s)-->
+                    <!--</div>-->
+                <!--</xpath>-->
+
+                <!--<field name="name" position="attributes">-->
+                    <!--<attribute name="required">True</attribute>-->
+                    <!--<attribute name="string">เหตุผลการขอลา</attribute>-->
+                <!--</field>-->
+
+                <!--<xpath expr="//sheet/group/group/div/div/field[@name='date_from']" position="attributes">-->
+                    <!--<attribute name="on_change">onchange_date_with_emp(date_to, date_from, employee_id, holiday_status_id, "date_from", context)</attribute>-->
+                <!--</xpath>-->
+                <!--<xpath expr="//sheet/group/group/div/div/field[@name='date_to']" position="attributes">-->
+                    <!--<attribute name="on_change">onchange_date_with_emp(date_to, date_from, employee_id, holiday_status_id, "date_to", context)</attribute>-->
+                <!--</xpath>-->
+
+            <!--</field>-->
+        <!--</record>-->
+
+        <!--################## end remove first and view review later-->
+
+        <record model="ir.actions.act_window" id="open_leave_request">
+            <field name="name">All Leave Requests</field>
+            <field name="res_model">hr.holidays</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="context">{'default_type': 'remove', 'search_default_group_date_from':1, 'search_default_group_type':1}</field>
+            <field name="domain">[('type','=','remove')]</field>
+            <field name="search_view_id" ref="hr_holidays.view_hr_holidays_filter"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a new leave request.
+              </p><p>
+                Once you have recorded your leave request, it will be sent
+                to a manager for validation. Be sure to set the right leave
+                type (recuperation, legal holidays, sickness) and the exact
+                number of open days related to your leave.
+              </p>
+            </field>
+        </record>
+
+        <!--<menuitem parent="hr_holidays.menu_hr_holidays_root"-->
+            <!--id="menu_leave_request"-->
+            <!--action="open_leave_request"-->
+            <!--groups="hr.group_hr_user"-->
+            <!--sequence="1"/>-->
+
+        <!--<record model="ir.actions.act_window.view" id="action_open_leave_request_tree">-->
+            <!--<field name="sequence" eval="2"/>-->
+            <!--<field name="view_mode">tree</field>-->
+            <!--<field name="view_id" ref="hr_holidays.view_holiday"/>-->
+            <!--<field name="act_window_id" ref="open_leave_request"/>-->
+        <!--</record>-->
+
+        <!-- Change name of leave request action (from a stock install) -->
+        <!--<record model="ir.actions.act_window" id="hr_holidays.open_ask_holidays">-->
+            <!--<field name="name">My Leaves</field>-->
+        <!--</record>-->
+        <!--<menuitem id="hr_holidays.menu_open_allocation_holidays"-->
+            <!--parent="hr_holidays.menu_hr_holidays_my_leaves"-->
+            <!--action="hr_holidays.open_allocation_holidays"-->
+            <!--groups="base.group_no_one" string="My Leaves"/>-->
+
+        <!--record id="view_holiday_status_form" model="ir.ui.view">
+            <field name="name">hr.holidays.status.form.extension</field>
+            <field name="model">hr.holidays.status</field>
+            <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='active']" position="after">
+                        <field name="ex_rest_days"/>
+                        <field name="ex_public_holidays"/>
+                    </xpath>
+                </data>
+            </field>
+        </record-->
+
+         <!-- hr job from-->
+        <record id="view_job_holiday_itaas_form" model="ir.ui.view">
+			<field name="name">hr.job.holiday.itaas.form</field>
+			<field name="model">hr.job</field>
+			<field name="inherit_id" ref="hr.view_hr_job_form" />
+			<field name="arch" type="xml">
+				<field name="department_id" position="after">
+					<field name="group_leave"/>
+
+                </field>
+            </field>
+        </record>
+        
+    </data>
+</openerp>

@@ -4,7 +4,7 @@
 
 {
     'name': 'Wizard Spinner Gift',
-    'version': '11.0.2.7',
+    'version': '11.0.2.6',
     'category': 'Wizard Spinner Gift',
     'sequence': 1,
     'author': 'Technaureus Info Solutions Pvt. Ltd',

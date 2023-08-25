@@ -1,0 +1,51 @@
+<odoo>
+    <data>
+
+        <!--======================Branch=========-->
+        <record id="view_contract_branch_form_itaas" model="ir.ui.view">
+            <field name="name">contract.branch.form.itaas</field>
+            <field name="model">contract.branch</field>
+            <field name="arch" type="xml">
+                <form string="Contract Branch">
+                    <sheet>
+                        <group>
+                            <field name="name" required="True"/>
+                            <field name="company_id" invisible="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_contract_branch_tree" model="ir.ui.view">
+            <field name="name">contract.branch.tree</field>
+            <field name="model">contract.branch</field>
+            <field name="arch" type="xml">
+                <tree string="Contract Branch">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="action_contract_branch" model="ir.actions.act_window">
+            <field name="name">Contract Branch</field>
+            <field name="res_model">contract.branch</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p>
+                </p>
+            </field>
+        </record>
+        <!--=======================End========================-->
+
+        <menuitem id="menu_contract_branch"
+                  name="Contract Branch"
+                  parent="hr.menu_human_resources_configuration"
+                  action="action_contract_branch"
+                  sequence="5"/>
+
+    </data>
+
+
+</odoo>

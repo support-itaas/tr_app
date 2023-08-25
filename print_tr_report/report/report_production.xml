@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <template id="report_production_report_id">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="o">
+
+            </t>
+            <div class="page">
+
+                <style>
+                    table.table-bordered {
+                    border:1px solid black;
+                    border-collapse: collapse;
+                    }
+                    table.table-bordered &gt; thead &gt; tr &gt; td{
+                    border:1px solid black;
+                    border-collapse: collapse;
+                    }
+                    table.table-bordered &gt; tbody &gt; tr &gt; td{
+                    border:0px solid white;
+                    border-left: 1px solid black;
+                    border-collapse: collapse;
+                    }
+                    table.table-bordered &gt; theader &gt; tr &gt; td &gt; th {
+                    border:0px solid white;
+                    border-left: 1px solid black;
+                    border-collapse: collapse;
+                    }
+
+                    table.table-bordered &gt; tfoot &gt; tr &gt; td  &gt; th{
+                    border:1px solid black;
+                    border-collapse: collapse;
+                    }
+                </style>
+
+                <table width="100%" class="table table-bordered" >
+                    <thead>
+                        <tr>
+                            <td colspan="2" align="center"  style="tborder:1px solid black; height:40px; font-size:27px;" >
+                                <span> บริษัท ที.อาร์.โปรดักส์ แอนด์ มาร์เก็ตติ้ง จำกัด</span>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td align="center"  style="tborder:1px solid black; height:40px; font-size:27px;" >
+                                <span>  ใบเบิกวัตถุดิบ / สินค้า    </span>
+                            </td>
+                            <td align="center"  style="tborder:1px solid black;font-size:27px;" >
+                                <span>เลขที่………………………</span>
+                            </td>
+
+
+                        </tr>
+
+
+
+                    </thead>
+                </table>
+
+            </div>
+
+            <div class="page">
+                <style>
+                    .td_top{
+                    border-top:#000 solid 1px;
+                    }
+                    .td_left{
+                    border-left:#000 solid 1px;
+                    }
+                    .td_right{
+                    border-right:#000 solid 1px;
+                    }
+                    .td_bott{
+                    border-bottom:#000 solid 1px;
+                    }
+                    .table4side{
+                    border:#000 solid 1px;
+                    }
+                </style>
+
+
+                <!--                <t t-set="break_line" t-value="o.get_break_line_invoice(max_body_height,new_line_height,row_line_height,max_line_lenght)"/>-->
+                <!--                <t t-set="start" t-value="0"/>-->
+                <!--                <t t-set="end" t-value="0"/>-->
+                <!--                <t t-set="qty" t-value="0"/>-->
+                <t t-foreach="docs" t-as="x">
+                    <table width="100%" style=" height:200mm; font-size:17px; border:1px solid black;">
+                        <thead>
+                            <font>
+                                <tr style="height:30px;">
+                                    <td align="center" class="td_bott td_right" style="vertical-align: middle;"><font>ชื่อผลิตภัณฑ์ </font></td>
+                                    <td align="center" class="td_bott td_right" style="vertical-align: middle;" ><font>C1410992540</font></td>
+                                    <td   align="center" class="td_bott td_right" style="vertical-align: middle;"><font>น้ำยาเคลือบเงายางชนิดน้ำมัน 20 ลิตร</font></td>
+                                    <td colspan="4" align="center" class="td_bott td_right" style="vertical-align: middle;"><font>( Lot.............)</font></td>
+
+                                    <td  align="center" class="td_bott td_right" style="vertical-align: middle;"><font>วันที่  ……/…../……</font></td>
+                                </tr>
+
+                                <tr style="height:30px;">
+                                    <td rowspan="2" align="center" class="td_bott td_right" style="vertical-align: middle;"><font>NO </font></td>
+                                    <td colspan="2" align="center" class="td_bott td_right" style="vertical-align: middle;" ><font>รายการ</font></td>
+                                    <td  rowspan="2" align="center" class="td_bott td_right" style="vertical-align: middle;"><font>จำนวน</font></td>
+                                    <td  rowspan="2" align="center" class="td_bott td_right" style="vertical-align: middle;"><font>หน่วย</font></td>
+
+                                    <td  align="center" class="td_bott td_right" style="vertical-align: middle;"><font>วัตถุดิบ</font></td>
+                                    <td  align="center" class="td_bott td_right" style="vertical-align: middle;"><font>สินค้า</font></td>
+
+                                    <td rowspan="2" align="center" class="td_bott td_right" style="vertical-align: middle;"><font>หมายเหตุ</font></td>
+
+                                </tr>
+                                <tr style="height:30px;">
+                                    <td  align="center" class="td_bott td_right" style="vertical-align: middle;"><font>รหัส </font></td>
+                                    <td align="center" class="td_bott td_right" style="vertical-align: middle;" ><font>ชื่อสินค้า</font></td>
+                                    <td  align="center" class="td_bott td_right" style="vertical-align: middle;"><font>Lot No.</font></td>
+                                    <td  align="center" class="td_bott td_right" style="vertical-align: middle;"><font>สินค้า</font></td>
+
+
+
+                                </tr>
+
+
+                            </font>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="range(0,35,1)" t-as="y">
+                                <tr style="height:26px;">
+
+                                    <td align="center" class="td_bott td_right">
+                                        <span t-esc="y+1"/>
+                                    </td>
+                                    <td align="center" class="td_bott td_right">2</td>
+                                    <td align="center" class="td_bott td_right">3</td>
+                                    <td align="center" class="td_bott td_right">4</td>
+                                    <td align="center" class="td_bott td_right">5</td>
+                                    <td align="center" class="td_bott td_right">6</td>
+                                    <td align="center" class="td_bott td_right">7</td>
+                                    <td align="center" class="td_bott td_right">8</td>
+
+
+
+
+                                </tr>
+                            </t>
+                        </tbody>
+
+                    </table>
+                </t>
+            </div>
+            <div class="page">
+                                        <tfoot>
+                            <td  colspan="7" style="font-size: 17px;" >
+                                <table width="100%">
+                                    <td width="30%" align="center" >
+                                        <font style="font-size: 17px;"><br/>
+                                            <strong> ผู้อนุมัติเบิก……………………..</strong><br/>
+                                            <strong>   ผู้รับ……………………….</strong><br/>
+                                            <strong>แผนก………………………</strong><br/>
+                                            <strong>FM-STO-01/01  แก้ไขครั้งที่ : 01</strong>
+                                        </font>
+                                    </td>
+                                    <td align="center"  width="50%">
+
+                                    </td>
+
+
+                                    <td align="center"   width="20%">
+                                        <strong>ผู้อนุมัติ…………………..</strong>
+                                        <strong>ผู้จ่าย……………………..</strong>
+
+                                    </td>
+
+
+
+
+
+                                </table>
+                            </td>
+
+                        </tfoot>
+
+            </div>
+
+
+
+
+
+
+
+        </t>
+    </template>
+</openerp>

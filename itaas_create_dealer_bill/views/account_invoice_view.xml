@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_account_invoice_create_bill_form_inherit" model="ir.ui.view" >
+            <field name="name">account.invoice.form.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="check_dealer_bill" invisible="1"/>
+                </xpath>
+
+                <xpath expr="//header/button[@name='action_invoice_cancel']" position="after">
+                    <button string="Create DL Bill" name="action_create_bill" type="object"
+                            class="oe_highlight" attrs="{'invisible': [('check_dealer_bill', '=', True)]}"/>
+                </xpath>
+
+                <!--                <xpath expr="//header/button[@name='print_quotation']" position="after">-->
+                <!--                    <button name="action_request"-->
+                <!--                            string="Request" type="object" class="btn-primary"-->
+                <!--                            attrs="{'invisible': [('state', 'not in', ['draft'])]}"/>-->
+                <!--                </xpath>-->
+
+            </field>
+        </record>
+    </data>
+</odoo>

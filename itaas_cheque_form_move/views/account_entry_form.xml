@@ -1,0 +1,49 @@
+<odoo>
+    <record id="view_account_move_form_itaas_inherit_cheque_form_entry" model="ir.ui.view">
+        <field name="name">account.move.form.itaas.cheque.form.entry</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="thai_accounting.account_move_form_itaas_inherit"/>
+        <field name="arch" type="xml">
+            <field name="cheque_bank" position="replace"/>
+            <field name="cheque_branch" position="replace"/>
+            <field name="cheque_number" position="replace"/>
+            <field name="cheque_date" position="replace"/>
+            <field name="journal_id" position="after">
+                <field name="cheque_type"/>
+                <label for="cheque_bank" string="Cheque Payment" attrs="{'invisible': [('cheque_bank','=',False)]}"/>
+                <div>
+                    <field name="cheque_bank" placeholder="Bank" class="oe_inline" width="30" attrs="{'invisible': [('cheque_type','=','')]}"/>
+                    <field name="cheque_branch" placeholder="Branch" class="oe_inline" width="10" attrs="{'invisible': [('cheque_bank','=',False)]}"/>
+                    <field name="cheque_number" placeholder="Number" class="oe_inline" width="10" attrs="{'invisible': [('cheque_bank','=',False)]}"/>
+                    <field name="cheque_date" placeholder="Date" class="oe_inline" width="10" attrs="{'invisible': [('cheque_bank','=',False)]}"/>
+                    <field name="cheque_amount" placeholder="Amount" class="oe_inline" width="10" attrs="{'invisible': [('cheque_bank','=',False)]}"/>
+                </div>
+            </field>
+
+
+
+            <!--            <field name="cheque_bank" position="attributes">-->
+            <!--                <attribute name="attrs">{'invisible': [('cheque_type','=','')]}</attribute>-->
+            <!--            </field>-->
+            <!--            <field name="cheque_date" position="after">-->
+            <!--                <field name="cheque_amount" placeholder="Amount" class="oe_inline" width="10" attrs="{'invisible': [('cheque_bank','=',False)]}"/>-->
+            <!--            </field>-->
+        </field>
+    </record>
+
+    <record id="view_account_move_form_itaas_inherit_cheque_form_button" model="ir.ui.view">
+        <field name="name">account.move.form.itaas.cheque.form.button</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <button name="action_duplicate" position="after">
+                <button type="object" name="create_cheque" string="Create Cheque" class="oe_link"/>
+            </button>
+            <field name="company_id" position="after">
+                <field name="note_text"/>
+            </field>
+        </field>
+    </record>
+
+
+</odoo>

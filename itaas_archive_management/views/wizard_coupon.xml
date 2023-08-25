@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_coupon_form_hide_archive" model="ir.ui.view">
+        <field name="name">wizard.coupon.form.inh</field>
+        <field name="model">wizard.coupon</field>
+        <field name="inherit_id" ref="wizard_coupon.view_coupon_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='toggle_active']" position="attributes">
+                <attribute name="groups">itaas_archive_management.group_archive</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
+
+</odoo>

@@ -23,6 +23,11 @@ class CarSettings(models.Model):
 
     server_token = fields.Char(string='Server Token')
 
+    extend_subject = fields.Char(string='Extend Subject')
+    extend_message = fields.Char(string='Extend Message')
+    number_of_day_extend = fields.Integer(string='Day Extension')
+    warranty_hr = fields.Integer(string='Warranty Hours')
+
     @api.model
     def create(self, vals):
         car_settings = self.env['car.settings'].search([])

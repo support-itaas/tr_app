@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!--form view for stock.picking.type-->
+    <record id="view_stock_picking_type_form" model="ir.ui.view">
+        <field name="name">stock.picking.type.form</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_picking_type_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//form/sheet/group[2]/group[2]" position="after">
+                <group string="Show On Dashboard">
+                    <field name="is_show_on_dashboard"/>
+                </group>
+            </xpath>
+
+            <field name="sequence_id" position="after">
+                <field name="real_sequence_id"/>
+            </field>
+
+        </field>
+    </record>
+
+    <record id="stock.stock_picking_type_action" model="ir.actions.act_window">
+        <field name="name">Inventory</field>
+        <field name="res_model">stock.picking.type</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="domain">[('is_show_on_dashboard','=',True)]</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a new operation type.
+            </p><p>
+            The operation type system allows you to assign each stock
+            operation a specific type which will alter its views accordingly.
+            On the operation type you could e.g. specify if packing is needed by default,
+            if it should show the customer.
+        </p>
+        </field>
+    </record>
+
+</odoo>

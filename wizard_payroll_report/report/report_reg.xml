@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="paperformat_A4_Zero_Margin_payroll_wizard" model="report.paperformat">
+            <field name="name">A4_Zero_Margin_payroll_wizard</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">5</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">20</field>
+            <field name="dpi">90</field>
+        </record>
+        <report
+                id="action_payroll_salary_wizard"
+                model="account.move"
+                menu="False"
+                report_type="qweb-pdf"
+                string="รายงานบัญชีเงินเดือน รายงวด"
+                paperformat="wizard_payroll_report.paperformat_A4_Zero_Margin_payroll_wizard"
+                name="wizard_payroll_report.payroll_salary_report"
+                file="wizard_payroll_report.payroll_salary_report"
+        />
+
+
+
+
+
+
+    </data>
+</openerp>

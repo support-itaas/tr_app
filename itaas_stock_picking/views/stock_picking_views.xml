@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="view_stock_picking_add_button" model="ir.ui.view">
+        <field name="name">stock.picking.form.add.button</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_toggle_is_locked']" position="after">
+                <button name="create_stock_picking" states="done" string="Create Stock Picking" type="object" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_stock_location_form" model="ir.ui.view">
+        <field name="name">view.stock.location.form</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='return_location']" position="after">
+                <field name="is_use"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_stock_picking_type_form_id" model="ir.ui.view">
+        <field name="name">stock.picking.type.form</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_picking_type_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='default_location_dest_id']" position="after">
+                <field name="default_cut_off"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_company_form_create_stock_picking" model="ir.ui.view">
+        <field name="name">res.company.form</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='default_purchase_discount_account_id']" position="after">
+                <field name="is_create_stock_picking"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="paperformat_A4_Zero_Margin_Mrp_repair" model="report.paperformat">
+            <field name="name">paperformat_A4_Zero_Margin_Mrp_repair</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">50</field>
+            <field name="margin_bottom">75</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">45</field>
+            <field name="dpi">90</field>
+        </record>
+        <report
+                id="mrp_repair_id_itaas"
+                model="mrp.repair"
+                menu="True"
+                report_type="qweb-pdf"
+                string="Quotation / Order"
+                paperformat="print_repair_report.paperformat_A4_Zero_Margin_Mrp_repair"
+                name="mrp_repair.report_mrprepairorder2"
+                file="mrp_repair.report_mrprepairorder2"
+        />
+
+        <!--#############################################################################################-->
+    </data>
+</odoo>

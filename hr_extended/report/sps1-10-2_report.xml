@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <template id="sps1-10-2_report_id">
+          <!--t t-foreach="docs" t-as="o"-->
+             <t t-call="report.internal_layout">
+                <!--t t-foreach="docs" t-as="o"-->
+                <div class="page" t-attf-style="background-image:url('/signature/static/sps1-10-2.jpg'); background-size:520mm 365mm; width:520mm; height:365mm;">
+                    <t t-foreach="docs" t-as="o">
+                        <t t-set="regis" t-value="o.company_id.company_registry" />
+                        <t t-set="branch" t-value="o.company_id.branch_no" />
+                        <div style="position: absolute; left: 19.5%;">
+                            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                            <font style="font-size: 22px;">
+                                <span t-field="o.company_id.name" />
+                            </font>
+                        </div>
+                        <div style="position: absolute; left: 76.5%;">
+                            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                            <font style="font-size: 22px;">
+                                <t t-if="regis">
+                                <span t-esc="regis[0]" />&amp;nbsp;&amp;nbsp;
+                                <span t-esc="regis[1]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                <span t-esc="regis[2]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                <span t-esc="regis[3]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                <span t-esc="regis[4]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                <span t-esc="regis[5]" />&amp;nbsp;&amp;nbsp;
+                                <span t-esc="regis[6]" />&amp;nbsp;&amp;nbsp;
+                                <span t-esc="regis[7]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                <span t-esc="regis[8]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                <span t-esc="regis[9]" />
+                                </t>
+                            </font>
+                        </div>
+                        <div style="position: absolute; left: 76.5%;">
+                            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                            <font style="font-size: 22px;">
+                                <t t-if="branch">
+                                <span t-esc="branch[0]" />&amp;nbsp;&amp;nbsp;
+                                <span t-esc="branch[1]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                <span t-esc="branch[2]" />&amp;nbsp;&amp;nbsp;
+                                <span t-esc="branch[3]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                <span t-esc="branch[4]" />&amp;nbsp;&amp;nbsp;
+                                <span t-esc="branch[5]" />
+                                </t>
+                            </font>
+                        </div>
+                    </t>
+
+                    <div class="col-xs-12">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                            <table class="table table-responsive">
+                                <t t-set="i" t-value="1"/>
+                                <t t-foreach="docs" t-as="o">
+                                     <t t-set="ident" t-value="o.identification_id" />
+                                    <tr>
+                                        <td class="col-xs-0.5" style="text-align: left; font-size: 24px; position: absolute; left: 10%;">
+                                            <span t-esc="i" />
+                                        </td>
+                                        <td class="col-xs-4" style="text-align: left; font-size: 24px; position: absolute; left: 14%;">
+                                            <t t-if="ident">
+                                            <span t-esc="ident[0]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            <span t-esc="ident[1]" />&amp;nbsp;&amp;nbsp;
+                                            <span t-esc="ident[2]" />&amp;nbsp;&amp;nbsp;
+                                            <span t-esc="ident[3]" />&amp;nbsp;&amp;nbsp;
+                                            <span t-esc="ident[4]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            <span t-esc="ident[5]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            <span t-esc="ident[6]" />&amp;nbsp;&amp;nbsp;
+                                            <span t-esc="ident[7]" />&amp;nbsp;&amp;nbsp;
+                                            <span t-esc="ident[8]" />&amp;nbsp;&amp;nbsp;
+                                            <span t-esc="ident[9]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            <span t-esc="ident[10]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            <span t-esc="ident[11]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            <span t-esc="ident[12]" />
+                                            </t>
+                                        </td>
+                                        <td class="col-xs-3" style="text-align: left; font-size: 24px; ">
+                                            <span t-field="o.name" />
+                                        </td>
+                                        <td class="col-xs-2" style="text-align: left; font-size: 24px; ">
+                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            <span t-field="o.contract_id.wage" />
+                                        </td>
+                                        <td class="col-xs-2" style="text-align: left; font-size: 24px; ">
+                                            &amp;nbsp;&amp;nbsp;
+                                            <span>gjhjhlj</span>
+                                        </td>
+                                        <t t-set="i" t-value="i+1"/>
+                                    </tr>
+                                </t>
+                            </table>
+                        </div>
+                </div>
+                <!--/t-->
+
+             </t>
+          <!--/t-->
+        </template>
+
+    </data>
+</openerp>
+
+<!-- position: absolute; left: 41%; position: absolute; left: 71%; position: absolute; left: 86%; -->

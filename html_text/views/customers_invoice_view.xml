@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="account_invoice_search_itaas" model="ir.ui.view">
+            <field name="name">account.invoice.search.itaas</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search/field[@name='number']" position="replace">
+                    <field name="number" string="Invoice" filter_domain="['|','|','|', '|',('number','ilike',self), ('origin','ilike',self), ('reference', 'ilike', self), ('partner_id', 'child_of', self),('name','ilike',self)]"/>
+
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

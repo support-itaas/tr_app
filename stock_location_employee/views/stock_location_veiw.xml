@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- stock.location : inherit views -->
+    <record id="view_stock_location_form_employee" model="ir.ui.view">
+        <field name="name">view.stock.location.form.employee</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//form/group" position="inside">
+                <group string="Employee Responsible">
+                    <field name="employee_id" options="{'no_create': True}"/>
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

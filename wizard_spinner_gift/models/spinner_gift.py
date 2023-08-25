@@ -10,8 +10,13 @@ class SpinnerWheelGift(models.Model):
     _description = 'Spinner Wheel Gift'
 
     sequence = fields.Integer(required=True, default=1)
-    name = fields.Char(string='Name', required=True, size=10)
+    name = fields.Char(string='Name', required=True)
+    description = fields.Char(string='Description')
+    is_limited = fields.Boolean(string='Limited',default=False)
     is_coupon = fields.Boolean(string='Is Coupon', default=False)
+    is_voucher = fields.Boolean(string='Is Voucher', default=False)
+    is_no_gift = fields.Boolean(string='No Gift', default=False)
+    voucher_amount = fields.Float(string='Voucher Amount')
     winners_ids = fields.One2many('gift.winners.list', 'gift_id', string='Winners')
     number_of_gift = fields.Integer(string='Number of Gift')
     won_gift_count = fields.Integer(string='Won Gift Count')
@@ -26,6 +31,7 @@ class SpinnerWheelGift(models.Model):
         string='Span')
     spinner_degree = fields.Char(string='Degree')
     product_id = fields.Many2one('product.product', string="Product")
+    active = fields.Boolean(string='Active',default=True)
 
 
 class ResPartner(models.Model):
@@ -35,6 +41,7 @@ class ResPartner(models.Model):
     allotted_attempts = fields.Integer(string='Allotted Attempts')
     used_attempts = fields.Integer(string='Used Attempts')
     access_token = fields.Char(string='Access token')
+    is_game_available = fields.Boolean(string='Game Available')
 
 
 class GiftWinnersList(models.Model):

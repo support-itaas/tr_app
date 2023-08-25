@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="pngd_1kor_report_id">
+            <t t-call="web.basic_layout">
+                <div class="page" t-attf-style="background-image:url('/report_hr/static/description/pngd_1kor.jpg'); background-size:365mm 520mm; width:365mm; height:520mm; font-family:Tahoma; src:url(/report_hr/static/tahoma.ttf);">
+                    <t t-set="info" t-value="get_header_info"/>
+                    <t t-set="info1" t-value="get_salary_info"/>
+                    <div class="col-xs-4" style="position: absolute; left: 28%;">
+                        <font style="font-size: 22px;">
+                            <br style="line-height: 260px"/>
+                            <t t-if="info and info['company_vat']">
+                                <t t-set="regis" t-value="info['company_vat']"/>
+                                <span t-esc="regis[0]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                <span t-esc="regis[1]"/>&amp;nbsp;
+                                <span t-esc="regis[2]"/>&amp;nbsp;
+                                <span t-esc="regis[3]"/>&amp;nbsp;
+                                <span t-esc="regis[4]"/>&amp;nbsp;&amp;nbsp;
+                                <span t-esc="regis[5]"/>&amp;nbsp;
+                                <span t-esc="regis[6]"/>&amp;nbsp;
+                                <span t-esc="regis[7]"/>&amp;nbsp;
+                                <span t-esc="regis[8]"/>&amp;nbsp;
+                                <span t-esc="regis[9]"/>&amp;nbsp;&amp;nbsp;
+                                <span t-esc="regis[10]"/>&amp;nbsp;
+                                <span t-esc="regis[11]"/>&amp;nbsp;&amp;nbsp;
+                                <span t-esc="regis[12]"/>
+                            </t>
+                        </font>
+                    </div>
+                    <div class="col-xs-4" style="position: absolute; left: 45%;">
+                        <font style="font-size: 22px;">
+                            <br style="line-height: 325px"/>
+                            <t t-if="info and info['company_branch']">
+                                <t t-set="branch" t-value="info['company_branch']"/>
+                                &amp;nbsp;
+                                <span t-esc="branch[0]"/>&amp;nbsp;
+                                <span t-esc="branch[1]"/>&amp;nbsp;
+                                <span t-esc="branch[2]"/>&amp;nbsp;
+                                <span t-esc="branch[3]"/>&amp;nbsp;
+                                <span t-esc="branch[4]"/>
+                            </t>
+                        </font>
+                    </div>
+                    <div class="col-xs-4" style="position: absolute; left: 85%;">
+                        <font style="font-size: 22px;">
+                            <br style="line-height: 310px"/>
+                            <t t-if="doc_model.date_start">
+                                <t t-set="date" t-value="time.strptime(doc_model.date_start,'%Y-%m-%d')"/>
+                                <span t-esc="date.tm_year+543"/>
+                            </t>
+                        </font>
+                    </div>
+                    <div class="col-xs-6" style="position: absolute; left: 10%;">
+                        <font style="font-size: 22px;">
+                            <br style="line-height: 361px"/>
+                            <t t-if="info and info['company_name']">
+                                <span t-esc="info['company_name']"/>
+                            </t>
+                        </font>
+                    </div>
+                    <div class="col-xs-4" style="position: absolute; left: 18%;">
+                        <br style="line-height: 400px"/>
+                        <t t-if="info and info['company_building']">
+                            <span t-esc="info['company_building']"/>&amp;nbsp;
+                        </t>
+                    </div>
+                    <div class="col-xs-4" style="position: absolute; left: 33%;">
+                        <br style="line-height: 400px"/>
+                        <font style="font-size: 22px;">
+                            <!--<t t-if="info and info['company_roomnumber']">-->
+                                <!--<span t-esc="info['company_roomnumber']"/>&amp;nbsp;-->
+                            <!--</t>-->
+                        </font>
+                    </div>
+                    <div class="col-xs-4" style="position: absolute; left: 39%;">
+                        <br style="line-height: 400px"/>
+                        <font style="font-size: 22px;">
+                            <t t-if="info and info['company_floornumber']">
+                                <span t-esc="info['company_floornumber']"/>&amp;nbsp;
+                            </t>
+                        </font>
+                    </div>
+                    <div class="col-xs-4" style="position: absolute; left: 45%;">
+                        <br style="line-height: 400px"/>
+                        <font style="font-size: 22px;">
+                            <t t-if="info and info['company_village']">
+                                <span t-esc="info['company_village']"/>&amp;nbsp;
+                            </t>
+                        </font>
+                    </div>
+                    <div class="col-xs-4" style="position: absolute; left: 13%;">
+                        <br style="line-height: 439px"/>
+                        <font style="font-size: 22px;">
+                            <t t-if="info and info['company_roomnumber']">
+                                <span t-esc="info['company_roomnumber']"/>&amp;nbsp;
+                            </t>
+                            <!--<t t-if="info and info['company_house_number']">-->
+                                <!--<span t-esc="info['company_house_number']"/>&amp;nbsp;-->
+                            <!--</t>-->
+                        </font>
+                    </div>
+                    <div class="col-xs-4" style="position: absolute; left: 27%;">
+                        <br style="line-height: 439px"/>
+                        <font style="font-size: 22px;">
+                            <t t-if="info and info['company_moo_number']">
+                                <span t-esc="info['company_moo_number']"/>&amp;nbsp;
+                            </t>
+                        </font>
+                    </div>
+                    <div class="col-xs-4" style="position: absolute; left: 36%;">
+                        <br style="line-height: 439px"/>
+                        <font style="font-size: 22px;">
+                            <t t-if="info and info['company_soi_number']">
+                                <span t-esc="info['company_soi_number']"/>&amp;nbsp;
+                            </t>
+                        </font>
+                    </div>
+                    <div class="col-xs-4" style="position: absolute; left: 13%;">
+                        <br style="line-height: 474px"/>
+                        <font style="font-size: 22px;">
+                            <!--                            <span t-field="o.company_id.street"/>&amp;nbsp;-->
+                        </font>
+                    </div>
+                    <div class="col-xs-4" style="position: absolute; left: 36%;">
+                        <br style="line-height: 474px"/>
+                        <font style="font-size: 22px;">
+                            <span t-esc="info['company_tumbon']"/>
+                            <t t-if="info and info['company_street2']">
+                                <span t-esc="info['company_street2']"/>&amp;nbsp;
+                            </t>
+                        </font>
+                    </div>
+                    <div class="col-xs-4" style="position: absolute; left: 16%;">
+                        <br style="line-height: 510px"/>
+                        <font style="font-size: 22px;">
+                            <t t-if="info and info['company_city']">
+                                <span t-esc="info['company_city']"/>&amp;nbsp;
+                            </t>
+                        </font>
+                    </div>
+                    <div class="col-xs-4" style="position: absolute; left: 37%;">
+                        <br style="line-height: 510px"/>
+                        <font style="font-size: 22px;">
+                            <t t-if="info and info['company_province']">
+                                <span t-esc="info['company_province']"/>&amp;nbsp;
+                            </t>
+                        </font>
+                    </div>
+                    <div class="col-xs-4" style="position: absolute; left: 18%;">
+                        <br style="line-height: 540px"/>
+                        <font style="font-size: 22px;">
+                            <t t-if="info and info['company_code']">
+                                <t t-set="zipcode" t-value="info['company_code']"/>
+                                <span t-esc="zipcode[0]"/>&amp;nbsp;
+                                <span t-esc="zipcode[1]"/>
+                                <span t-esc="zipcode[2]"/>&amp;nbsp;
+                                <span t-esc="zipcode[3]"/>&amp;nbsp;
+                                <span t-esc="zipcode[4]"/>&amp;nbsp;
+                            </t>
+                        </font>
+                    </div>
+                    <div style="position: absolute; left: 59%;">
+                        <br style="line-height: 448px"/>
+                        <font style="font-size: 30px;">
+                            ✓
+                        </font>
+                    </div>
+
+                    <!-- 1 -->
+                    <div style="position: absolute; right: 42%;">
+                        <br style="line-height: 1020px"/>
+                        <font style="font-size: 22px;">
+                            <span t-esc="'{0:,.0f}'.format(int(info1['sum_tax_no_employee']))"/>
+                        </font>
+                    </div>
+                    <div style="position: absolute; right: 25%;">
+                        <br style="line-height: 1020px"/>
+                        <font style="font-size: 22px;">
+                            <span t-esc="'{0:,.2f}'.format(float(info1['sum_salary']))"/>
+                        </font>
+                    </div>
+                    <div style="position: absolute; right: 9%;">
+                        <br style="line-height: 1020px"/>
+                        <font style="font-size: 22px;">
+                            <span t-esc="'{0:,.2f}'.format(float(info1['sum_tax_employee']))"/>
+                        </font>
+                    </div>
+
+                    <!-- 2 -->
+                    <div style="position: absolute; right: 42%;">
+                        <br style="line-height: 1340px"/>
+                        <font style="font-size: 22px;">
+                            <span t-esc="'{0:,.0f}'.format(int(info1['sum_tax_no_employee']))"/>
+                        </font>
+                    </div>
+                    <div style="position: absolute; right: 25%;">
+                        <br style="line-height: 1340px"/>
+                        <font style="font-size: 22px;">
+                            <span t-esc="'{0:,.2f}'.format(float(info1['sum_salary']))"/>
+                        </font>
+                    </div>
+                    <div style="position: absolute; right: 9%;">
+                        <br style="line-height: 1340px"/>
+                        <font style="font-size: 22px;">
+                            <span t-esc="'{0:,.2f}'.format(float(info1['sum_tax_employee']))"/>
+                        </font>
+                    </div>
+
+                </div>
+            </t>
+        </template>
+    </data>
+</openerp>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="mt_overtime_submit" model="mail.message.subtype">
+            <field name="name">Overtime Submit</field>
+            <field name="res_model">hr.overtime</field>
+            <field name="default" eval="True"/>
+            <field name="description">Request Overtime ,Please approve</field>
+        </record>
+
+        <record id="mt_overtime_approve" model="mail.message.subtype">
+            <field name="name">Overtime Approve</field>
+            <field name="res_model">hr.overtime</field>
+            <field name="default" eval="True"/>
+            <field name="description">Request Overtime Approved</field>
+        </record>
+
+    </data>
+
+</odoo>

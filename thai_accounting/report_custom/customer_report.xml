@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <template id="customer_report_id">
+
+             <t t-call="report.internal_layout">
+                <div class="page">
+                    <t t-set="i" t-value="1"/>
+                    <t t-foreach="docs" t-as="doc">
+                        <div style="text-align:left">
+                            <font style="font-size: 22px;">
+                                <t t-if="i == 1" >
+                                    <t t-set="company" t-value="doc.company_id.name" />
+                                    <strong><span t-esc="company" /></strong>
+                                </t>
+                                <t t-set="i" t-value="i+1"/>
+                            </font>
+                        </div>
+                    </t>
+                    <div style="text-align:left">
+                        <font style="font-size: 24px;">
+                            <strong><span>รายงานชื่อลูกค้า ที่อยู่และผู้ติดต่อ ทุกสาขา</span></strong>
+                        </font>
+                    </div>
+                    <div style="text-align:left">
+                        <h4>
+                            <strong><span>** เงื่อนไขในการแสดงรายงาน **</span></strong><br/>
+                            &amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <!--<span>ประเภทลูกหนี้ : </span><span>ยังไม่มีข้อมูล</span>-->
+                        </h4>
+                    </div>
+                    <h4>
+                        <table class="table table-responsive">
+                            <tr>
+                                <td style="text-align:center" width="50%">รหัส:ชื่อลูกค้า</td>
+                                <td style="text-align:center" width="10%">รหัสลงบัญชี</td>
+                                <td style="text-align:center" width="20%">หมายเหตุ</td>
+                                <td style="text-align:center" width="20%">ผู้ติดต่อ</td>
+                            </tr>
+                            <t t-foreach="docs" t-as="o">
+                                <t t-if="not o.child_ids">
+                                    <tr>
+                                        <td style="text-align:left"><span t-field="o.ref"/>&amp;nbsp;<span>:</span>&amp;nbsp;<span t-field="o.name" /><br/>
+                                            &amp;nbsp;&amp;nbsp;<span t-field="o.street" />&amp;nbsp;<span t-field="o.street2" />&amp;nbsp;
+                                            <span t-field="o.city" />&amp;nbsp;<span t-field="o.state_id.name" />&amp;nbsp;<span t-field="o.zip" /><br/>
+                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;<span>เลขประจำตัวผู้เสียภาษี : </span><span t-field="o.vat" /> </td>
+                                        <td style="text-align:center"><span t-field="o.property_account_receivable_id.code" /></td>
+                                        <td style="text-align:center"><span t-field="o.comment" /></td>
+                                        <td style="text-align:center"><span /></td>
+                                    </tr>
+                                </t>
+                                <t t-if="o.child_ids">
+                                    <tr>
+                                        <td style="text-align:left"><b><span t-field="o.ref"/>&amp;nbsp;<span>:</span>&amp;nbsp;<span t-field="o.name" /></b>><br/>
+                                            &amp;nbsp;&amp;nbsp;<span t-field="o.street" />&amp;nbsp;<span t-field="o.street2" />&amp;nbsp;
+                                            <span t-field="o.city" />&amp;nbsp;<span t-field="o.state_id.name" />&amp;nbsp;<span t-field="o.zip" /><br/>
+                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;<span>เลขประจำตัวผู้เสียภาษี : </span><span t-field="o.vat" /> </td>
+                                        <td style="text-align:center"><span t-field="o.property_account_receivable_id.code" /></td>
+                                        <td style="text-align:center"><span t-field="o.comment" /></td>
+                                        <td style="text-align:center"><span /></td>
+                                    </tr>
+                                    <t t-foreach="o.child_ids" t-as="l">
+                                        <t t-if="l.type == 'delivery'">
+                                            <tr>
+                                                <td style="text-align:left"><span t-field="l.branch_code"/>&amp;nbsp;<span>:</span>&amp;nbsp;<span t-field="l.name" /><br/>
+                                                    &amp;nbsp;&amp;nbsp;<span t-field="l.street" />&amp;nbsp;<span t-field="l.street2" />&amp;nbsp;
+                                                    <span t-field="l.city" />&amp;nbsp;<span t-field="l.state_id.name" />&amp;nbsp;<span t-field="l.zip" /><br/>
+                                                    &amp;nbsp;&amp;nbsp;&amp;nbsp;<span>เลขประจำตัวผู้เสียภาษี : </span><span t-field="l.parent_id.vat" /> </td>
+                                                <td style="text-align:center"><span t-field="l.parent_id.property_account_receivable_id.code" /></td>
+                                                <td style="text-align:center"><span t-field="o.comment" /></td>
+                                                <td style="text-align:center"><span /></td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </t>
+                            </t>
+                        </table>
+                    </h4>
+
+                </div>
+              </t>
+
+        </template>
+        
+    </data>
+</openerp>

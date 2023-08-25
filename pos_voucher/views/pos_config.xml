@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="pos_config_voucher">
+            <field name="name">pos.config.voucher</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="inside">
+                    <group string="Voucher Management">
+                        <group>
+                            <field name="scan_voucher"/>
+                            <field name="expired_days_voucher"/>
+                            <field name="print_voucher"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

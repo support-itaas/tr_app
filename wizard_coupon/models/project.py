@@ -11,6 +11,7 @@ from odoo.exceptions import UserError
 
 class Task(models.Model):
     _inherit = "project.task"
+    _order = "date_deadline desc"
 
     coupon_id = fields.Many2one('wizard.coupon', string='Coupon', readonly=True)
     plate_number_id = fields.Many2one('car.details', string='Plate Number', readonly=True)
@@ -172,6 +173,14 @@ class Task(models.Model):
                     task_child.state = 'done'
                     if done_state:
                         task.stage_id = done_state.id
+
+            #temporary remove by JA 19/08/2021
+            # if task.picking_id:
+            #     if task.picking_id.state == 'assigned':
+            #         task.picking_id.force_assign()
+            #         task.picking_id.button_validate()
+            #         if task.coupon_id:
+            #             task.coupon_id.picking_immediate_process(task.picking_id)
 
     @api.multi
     def button_cancel(self):

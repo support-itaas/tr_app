@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="envelope_res_partner_report_id" >
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                    <div style="position: absolute; top:120px; left:700px; width:900px; font-family:TH SarabunPSK; src:url(/itaas_print_invoice_report/static/THSarabun.ttf);">
+                        <font style="font-size: 28px;">
+                            <span>กรุณาส่ง</span> <span t-field="o.to_envelope"/>
+                        </font>
+                    </div>
+                    <div style="position: absolute; top:160px; left:770px; width:900px; font-family:TH SarabunPSK; src:url(/itaas_print_invoice_report/static/THSarabun.ttf);">
+                        <font style="font-size: 28px;">
+                            <span></span><span t-field="o.name"/>
+                        </font>
+                    </div>
+                    <div style="position: absolute; top:200px; left:770px; width:1000px; font-family:TH SarabunPSK; src:url(/itaas_print_invoice_report/static/THSarabun.ttf);">
+                        <font style="font-size: 28px;">
+
+                            <t t-if="o.street"><span t-field="o.street"/></t>
+                            <t t-if="o.street2"><span t-field="o.street2"/>&amp;nbsp;</t><br/>
+                            <span t-if="o.sub_district_id.name and o.state_id.code == 'BKK'">แขวง<span t-field="o.sub_district_id.name"/>&amp;nbsp;</span>
+                            <span t-if="o.sub_district_id.name and o.state_id.code != 'BKK'">ต.<span t-field="o.sub_district_id.name"/>&amp;nbsp;</span>
+                            <span t-if="o.district_id.name and o.state_id.code == 'BKK'">เขต<span t-field="o.district_id.name"/>&amp;nbsp;</span>
+                            <span t-if="o.district_id.name and o.state_id.code != 'BKK'">อ.<span t-field="o.district_id.name"/>&amp;nbsp;</span><br/>
+                            <span t-if="o.city and o.state_id and o.state_id.code == 'BKK'"><span t-field="o.city"/></span>
+                            <span t-if="o.city and o.state_id and o.state_id.code != 'BKK'"><span t-field="o.city"/></span>
+                            <span t-if="o.state_id.name and o.state_id.code == 'BKK'"><span t-field="o.state_id.name"/>&amp;nbsp;</span>
+                            <span t-if="o.state_id.name and o.state_id.code != 'BKK'">จ.<span t-field="o.state_id.name"/>&amp;nbsp;</span><br/>
+                            <t t-if="o.zip"><span t-esc="o.zip"/>&amp;nbsp;</t>
+                        </font>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <record id="paperformat_envelope" model="report.paperformat">
+        <field name="name">envelope_Zero_Margin</field>
+        <field name="default" eval="False"/>
+        <field name="format">custom</field>
+        <field name="page_height">240</field>
+        <field name="page_width">108</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">5</field>
+        <field name="dpi">90</field>
+    </record>
+    <report
+            id="envelope_res_partner_report"
+            model="res.partner"
+            menu="True"
+            report_type="qweb-pdf"
+            string="จดหมาย"
+            paperformat="itaas_print_res_partner.paperformat_envelope"
+            name="itaas_print_res_partner.envelope_res_partner_report_id"
+            file="itaas_print_res_partner.envelope_res_partner_report_id"
+    />
+
+
+</odoo>

@@ -1,0 +1,22 @@
+<odoo>
+
+	<record id="view_product_template_stock_bom_form_inherit" model="ir.ui.view">
+		<field name="name">product.template.form.inherit</field>
+		<field name="model">product.template</field>
+		<field name="inherit_id" ref="product.product_template_form_view"/>
+		<field name="arch" type="xml">
+			<xpath expr="//div[@name='options']" position="after">
+				<div name="select_stock_bom">
+					<div>
+						<field name="select_stock_bom"/>
+						<label for="select_stock_bom" string="Show Stock Bom"/>
+					</div>
+				</div>
+			</xpath>
+
+			<xpath expr="//field[@name='type']" position="after">
+				<field name="meter_type" widget="many2many_tags"/>
+			</xpath>
+		</field>
+	</record>
+</odoo>

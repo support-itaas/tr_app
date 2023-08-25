@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2019 Eficent Business and IT Consulting Services S.L.
+     Serpent Consulting Services Pvt. Ltd.
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl-3.0) -->
+<odoo>
+
+    <record id="ir_rule_purchase_order_allowed_operating_units"
+            model="ir.rule">
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="domain_force">['|',('operating_unit_id','=',False),('operating_unit_id','in',[g.id for g in user.operating_unit_ids])]</field>
+        <field name="name">Purchase Orders from allowed operating units</field>
+        <field name="global" eval="True"/>
+        <field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>
+    </record>
+
+    <record id="ir_rule_purchase_order_line_allowed_operating_units"
+            model="ir.rule">
+        <field name="model_id" ref="purchase.model_purchase_order_line"/>
+        <field name="domain_force">['|',('operating_unit_id','=',False),('operating_unit_id','in',[g.id for g in user.operating_unit_ids])]</field>
+        <field name="name">Purchase Order lines from allowed operating units</field>
+        <field name="global" eval="True"/>
+        <field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>
+    </record>
+
+    <record id="ir_rule_purchase_report_allowed_operating_units"
+            model="ir.rule">
+        <field name="model_id" ref="purchase.model_purchase_report"/>
+        <field name="domain_force">['|',('operating_unit_id','=',False),('operating_unit_id','in',[g.id for g in user.operating_unit_ids])]</field>
+        <field name="name">Purchase Report from allowed operating units</field>
+        <field name="global" eval="True"/>
+        <field eval="0" name="perm_unlink"/>
+        <field eval="0" name="perm_write"/>
+        <field eval="1" name="perm_read"/>
+        <field eval="0" name="perm_create"/>
+    </record>
+
+</odoo>

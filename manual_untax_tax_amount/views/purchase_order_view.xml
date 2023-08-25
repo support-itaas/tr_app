@@ -1,0 +1,43 @@
+<odoo>
+    <record id="purchase_order_form_more_field_itaas" model="ir.ui.view">
+        <field name="name">purchase.order.form.add.itaas</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <field name="origin" position="after">
+                <field name="is_manual_amount"/>
+                <field name="new_amount_untaxed" attrs="{'invisible': [('is_manual_amount','=',False)]}"/>
+                <field name="new_amount_tax" attrs="{'invisible': [('is_manual_amount','=',False)]}"/>
+                <field name="new_amount_total" attrs="{'invisible': [('is_manual_amount','=',False)]}"/>
+                <button name="apply_price" string="Apply Price" type="object" attrs="{'invisible': [('is_manual_amount','=',False)]}"/>
+            </field>
+        </field>
+    </record>
+
+<!--    -->
+<!--    <record id="stock_picking_type_add_more_field_itaas" model="ir.ui.view">-->
+<!--        <field name="name">stock.picking.type.form.add.itaas</field>-->
+<!--        <field name="model">stock.picking.type</field>-->
+<!--        <field name="inherit_id" ref="stock.view_picking_type_form"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <field name="sequence_id" position="after">-->
+<!--                <field name="new_sequence_id" />-->
+<!--            </field>-->
+<!--        </field>-->
+<!--    </record>-->
+
+
+
+<!--    <record id="vpicktree_itaas_picking_number" model="ir.ui.view">-->
+<!--        <field name="name">stock.vpicktree.tree.views.itaas.inherit</field>-->
+<!--        <field name="model">stock.picking</field>-->
+<!--        <field name="inherit_id" ref="stock.vpicktree"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <field name="name" position="after">-->
+<!--                <field name="picking_number" />-->
+<!--            </field>-->
+<!--        </field>-->
+<!--    </record>-->
+
+
+</odoo>

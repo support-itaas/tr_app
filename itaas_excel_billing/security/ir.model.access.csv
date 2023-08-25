@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_customer_billing_excel,customer_billing_excel,itaas_excel_billing.model_customer_billing_excel,base.group_user,1,1,1,1
+access_customer_billing_export,customer_billing_export,itaas_excel_billing.model_customer_billing_export,base.group_user,1,1,1,1

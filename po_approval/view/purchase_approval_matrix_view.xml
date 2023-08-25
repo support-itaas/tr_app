@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_purchase_approval_matrix_form" model="ir.ui.view">
+        <field name="name">purchase.approval.matrix.form</field>
+        <field name="model">purchase.approval.matrix</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+
+                        <field name="type"/>
+                        <field name="purchase_type"/>
+                        <field name="max_amount"/>
+                        <field name="group_id"/>
+                        <field name="order"/>
+                        <button name="fix_warehouse" string="fix warehouse" type="object"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_purchase_approval_matrix_tree" model="ir.ui.view">
+        <field name="name">purchase.approval.matrix.tree</field>
+        <field name="model">purchase.approval.matrix</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="type"/>
+                <field name="purchase_type"/>
+                <field name="max_amount"/>
+                <field name="group_id"/>
+                <field name="order"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--#################-->
+
+    <record id="view_purchase_type_form" model="ir.ui.view">
+        <field name="name">purchase.type.form</field>
+        <field name="model">purchase.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                        </group>
+                        <group>
+                            <field name="user_ids" widget="many2many_tags" string="Default User Email"/>
+                            <field name="user_ids_2_level" widget="many2many_tags" string="Default User Email 2"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_purchase_type_tree" model="ir.ui.view">
+        <field name="name">purchase.type.tree</field>
+        <field name="model">purchase.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--###########################-->
+    <record id="view_groups_form_order" model="ir.ui.view">
+        <field name="name">res.groups.form</field>
+        <field name="model">res.groups</field>
+        <field name="inherit_id" ref="base.view_groups_form"/>
+        <field name="arch" type="xml">
+            <field name="share" position="after">
+                <field name="order"/>
+            </field>
+        </field>
+    </record>
+
+    <act_window id="action_purchase_approval_matrix"
+                name="Purchase Approval Matrix"
+                res_model="purchase.approval.matrix"
+                view_mode="tree,form"/>
+
+    <menuitem id="menu_purchase_approval_matrix"
+              name="Purchase Approval Matrix"
+              parent="purchase.menu_purchase_config"
+              action="action_purchase_approval_matrix"/>
+
+    <act_window id="action_purchase_type"
+                name="Purchase Type"
+                res_model="purchase.type"
+                view_mode="tree,form"/>
+
+    <menuitem id="menu_purchase_type"
+              name="Purchase Type"
+              parent="purchase.menu_purchase_config"
+              action="action_purchase_type"/>
+
+
+
+
+    <!-- -->
+    <!--<record id="view_purchase_request_inherit" model="ir.ui.view">-->
+        <!--<field name="name">purchase.request.form.inherit</field>-->
+        <!--<field name="model">purchase.request</field>-->
+        <!--<field name="inherit_id" ref="purchase_request.view_purchase_request_search"/>-->
+        <!--<field name="arch" type="xml">-->
+            <!--<field name="state" position="after">-->
+                <!--&lt;!&ndash;<field name="approve_date" string="Approve Date"/>&ndash;&gt;-->
+                <!--<filter string="Date" domain="[]" context="{'group_by':'date:day'}"/>-->
+                <!--<filter name="approve_date" string="Approve Date"  domain="[]" help="Approve Date to me"/>-->
+            <!--</field>-->
+        <!--</field>-->
+    <!--</record>-->
+
+</odoo>

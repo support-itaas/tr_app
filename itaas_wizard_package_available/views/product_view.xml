@@ -15,4 +15,12 @@
             </xpath>
         </field>
     </record>
+
+    <record model="ir.rule" id="product_package_rule">
+        <field name="name">Package by Branch rule</field>
+        <field name="model_id" ref="model_product_product"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">['|',('is_limit_branch','=',False),('available_branch','in',user.operating_unit_ids.ids)]</field>
+    </record>
+
 </odoo>

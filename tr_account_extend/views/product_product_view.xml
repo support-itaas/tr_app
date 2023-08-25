@@ -1,0 +1,17 @@
+<odoo>
+
+	<record id="product_normal_form_view_old" model="ir.ui.view">
+		<field name="name">product.product.form.form.exta.old</field>
+		<field name="model">product.product</field>
+		<field name="inherit_id" ref="product.product_normal_form_view"/>
+		<field name="arch" type="xml">
+			<field name="type" position="after">
+				<field name="is_extra_old"/>
+			</field>
+			<field name="property_account_income_id" position="after">
+				<button name="apply_account" string="Apply Account" type="object"/>
+			</field>
+		</field>
+	</record>
+
+</odoo>

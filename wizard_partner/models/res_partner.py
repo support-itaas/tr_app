@@ -8,6 +8,52 @@ import math
 import random
 import http.client, urllib.parse
 from odoo.addons import decimal_precision as dp
+from odoo.exceptions import UserError
+from dateutil.relativedelta import relativedelta
+
+from datetime import datetime, date
+
+def strToDate(dt):
+    return date(int(dt[0:4]), int(dt[5:7]), int(dt[8:10]))
+
+class CarDetails(models.Model):
+    _name = "car.details"
+    _description = 'Adding Car Plate Number'
+
+    name = fields.Char(string="Plate Number", required=True)
+    partner_id = fields.Many2one('res.partner')
+    is_primary = fields.Boolean(string="Primary", default=False)
+    state_id = fields.Many2one('res.country.state', string='State')
+
+    active = fields.Boolean('Active', default=True)
+
+    @api.onchange('is_primary')
+    def _is_primary_onchange(self):
+        flag = 0
+        for car in self.partner_id.car_ids:
+            if car.is_primary:
+                flag = flag + 1
+                if flag > 1:
+                    raise UserError(_('You have already selected a car as primary'))
+
+
+class StarLevel(models.Model):
+    _name = "star.level"
+    _description = 'Star Level'
+
+    name = fields.Char("Name", required=True)
+    from_point = fields.Float(string='From', required=True)
+    to_point = fields.Float(string='To', required=True)
+    number = fields.Integer(string='Number')
+
+
+class SmsSignupMobile(models.Model):
+    _name = "sms.signup.mobile"
+    _description = "Stores signup details for verification."
+
+    mobile = fields.Char(string="Mobile")
+    otp = fields.Char(string="OTP")
+    otp_sent_time = fields.Datetime(string="OTP Sent Time")
 
 
 class ResPartner(models.Model):
@@ -29,7 +75,10 @@ class ResPartner(models.Model):
     car_ids = fields.One2many('car.details', 'partner_id', string='Plate Number')
     membership_type_id = fields.Many2one('membership.type', string='Membership Type',
                                          compute='_compute_membership_type_id')
-    membership_type_color = fields.Char(string="Color", related='membership_type_id.color', readonly=True)
+    # membership_type_id = fields.Many2one('membership.type', string='Membership Type',
+    #                                      compute='_compute_membership_type_id')
+    # membership_type_color = fields.Char(string="Color", related='membership_type_id.color', readonly=True,store=True)
+    membership_type_color = fields.Char(string="Color", related='membership_type_id.color')
     plate_id = fields.Many2one('car.details', string="Plate No", compute='_compute_plate_id')
     password = fields.Char("Password")
     user_credential = fields.Char("User Credential")
@@ -42,6 +91,7 @@ class ResPartner(models.Model):
     ], default='not_signup')
     last_service = fields.Date("Last Service", compute='_compute_last_service')
     total_order_amount = fields.Monetary(compute='_compute_total_order_amount', string="Amount")
+    # points = fields.Float(string='Points', compute='_compute_total_points',store=True)
     points = fields.Float(string='Points', compute='_compute_total_points')
     stars = fields.Integer('Star Level', compute='_compute_star_level')
     country_id = fields.Many2one('res.country', string='Country', default=_default_country_id)
@@ -52,6 +102,28 @@ class ResPartner(models.Model):
 
     next_level_diff = fields.Float(string='Next Level Difference', compute='_compute_next_level_difference')
     next_level_name = fields.Char(string='Next Level Name')
+    ###new member compute#
+    pos_order_ids = fields.One2many('pos.order','partner_id',domain=[('state', 'in', ('paid','done','invoiced'))],string='POS Order')
+    # membership_level = fields.Many2one('membership.type', string='Membership Level',
+    #                                      compute='get_member_status',store=True)
+    # membership_valid_start_date = fields.Date(string='Validate Start Date')
+    # membership_valid_end_date = fields.Date(string='Validate End Date',compute='compute_end_date',store=True)
+    # membership_level_color = fields.Char(string="Color", related='membership_level.color')
+    # membership_level_sequence = fields.Integer(string="Sequence", related='membership_level.sequence',store=True)
+    # last_order_date = fields.Datetime(string='Last Order Date',compute='get_member_status',store=True)
+
+    membership_level = fields.Many2one('membership.type', string='Membership Level')
+    membership_valid_start_date = fields.Date(string='Validate Start Date')
+    membership_valid_end_date = fields.Date(string='Validate End Date')
+    membership_level_color = fields.Char(string="Color", related='membership_level.color')
+    membership_level_sequence = fields.Integer(string="Sequence", related='membership_level.sequence')
+    last_order_date = fields.Datetime(string='Last Order Date')
+
+    @api.depends('membership_valid_start_date')
+    def compute_end_date(self):
+        for partner in self:
+            if partner.membership_valid_start_date:
+                partner.membership_valid_end_date = strToDate(partner.membership_valid_start_date) + relativedelta(days=365)
 
     @api.model
     def create_from_app_new(self, vals):
@@ -183,9 +255,9 @@ class ResPartner(models.Model):
                         return False
         return True
 
-    _constraints = [
-        (_check_user_credential, 'User credential must be unique ', []),
-    ]
+    # _constraints = [
+    #     (_check_user_credential, 'User credential must be unique ', []),
+    # ]
 
     @api.multi
     @api.depends('last_service')
@@ -205,9 +277,22 @@ class ResPartner(models.Model):
     @api.multi
     def _compute_total_points(self):
         for partner in self:
-            orders = self.env['pos.order'].search([('partner_id', '=', partner.id)])
+            from_date = date.today() + relativedelta(days=-365)
+            print ('FROM date', from_date)
+            orders = self.env['pos.order'].search(
+                [('partner_id', '=', partner.id), ('date_order', '>=', str(from_date))])
+
+            # orders = self.env['pos.order'].search([('partner_id', '=', partner.id)])
+            # car_settings = self.env['car.settings'].search([])
+
+            point_equal_amount = 100
             for order in orders:
-                partner.points = partner.points + order.points
+                if point_equal_amount != 0 and order.state != 'draft':
+                    new_point = (order.amount_total / point_equal_amount)
+                else:
+                    new_point = 0.00
+                partner.points = partner.points + new_point
+                partner._compute_membership_type_id()
 
     @api.multi
     def _compute_star_level(self):
@@ -224,8 +309,9 @@ class ResPartner(models.Model):
             partner.next_level_diff = next_level.from_point - partner.points
             partner.next_level_name = next_level.name
 
+
     @api.multi
-    @api.depends('membership_type_id')
+    @api.depends('membership_type_id','points')
     def _compute_membership_type_id(self):
         for partner in self:
             membership_types = self.env['membership.type'].search([])
@@ -233,17 +319,133 @@ class ResPartner(models.Model):
                 if (membership_type.point_from <= partner.points) and (membership_type.point_to >= partner.points) or (
                         (membership_type.amount_from <= partner.total_order_amount) and (
                         membership_type.amount_to >= partner.total_order_amount)):
+
+                    print ('partner.total_order_amount',partner.total_order_amount)
+                    print ('partner.points', partner.points)
+                    print('membership_type', membership_type.name)
+                    print ('membership_type',membership_type.color)
+                    # partner.update({'membership_type_id': membership_type.id})
                     partner.membership_type_id = membership_type.id
+
+    @api.multi
+    @api.depends('pos_order_ids', 'pos_order_ids.state')
+    def get_member_status(self):
+        for partner in self:
+            # print ('CURRENT LEVEL:',partner.membership_level.name)
+            point_equal_amount = 100
+            if partner.membership_valid_start_date:
+                from_date = partner.membership_valid_start_date
+            else:
+                from_date = date.today() + relativedelta(days=-365)
+
+            print('FROM date', from_date)
+            if partner.last_order_date:
+                orders = self.env['pos.order'].search(
+                    [('partner_id', '=', partner.id),('state', 'in', ('paid','done','invoiced')),('date_order', '>', partner.last_order_date)])
+                new_point = 0
+                for order in orders:
+                    if point_equal_amount != 0 and order.state != 'draft':
+                        new_point += (order.amount_total / point_equal_amount)
+                    else:
+                        new_point = 0.00
+
+                partner.points += new_point
+            else:
+                orders = self.env['pos.order'].search(
+                    [('partner_id', '=', partner.id), ('state', 'in', ('paid', 'done', 'invoiced')),
+                     ('date_order', '>=', str(from_date))])
+
+                new_point = 0
+                for order in orders:
+                    if point_equal_amount != 0 and order.state != 'draft':
+                        new_point += (order.amount_total / point_equal_amount)
+                    else:
+                        new_point = 0.00
+
+                partner.points = new_point
+
+            if partner.pos_order_ids:
+                partner.last_order_date = partner.pos_order_ids.sorted(key=lambda r: r.id)[-1].date_order
+            else:
+                partner.last_order_date = False
+
+            membership_types = self.env['membership.type'].search([('point_from','<=',new_point),('point_to','>=',new_point)],limit=1)
+            # partner.membership_level = membership_types.id
+            # partner.membership_valid_start_date = date.today()
+            # partner.membership_valid_end_date = date.today() + relativedelta(days=365)
+
+            if membership_types.sequence > partner.membership_level_sequence:
+                print ('membership_type.sequence',membership_types.sequence)
+                print('partner.membership_level.sequence', partner.membership_level.sequence)
+                print('partner.membership_level.new', membership_types.point_to)
+                print('partner.membership_level.current name', partner.membership_level.name)
+
+            else:
+                print ("Reduce level, ignore")
+
+
+
+    def reset_member_status(self):
+        # partner_ids = self.env['res.partner'].search([('membership_valid_end_date','!=',False),('membership_valid_end_date','<',str(date.today()))])
+        # partner_ids = self.env['res.partner'].search(
+        #     [('membership_level', '=', False), ('is_a_member', '=', True), ('pos_order_ids', '!=', False)], limit=2000)
+
+        partner_ids = self.env['res.partner']
+        for partner_id in self:
+            if partner_id not in partner_ids:
+                partner_ids += partner_id
+
+        for partner in partner_ids:
+            if partner.membership_valid_start_date:
+                from_date = partner.membership_valid_start_date
+            else:
+                from_date = date.today() + relativedelta(days=-365)
+
+            # print('FROM date', from_date)
+            #more that from date
+            orders = self.env['pos.order'].search(
+                [('partner_id', '=', partner.id), ('state', 'in', ('paid', 'done', 'invoiced')),
+                 ('date_order', '>', str(from_date))])
+
+
+            if partner.pos_order_ids:
+                partner.last_order_date = partner.pos_order_ids.sorted(key=lambda r: r.id)[-1].date_order
+            else:
+                partner.last_order_date = False
+
+            point_equal_amount = 100
+            new_point = 0
+            for order in orders:
+                if point_equal_amount != 0 and order.state != 'draft':
+                    new_point += (order.amount_total / point_equal_amount)
+                else:
+                    new_point = 0.00
+
+            partner.points = new_point
+            print ('NEW POINT',new_point)
+            membership_types = self.env['membership.type'].search([])
+            for membership_type in membership_types:
+                if (membership_type.point_from <= partner.points) and (membership_type.point_to >= partner.points):
+
+                    print ('membership_type',membership_type.name)
+                    partner.membership_level = membership_type.id
+                    if partner.last_order_date:
+                        partner.membership_valid_start_date = strToDate(partner.last_order_date)
+                        partner.membership_valid_end_date = strToDate(partner.last_order_date) + relativedelta(days=365)
 
     @api.multi
     @api.depends('total_order_amount')
     def _compute_total_order_amount(self):
         total_order_amount = 0
         for partner in self:
-            orders = self.env['pos.order'].search([('partner_id', '=', partner.id)])
+            # current = date.today()
+            from_date = date.today() + relativedelta(days=-365)
+            print ('FROM date',from_date)
+            orders = self.env['pos.order'].search([('partner_id', '=', partner.id),('date_order', '>=', str(from_date))])
             for order in orders:
                 total_order_amount = total_order_amount + order.amount_total
             partner.total_order_amount = total_order_amount
+            partner._compute_membership_type_id()
 
     @api.multi
     def name_get(self):
@@ -291,112 +493,87 @@ class ResPartner(models.Model):
             return {'status': 'Incorrect Mobile Number'}
 
     @api.multi
-    def generate_otp_new(self, mobile, source, PARTNER_ID, NEW_MOBILE):
-        mobile1 = False
-        new_mob = self.env['res.partner'].search([('mobile', '=', NEW_MOBILE)])
-        the_partner = self.env['res.partner'].browse(PARTNER_ID)
-        if the_partner and source == 'CHANGE':
-            if not mobile and not NEW_MOBILE:
-                return {'status': 'INVALID DATA'}
-            if not mobile and NEW_MOBILE:
-                if new_mob:
-                    return {'status': 'Mobile Number Already Registered With Another User '}
-                else:
-                    mobile1 = NEW_MOBILE
-            if mobile and NEW_MOBILE:
-                if the_partner.mobile == mobile:
-                    if new_mob:
-                        return {'status': 'Mobile Already Registered With Another User '}
-                    mobile1 = NEW_MOBILE
-
-                else:
-                    return {'status': 'User Registered With Another Number'}
-
+    def generate_otp_new(self, mobile, source):
         partner = self.env['res.partner'].search([('mobile', '=', mobile)])
         if not partner and source == 'Forget':
             return {'status': 'INVALID_NUMBER'}
         if partner and source == 'Signup':
             return {'status': 'ALREADY_REG'}
-        if mobile1:
-            mobile = mobile1
 
         # Declare a digits variable which stores all digits
         digits = "0123456789"
-        OTP = "1234"
+        OTP = ""
         # length of password can be changed by changing value in range
-        # for i in range(4):
-        #     OTP += digits[math.floor(random.random() * 10)]
-        # Username = self.env['ir.config_parameter'].sudo().get_param(
-        #     'wizard_partner.smsmkt_username')
-        # Password = self.env['ir.config_parameter'].sudo().get_param(
-        #     'wizard_partner.smsmkt_password')
-        # Sender = self.env['ir.config_parameter'].sudo().get_param('wizard_partner.smsmkt_sender')
+        for i in range(4):
+            OTP += digits[math.floor(random.random() * 10)]
+        Username = self.env['ir.config_parameter'].sudo().get_param(
+            'wizard_partner.smsmkt_username')
+        Password = self.env['ir.config_parameter'].sudo().get_param(
+            'wizard_partner.smsmkt_password')
+        Sender = self.env['ir.config_parameter'].sudo().get_param('wizard_partner.smsmkt_sender')
         expiry = self.env['ir.config_parameter'].sudo().get_param('wizard_partner.otp_expiry')
-        # if not Username or not Password or not Sender:
-        #     return {'status': 'Credentials Not Configured'}
-        # Parameter = urllib.parse.urlencode({
-        #     "User": Username,
-        #     "Password": Password,
-        #     "Msnlist": mobile,
-        #     "Msg": "Your OTP to reset password is " + OTP,
-        #     "Sender": Sender
-        # })
-        # Headers = {
-        #     "Content-type": "application/x-www-form-urlencoded"
-        # }
-        # Url = "member.smsmkt.com"
-        # Path = "/SMSLink/SendMsg/index.php"
-        # Connect = http.client.HTTPSConnection(Url)
-        # Connect.request("POST", Path, Parameter, Headers)
-        # Response = Connect.getresponse().read().decode('utf-8')
-        # if Response:
-        #     resp = Response.split(',')[0].split('=')[1]
-        #
-        #     if resp == '0':
-        #         if source == 'Forget':
-        #             if partner and len(partner) == 1:
-        #                 partner.write({
-        #                     'otp': OTP,
-        #                     'otp_sent_time': datetime.now() + timedelta(minutes=float(expiry))
-        #                 })
-        #             else:
-        #                 return {'status': 'INVALID_NUMBER'}
-        if source == 'Signup' or source == 'CHANGE':
-            self.env['sms.signup.mobile'].create({
-                'mobile': mobile,
-                'otp': OTP,
-                'otp_sent_time': datetime.now() + timedelta(minutes=float(expiry))
-            })
+        if not Username or not Password or not Sender:
+            return {'status': 'Credentials Not Configured'}
+        Parameter = urllib.parse.urlencode({
+            "User": Username,
+            "Password": Password,
+            "Msnlist": mobile,
+            "Msg": "Your OTP to reset password is " + OTP,
+            "Sender": Sender
+        })
+        Headers = {
+            "Content-type": "application/x-www-form-urlencoded"
+        }
+        Url = "member.smsmkt.com"
+        Path = "/SMSLink/SendMsg/index.php"
+        Connect = http.client.HTTPSConnection(Url)
+        Connect.request("POST", Path, Parameter, Headers)
+        Response = Connect.getresponse().read().decode('utf-8')
+        if Response:
+            resp = Response.split(',')[0].split('=')[1]
 
-        return {'status': 'Success'}
-
-
-        #     elif resp == '-101':
-        #         return{'status': 'Parameter not complete.'}
-        #     elif resp == '-102':
-        #         return{'status': 'Database is not ready.'}
-        #     elif resp == '-103':
-        #         return {'status': 'Invalid User / Invalid Password.'}
-        #     elif resp == '-104':
-        #         return{'status': 'Invalid Mobile format.'}
-        #     elif resp == '-105':
-        #         return{'status': 'MsnList length limit exceed.'}
-        #     elif resp == '-106':
-        #         return{'status': 'Invalid your Sendername.'}
-        #     elif resp == '-107':
-        #         return{'status': 'Your account is expired.'}
-        #     elif resp == '-108':
-        #         return {'status': 'Quota Limit exceed.'}
-        #     elif resp == '-109':
-        #         return {'status': 'System is not ready. Please try to post again later.'}
-        #     elif resp == '-110':
-        #         return {'status': 'Your account has been Locked'}
-        #     elif resp == '-111':
-        #         return {'status': 'Message Input Error.'}
-        #     elif resp == '-112':
-        #         return {'status': 'Mobile number blacklisted.'}
-        # else:
-        #     return{'status': 'Response Not Received'}
+            if resp == '0':
+                if source == 'Forget':
+                    if partner and len(partner) == 1:
+                        partner.write({
+                            'otp': OTP,
+                            'otp_sent_time': datetime.now() + timedelta(minutes=float(expiry))
+                        })
+                    else:
+                        return {'status': 'INVALID_NUMBER'}
+                if source == 'Signup':
+                    self.env['sms.signup.mobile'].create({
+                        'mobile': mobile,
+                        'otp': OTP,
+                        'otp_sent_time': datetime.now() + timedelta(minutes=float(expiry))
+                    })
+                return {'status': 'Success'}
+            elif resp == '-101':
+                return {'status': 'Parameter not complete.'}
+            elif resp == '-102':
+                return {'status': 'Database is not ready.'}
+            elif resp == '-103':
+                return {'status': 'Invalid User / Invalid Password.'}
+            elif resp == '-104':
+                return {'status': 'Invalid Mobile format.'}
+            elif resp == '-105':
+                return {'status': 'MsnList length limit exceed.'}
+            elif resp == '-106':
+                return {'status': 'Invalid your Sendername.'}
+            elif resp == '-107':
+                return {'status': 'Your account is expired.'}
+            elif resp == '-108':
+                return {'status': 'Quota Limit exceed.'}
+            elif resp == '-109':
+                return {'status': 'System is not ready. Please try to post again later.'}
+            elif resp == '-110':
+                return {'status': 'Your account has been Locked'}
+            elif resp == '-111':
+                return {'status': 'Message Input Error.'}
+            elif resp == '-112':
+                return {'status': 'Mobile number blacklisted.'}
+        else:
+            return {'status': 'Response Not Received'}
 
     @api.multi
     def generate_otp(self, mobile=None):
@@ -528,6 +705,19 @@ class ResPartner(models.Model):
                 if mobile.startswith(str(country_phone_code)):
                     mobile = mobile[len(str(country_phone_code)):]
 
+            curr_date = datetime.now()
+            if strToDate(partner.member_date).month > curr_date.month:
+                to_date = datetime(curr_date.year, strToDate(partner.member_date).month,
+                                   strToDate(partner.member_date).day).date() or False
+            else:
+                to_date = datetime(curr_date.year + 1, strToDate(partner.member_date).month,
+                                   strToDate(partner.member_date).day).date() or False
+            next_level_id = self.env['membership.type'].search(
+                [('sequence', '=', partner.membership_type_id.sequence + 1)], limit=1)
+
+            msg_text = 'ขณะนี้คุณมีสถานะเป็น ' + str(partner.membership_type_id.name) + ' จนถึงวันที่ ' + str(to_date.strftime('%d/%m/%Y'))
+            last_service_date = 'สะสมอีก ' + str(partner.next_level_diff) + ' แต้มเพื่อเป็นระดับ ' + str(next_level_id.name)
+
             data = [{
                 'name': partner.name,
                 'last_name': partner.last_name,
@@ -560,8 +750,8 @@ class ResPartner(models.Model):
                 'points': partner.points,
                 'credit': partner.credit,
                 'stars': partner.stars,
-                'next_level_diff_and_name': str(partner.next_level_diff) + " Points to " + str(partner.next_level_name),
-                'last_service': partner.last_service,
+                'next_level_diff_and_name': msg_text,
+                'last_service': last_service_date,
                 'image': partner.image,
                 'vat': partner.vat,
             }]
@@ -572,44 +762,9 @@ class ResPartner(models.Model):
             }
 
 
-class CarDetails(models.Model):
-    _name = "car.details"
-    _description = 'Adding Car Plate Number'
-
-    name = fields.Char(string="Plate Number", required=True)
-    partner_id = fields.Many2one('res.partner')
-    is_primary = fields.Boolean(string="Primary", default=False)
-    state_id = fields.Many2one('res.country.state', string='State')
-
-    active = fields.Boolean('Active', default=True)
-
-    @api.onchange('is_primary')
-    def _is_primary_onchange(self):
-        flag = 0
-        for car in self.partner_id.car_ids:
-            if car.is_primary:
-                flag = flag + 1
-                if flag > 1:
-                    raise UserError(_('You have already selected a car as primary'))
 
 
-class StarLevel(models.Model):
-    _name = "star.level"
-    _description = 'Star Level'
 
-    name = fields.Char("Name", required=True)
-    from_point = fields.Float(string='From', required=True)
-    to_point = fields.Float(string='To', required=True)
-    number = fields.Integer(string='Number')
-
-
-class SmsSignupMobile(models.Model):
-    _name = "sms.signup.mobile"
-    _description = "Stores signup details for verification."
-
-    mobile = fields.Char(string="Mobile")
-    otp = fields.Char(string="OTP")
-    otp_sent_time = fields.Datetime(string="OTP Sent Time")
 
 
 

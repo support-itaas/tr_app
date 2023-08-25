@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="wht_pnd_53_entries_report_id">
+         <t t-foreach="docs" t-as="o">
+            <t t-set="i_page" t-value="0"/>
+            <t t-foreach="range(0,1,1)" t-as="page">
+                <t t-set="i_page" t-value="i_page + 1"/>
+                <t t-call="web.basic_layout">
+                    <t t-set="company_vat" t-value="o.company_id.vat"/>
+                    <t t-set="partner_vat" t-value="o.partner_id.vat"/>
+                    <t t-set="wht_ids" t-value="o.line_ids.filtered(lambda m: m.wht_type)"/>
+
+                    <div class="page" t-attf-style="background-image:url('/print_wht_report/static/whithoding.jpg'); background-size:360mm 520mm; width:360mm; height:520mm;">
+
+                        <!--copy-->
+                        <div style="position:absolute; left:90px;">
+                            <div style="font-size: 18px; background-color:white; width:1000px; height:100px;">
+                                <div style="height:0px; background-color:red; color:white;">-</div>
+                                  <span>
+                                      <t t-if="page == 0">ฉบับที่ 1 (สำหรับผู้ถูกหักภาษี ณ ที่จ่าย ใช้แนบพร้อมกับแบบแสดงรายการภาษี) <br/>
+                                      ฉบับที่ 2 (สำหรับผู้ถูกหักภาษี ณ ที่จ่าย เก็บไว้เป็นหลักฐาน)<br/>
+                                      ฉบับที่ 3 (สำหรับผู้จ่ายเงินเก็บไว้เป็นหลักฐานแนบพร้อมไว้กับรายงานยื่นแบบและสำเนาแบบ ภ.ง.ด.)<br/>
+                                      ฉบับที่ 4 (สำหรับผู้จ่ายเงินแนบไว้กับใบสำคัญจ่าย)
+
+                                        </t>
+                                      <!--<t t-if="page == 1">ฉบับ 2</t>-->
+                                      <!--<t t-if="page == 2">ฉบับ 3</t>-->
+                                      <!--<t t-if="page == 3">ฉบับ 4</t>-->
+                                  </span>
+                            </div>
+                        </div>
+
+                        <!--header-->
+                        <div style="text-align:center; position: absolute;left: 1200px;top: 150px;">
+                            <font style="font-size: 20px;">
+<!--                                <span t-field="o.move_id.wht_reference"/>-->
+                                <span t-field="o.wht_reference"/>
+                            </font>
+                        </div>
+
+                        <!--company-->
+                        <div>
+                            <font style="font-size: 20px;">
+                                <t t-if="company_vat">
+                                    <span t-if="len(company_vat) &gt; 0" t-esc="company_vat[0]" style="position: absolute;left: 880px;top: 200px;"/>
+                                    <span t-if="len(company_vat) &gt; 1" t-esc="company_vat[1]" style="position: absolute;left: 920px;top: 200px;"/>
+                                    <span t-if="len(company_vat) &gt; 2" t-esc="company_vat[2]" style="position: absolute;left: 950px;top: 200px;"/>
+                                    <span t-if="len(company_vat) &gt; 3" t-esc="company_vat[3]" style="position: absolute;left: 980px;top: 200px;"/>
+                                    <span t-if="len(company_vat) &gt; 4" t-esc="company_vat[4]" style="position: absolute;left: 1010px;top: 200px;"/>
+                                    <span t-if="len(company_vat) &gt; 5" t-esc="company_vat[5]" style="position: absolute;left: 1050px;top: 200px;"/>
+                                    <span t-if="len(company_vat) &gt; 6" t-esc="company_vat[6]" style="position: absolute;left: 1080px;top: 200px;"/>
+                                    <span t-if="len(company_vat) &gt; 7" t-esc="company_vat[7]" style="position: absolute;left: 1100px;top: 200px;"/>
+                                    <span t-if="len(company_vat) &gt; 8" t-esc="company_vat[8]" style="position: absolute;left: 1130px;top: 200px;"/>
+                                    <span t-if="len(company_vat) &gt; 9" t-esc="company_vat[9]" style="position: absolute;left: 1160px;top: 200px;"/>
+                                    <span t-if="len(company_vat) &gt; 10" t-esc="company_vat[10]" style="position: absolute;left: 1200px;top: 200px;"/>
+                                    <span t-if="len(company_vat) &gt; 11" t-esc="company_vat[11]" style="position: absolute;left: 1230px;top: 200px;"/>
+                                    <span t-if="len(company_vat) &gt; 12" t-esc="company_vat[12]" style="position: absolute;left: 1275px;top: 200px;"/>
+                                </t>
+                            </font>
+                        </div>
+                        <div class="col-xs-12" style="position: absolute;left: 140px;top: 235px;">
+                            <font style="font-size: 25px;">
+                                <span t-field="o.company_id.name"/>
+                                <t t-if="o.company_id.branch_no == '00000'">
+                                    <span>(สำนักงานใหญ่)</span>
+                                </t>
+                                <t t-if="o.company_id.branch_no != '00000'">
+                                    (<span t-field="o.company_id.branch_no"/>)
+                                </t>
+                            </font>
+                        </div>
+                        <div class="col-xs-12" style="position: absolute;left: 140px;top: 288px;">
+                            <font style="font-size: 20px;">
+                                <span t-if="o.company_id.building"><span t-field="o.company_id.building"/>&amp;nbsp;</span>
+                                <span t-if="o.company_id.roomnumber">ห้องที่&amp;nbsp;<span t-field="o.company_id.roomnumber"/>&amp;nbsp;</span>
+                                <span t-if="o.company_id.floornumber">ชั้นที่&amp;nbsp;<span t-field="o.company_id.floornumber"/>&amp;nbsp;</span>
+                                <span t-if="o.company_id.village">หมู่บ้าน&amp;nbsp;<span t-field="o.company_id.village"/>&amp;nbsp;</span>
+                                <span t-if="o.company_id.house_number"><span t-field="o.company_id.house_number"/>&amp;nbsp;</span>
+                                <span t-if="o.company_id.moo_number">&amp;nbsp;<span t-field="o.company_id.moo_number"/>&amp;nbsp;</span>
+                                <span t-if="o.company_id.soi_number">ซอย&amp;nbsp;<span t-field="o.company_id.soi_number"/>&amp;nbsp;</span>
+                                <span t-if="o.company_id.street"><span t-esc="o.company_id.street"/>&amp;nbsp;</span>
+                                <!--<span t-if="o.company_id.street2"><span t-esc="o.company_id.street2"/><![CDATA[&nbsp;]]></span>-->
+                                <span t-if="o.company_id.city and o.company_id.state_id and o.company_id.state_id.code == 'BKK'">&amp;nbsp;<span t-field="o.company_id.city"/>&amp;nbsp;</span>
+                                <span t-if="o.company_id.city and o.company_id.state_id and o.company_id.state_id.code != 'BKK'">&amp;nbsp;<span t-field="o.company_id.city"/>&amp;nbsp;</span>
+                                <span t-if="o.company_id.city and o.company_id.state_id and o.company_id.state_id.code == 'BKK'">&amp;nbsp;<span t-field="o.company_id.state_id.name"/>&amp;nbsp;</span>
+                                <span t-if="o.company_id.city and o.company_id.state_id and o.company_id.state_id.code != 'BKK'">จังหวัด&amp;nbsp;<span t-field="o.company_id.state_id.name"/>&amp;nbsp;</span>
+                                <!--<span t-if="o.company_id.state_id.name">จังหวัด&amp;nbsp;<span t-field="o.company_id.state_id.name"/>&amp;nbsp;</span>-->
+                                <span t-if="o.company_id.zip"><span t-esc="o.company_id.zip"/></span><br/>
+                            </font>
+                        </div>
+
+                        <!--partner-->
+                        <div>
+                            <font style="font-size: 20px;">
+                                <t t-if="partner_vat">
+                                    <span t-if="len(partner_vat) &gt; 0" t-esc="partner_vat[0]" style="position: absolute;left: 880px;top: 360px;"/>
+                                    <span t-if="len(partner_vat) &gt; 1" t-esc="partner_vat[1]" style="position: absolute;left: 920px;top: 360px;"/>
+                                    <span t-if="len(partner_vat) &gt; 2" t-esc="partner_vat[2]" style="position: absolute;left: 950px;top: 360px;"/>
+                                    <span t-if="len(partner_vat) &gt; 3" t-esc="partner_vat[3]" style="position: absolute;left: 980px;top: 360px;"/>
+                                    <span t-if="len(partner_vat) &gt; 4" t-esc="partner_vat[4]" style="position: absolute;left: 1010px;top: 360px;"/>
+                                    <span t-if="len(partner_vat) &gt; 5" t-esc="partner_vat[5]" style="position: absolute;left: 1050px;top: 360px;"/>
+                                    <span t-if="len(partner_vat) &gt; 6" t-esc="partner_vat[6]" style="position: absolute;left: 1080px;top: 360px;"/>
+                                    <span t-if="len(partner_vat) &gt; 7" t-esc="partner_vat[7]" style="position: absolute;left: 1100px;top: 360px;"/>
+                                    <span t-if="len(partner_vat) &gt; 8" t-esc="partner_vat[8]" style="position: absolute;left: 1130px;top: 360px;"/>
+                                    <span t-if="len(partner_vat) &gt; 9" t-esc="partner_vat[9]" style="position: absolute;left: 1160px;top: 360px;"/>
+                                    <span t-if="len(partner_vat) &gt; 10" t-esc="partner_vat[10]" style="position: absolute;left: 1200px;top: 360px;"/>
+                                    <span t-if="len(partner_vat) &gt; 11" t-esc="partner_vat[11]" style="position: absolute;left: 1230px;top: 360px;"/>
+                                    <span t-if="len(partner_vat) &gt; 12" t-esc="partner_vat[12]" style="position: absolute;left: 1275px;top: 360px;"/>
+                                </t>
+                            </font>
+                        </div>
+                        <div class="col-xs-12" style="position: absolute;left: 160px;top: 400px;">
+                             <t t-if="o.partner_id.name">
+                                <font style="font-size: 25px;">
+                                    <span t-field="o.partner_id.name"/>
+                                    <t t-if="o.partner_id.company_type == 'company' and o.partner_id.branch_no == '00000'">
+                                        <span>(สำนักงานใหญ่)</span>
+                                    </t>
+                                    <t t-if="o.partner_id.company_type == 'company' and o.partner_id.branch_no != '00000'">
+                                        (<span t-field="o.company_id.branch_no"/>)
+                                    </t>
+                                </font>
+                            </t>
+<!--                            <t t-if="o.line_ids[0].partner_id">-->
+<!--                                <font style="font-size: 25px;">-->
+<!--                                    <span t-field="o.line_ids[0].partner_id.name"/>-->
+<!--                                    <t t-if="o.line_ids[0]partner_id.company_type == 'company' and o.partner_id.branch_no == '00000'">-->
+<!--                                        <span>(สำนักงานใหญ่)</span>-->
+<!--                                    </t>-->
+<!--                                    <t t-if="o.line_ids[0]partner_id.company_type == 'company' and o.partner_id.branch_no != '00000'">-->
+<!--                                        (<span t-field="o.company_id.branch_no"/>)-->
+<!--                                    </t>-->
+<!--                                </font>-->
+<!--                            </t>-->
+                        </div>
+                        <div class="col-xs-12" style="position: absolute;left: 160px;top: 460px;">
+                            <font style="font-size: 20px;">
+                                <span t-field="o.partner_id.street"/>&amp;nbsp;
+                                <span t-field="o.partner_id.street2"/>&amp;nbsp;
+<!--                                <span t-field="o.partner_id.city"/>&amp;nbsp;-->
+                                <span t-field="o.partner_id.state_id.name"/>&amp;nbsp;
+                                <span t-field="o.partner_id.zip"/>
+                            </font>
+                        </div>
+<!--                        <t t-if="o.line_ids[0].partner_id">-->
+<!--                            <div class="col-xs-12" style="position: absolute;left: 160px;top: 460px;">-->
+<!--                                <font style="font-size: 20px;">-->
+<!--                                    <span t-field="o.line_ids[0].partner_id.street"/>&amp;nbsp;-->
+<!--                                    <span t-field="o.line_ids[0].partner_id.street2"/>&amp;nbsp;-->
+<!--&lt;!&ndash;                                    <span t-field="o.line_ids[0].partner_id.city"/>&amp;nbsp;&ndash;&gt;-->
+<!--                                    <span t-field="o.line_ids[0].partner_id.state_id.name"/>&amp;nbsp;-->
+<!--                                    <span t-field="o.line_ids[0].partner_id.zip"/>-->
+<!--                                </font>-->
+<!--                            </div>-->
+<!--                        </t>-->
+
+                        <!--pnd 53-->
+                        <div style="position: absolute;left: 920px;top: 565px;">
+                            <font style="font-size:37px;">
+                                <span>X</span>
+                            </font>
+                        </div>
+
+                        <!--detail-->
+                        <t t-set="sum_amount_before_tax" t-value="0"/>
+                        <t t-set="sum_amount_total" t-value="0"/>
+                        <div style="position: absolute; left: 780px; top:1330px; width:515px; height:170px;">
+                            <table width="100%" style="bottom:0px; position: absolute;">
+                                <t t-foreach="wht_ids" t-as="wht">
+                                    <tr style="height:40px; font-size:25px;  line-height:20px; position: relative;">
+                                        <td width="35%" style="vertical-align:bottom;">
+                                            <t t-if="wht.date">
+                                                <span t-esc="datetime.datetime.strptime(str(wht.date), '%Y-%m-%d').strftime('%d/%m/%Y')"/>
+                                            </t>
+                                        </td>
+                                        <td width="34%" align="right" style="vertical-align:bottom;">
+                                            <span t-esc="'{0:,.2f}'.format(float(wht.amount_before_tax))"/>
+                                            <t t-set="sum_amount_before_tax" t-value="sum_amount_before_tax + wht.amount_before_tax"/>
+                                        </td>
+                                        <td width="31%" align="right" style="vertical-align:bottom;">
+                                            <span t-esc="'{0:,.2f}'.format(float(wht.debit + wht.credit))"/>
+                                            <t t-set="sum_amount_total" t-value="sum_amount_total + wht.debit + wht.credit"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </table>
+                        </div>
+
+                        <!--sum detail-->
+                        <div style="position: absolute; right: 80px; top:1545px; width:515px; font-size:25px;">
+                            <table width="100%" style="bottom:0px; position: absolute;">
+                                <tr style="height:40px; font-size:25px;  line-height:20px; position: relative;">
+                                    <td width="35%"/>
+                                    <td width="34%" align="right" style="vertical-align:bottom;">
+                                        <span t-esc="'{0:,.2f}'.format(float(sum_amount_before_tax))"/>
+                                    </td>
+                                    <td width="31%" align="right" style="vertical-align:bottom;">
+                                        <span t-esc="'{0:,.2f}'.format(float(sum_amount_total))"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="position: absolute; left:440px; top:1560px; width:840px; font-size:25px;">
+                            <span t-esc="o.baht_text(sum_amount_total)"/>
+                        </div>
+
+                        <!--description-->
+                        <div style="position:absolute; left:240px; top:1470px; font-size:25px; width:515px;">
+                            <t t-set="i_description" t-value="0"/>
+                            <t t-foreach="wht_ids" t-as="wht">
+                                <t t-if="i_description != 0">
+                                    <span t-esc="wht.name"/>,
+                                </t>
+                                <t t-else="">
+                                    <span t-esc="wht.name"/>
+                                </t>
+                                <t t-set="i_description" t-value="i_description + 1"/>
+                            </t>
+                        </div>
+
+                        <!--footer-->
+                        <div style="position: absolute;left: 205px;top: 1645px;">
+                            <font style="font-size:37px;">
+                                <span>X</span>
+                            </font>
+                        </div>
+
+                        <!--footer date-->
+                        <t t-set="date" t-value="time.strptime(o.date,'%Y-%m-%d')"/>
+
+
+
+                        <div style="position: absolute;right: 540px;top: 1760px;">
+                            <font style="font-size:25px;">
+                                <t t-if="date">
+                                    <t t-if="date.tm_mday &gt; 9">
+                                        <span t-esc="date.tm_mday"/>
+                                    </t>
+                                    <t t-if="date.tm_mday &lt; 10">
+                                        <span>0</span><span t-esc="date.tm_mday"/>
+                                    </t>
+                                </t>
+                                <t t-if="not date">
+                                    <span/>
+                                </t>
+                            </font>
+                        </div>
+                        <div style="position: absolute;right: 450px;top: 1760px;">
+                            <font style="font-size:25px;">
+                                <t t-if="date">
+                                    <t t-if="date.tm_mon &gt; 9">
+                                        <span t-esc="date.tm_mon"/>
+                                    </t>
+                                    <t t-if="date.tm_mon &lt; 10">
+                                        <span>0</span><span t-esc="date.tm_mon"/>
+                                    </t>
+                                </t>
+                                <t t-if="not date">
+                                    <span/>
+                                </t>
+                            </font>
+                        </div>
+                        <div style="position: absolute;right: 290px;top: 1760px;">
+                            <font style="font-size:25px;">
+                                <t t-if="date">
+                                    <span t-esc="date.tm_year"/>
+                                </t>
+                                <t t-if="not date">
+                                    <span/>
+                                </t>
+                            </font>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+         </t>
+    </template>
+</odoo>

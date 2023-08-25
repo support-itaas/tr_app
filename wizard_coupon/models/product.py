@@ -31,7 +31,6 @@ class ProductProduct(models.Model):
 
     @api.model
     def create(self, values):
-        print("create_values", values)
         if values.get('is_pack') == True and values.get('is_coupon') == True and values.get('is_service') == True:
             raise UserError(_('Please choose either Combo/Pack or Coupon or Service'))
         elif values.get('is_pack') == True and values.get('is_coupon') == True:

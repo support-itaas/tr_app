@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_pos_session_form_view_inherit" model="ir.ui.view">
+            <field name="name">pos.session.form.view_inherit</field>
+            <field name="model">pos.session</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_session_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/group" position="after">
+                    <group>
+                        <group>
+                            <label string="มิตเตอร์1"/>
+                            <div class="o_row">
+                                <label string="End"/>
+                                <field name="mister_1_s" />
+                                <label string="Start"/>
+                                <field name="mister_1_e" />
+                            </div>
+                        </group>
+                        <group>
+                            <label string="มิตเตอร์2"/>
+                            <div class="o_row">
+                                <label string="End"/>
+                                <field name="mister_2_s" />
+                                <label string="Start"/>
+                                <field name="mister_2_e" />
+                            </div>
+                        </group>
+
+                    </group>
+                    <group>
+                        <group>
+                            <label string="มิตเตอร์3"/>
+                            <div class="o_row">
+                                <label string="End"/>
+                                <field name="mister_3_s" />
+                                <label string="Start"/>
+                                <field name="mister_3_e" />
+                            </div>
+                        </group>
+                        <group>
+                            <label string="มิตเตอร์4"/>
+                            <div class="o_row">
+                                <label string="End"/>
+                                <field name="mister_4_s" />
+                                <label string="Start"/>
+                                <field name="mister_4_e" />
+                            </div>
+                        </group>
+
+                    </group>
+                    <group>
+                        <group>
+                            <label string="มิตเตอร์ เครื่องดูดฝุ่น1"/>
+                            <div class="o_row">
+                                <label string="End"/>
+                                <field name="mister_vacuum_1_s" />
+                                <label string="Start"/>
+                                <field name="mister_vacuum_1_e" />
+                            </div>
+                        </group>
+                        <group>
+                            <label string="มิตเตอร์ เครื่องดูดฝุ่น2"/>
+                            <div class="o_row">
+                                <label string="End"/>
+                                <field name="mister_vacuum_2_s" />
+                                <label string="Start"/>
+                                <field name="mister_vacuum_2_s" />
+                            </div>
+                        </group>
+
+                    </group>
+                    <group>
+                        <group>
+                            <label string="มิตเตอร์ เครื่องทำความสะอาด"/>
+                            <div class="o_row">
+                                <label string="End"/>
+                                <field name="mister_cleaner_s" />
+                                <label string="Start"/>
+                                <field name="mister_cleaner_s" />
+                            </div>
+                        </group>
+
+                    </group>
+
+
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

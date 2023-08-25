@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="account_asset_asset_form_itaas_inherit11" model="ir.ui.view"  >
+            <field name="name">account.asset.asset.form.itaas11</field>
+            <field name="model">account.asset.asset</field>
+            <field name="inherit_id" ref="thai_accounting.account_asset_asset_form_itaas_inherit"/>
+            <field name="arch" type="xml">
+                <field name="asset_disposal_date" position="after">
+                    <field name="location_asset"/>
+                </field>
+
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!--    23-08-2018 -->
+    <menuitem action="mrp.mrp_production_action"
+            id="mrp.menu_mrp_production_action"
+            parent="mrp.menu_mrp_manufacturing"
+              groups="mrp.group_mrp_manager"
+            sequence="1"/>
+
+    <record id="mrp_production_action_machine" model="ir.actions.act_window">
+            <field name="name">Manufacturing Orders Machine</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mrp.production</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field name="view_id" eval="False"/>
+<!--            <field name="domain">['|',('bom_id.type_bom','=','machine'),('bom_id.type_bom','!=','cleanser')]</field>-->
+            <field name="domain">[('bom_id.type_bom','=','machine')]</field>
+            <field name="search_view_id" ref="mrp.view_mrp_production_filter"/>
+            <field name="context">{'search_default_todo': True}</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click here to create a Manufacturing Order.
+              </p><p>
+                Based on a Bill of Material, a Manufacturing Order will consume raw materials
+                and produce finished products.
+              </p><p>
+                Manufacturing Orders can be generated automatically based on customer
+                requirements or reordering rules.
+              </p>
+            </field>
+        </record>
+
+        <menuitem action="mrp_production_action_machine"
+            id="menu_mrp_production_action_machine"
+            parent="mrp.menu_mrp_manufacturing"
+            groups="mrp_tr_extended.group_mrp_bom_machine"
+            sequence="2"/>
+
+    <record id="mrp_production_action_cleanser" model="ir.actions.act_window">
+            <field name="name">Manufacturing Orders Cleanser</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mrp.production</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field name="view_id" eval="False"/>
+<!--            <field name="domain">['|',('bom_id.type_bom','=','cleanser'),('bom_id.type_bom','!=','machine')]</field>-->
+            <field name="domain">[('bom_id.type_bom','=','cleanser')]</field>
+            <field name="search_view_id" ref="mrp.view_mrp_production_filter"/>
+            <field name="context">{'search_default_todo': True}</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click here to create a Manufacturing Order.
+              </p><p>
+                Based on a Bill of Material, a Manufacturing Order will consume raw materials
+                and produce finished products.
+              </p><p>
+                Manufacturing Orders can be generated automatically based on customer
+                requirements or reordering rules.
+              </p>
+            </field>
+        </record>
+
+        <menuitem action="mrp_production_action_cleanser"
+            id="menu_mrp_production_action_cleanser"
+            parent="mrp.menu_mrp_manufacturing"
+            groups="mrp_tr_extended.group_mrp_bom_cleanser"
+            sequence="3"/>
+
+
+    <record id="view_mrp_product_produce_wizard_add_default_consume" model="ir.ui.view">
+        <field name="name">mrp.product.produce.add.default.consume</field>
+        <field name="model">mrp.product.produce</field>
+        <field name="inherit_id" ref="mrp.view_mrp_product_produce_wizard"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//form/group" position="after">
+
+                <group>
+                    <field name="is_default_consume"/>
+
+                </group>
+            </xpath>
+
+
+        </field>
+    </record>
+
+
+
+</odoo>

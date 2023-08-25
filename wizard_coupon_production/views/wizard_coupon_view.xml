@@ -7,6 +7,7 @@
         <field name="arch" type="xml">
             <tree string="ผลิตคูปอง">
                 <field name="name"/>
+                <field name="operating_unit_id"/>
                 <field name="branch_id"/>
                 <field name="date_order"/>
                 <field name="state"/>
@@ -80,7 +81,8 @@
                     </div>
                     <group>
                         <group>
-                            <field name="branch_id" attrs="{'readonly': [('state', '=', 'validate')]}" require="1"/>
+                            <field name="operating_unit_id"/>
+                            <field name="branch_id" attrs="{'readonly': [('state', '=', 'validate')]}" require="0" invisible="1"/>
                             <field name="partner_id" require="1"/>
 
                         </group>
@@ -175,9 +177,9 @@
 
 
 
-    <record id="wizard_coupon.wizard_coupon_action" model="ir.actions.act_window">
-        <field name="domain">[('type','=','e-coupon')]</field>
-    </record>
+<!--    <record id="wizard_coupon.wizard_coupon_action" model="ir.actions.act_window">-->
+<!--        <field name="domain">[('type','=','e-coupon')]</field>-->
+<!--    </record>-->
 
     <record id="wizard_paper_coupon_action" model="ir.actions.act_window">
         <field name="name">Paper Coupons</field>
@@ -216,14 +218,33 @@
         </field>
     </record>
 
+    <record id="wizard_package_id_form" model="ir.ui.view">
+        <field name="name">wizard.coupon.pack.form</field>
+        <field name="model">wizard.coupon.pack</field>
+        <field name="arch" type="xml">
+            <form string="Package ID">
+                <group>
+                    <field name="name"/>
+                    <field name="package_id"/>
+                    <field name="branch_id"/>
+                    <field name="production_id"/>
+                    <field name="state"/>
+                </group>
+                <group>
+                    <button name="update_expiry_date" type="object" string="Update Expiry Date"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
     <record id="wizard_package_id_action" model="ir.actions.act_window">
         <field name="name">Package ID</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">wizard.coupon.pack</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
-<!--        <field name="domain">[('type','=','paper')]</field>-->
-<!--        <field name="context">{"search_default_filter_available_filter":4}</field>-->
+        <!--        <field name="domain">[('type','=','paper')]</field>-->
+        <!--        <field name="context">{"search_default_filter_available_filter":4}</field>-->
         <field name="view_id" ref="wizard_coupon_production.wizard_package_id_tree"/>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">

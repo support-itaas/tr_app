@@ -1,0 +1,226 @@
+    @api.multi
+    def get_cal_public_holidays(self):
+        print ('get_cal_public_holidays')
+        DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+        tz = pytz.timezone('Asia/Bangkok')
+        ot_overtime1 = 0.0
+        for slip in self:
+            date_from = slip.date_from
+            date_to = slip.date_to
+            start_time = datetime.strptime('00:00:00', '%H:%M:%S')
+            finish_time = datetime.strptime('23:59:59', '%H:%M:%S')
+            start_time = start_time.time()
+            finish_time = finish_time.time()
+            date_from = strToDate(date_from)
+            date_to = strToDate(date_to)
+            start_time_of_the_day = tz.localize(datetime.combine(date_from, start_time))
+            finish_time_of_the_day = tz.localize(datetime.combine(date_to, finish_time))
+            att_ids = self.env['hr.attendance'].search(
+                [('employee_id', '=', slip.employee_id.id), ('check_in', '>', str(start_time_of_the_day)),
+                 ('check_in', '<', str(finish_time_of_the_day))])
+            print(att_ids)
+
+            attendance_s = []
+            ot_overtime = 0
+            total_wage = 0
+            t_total_wage = 0
+            if att_ids:
+                days = 0
+                for att in att_ids:
+                    date_to = strToDate(att.check_in)
+                    check_in = datetime(date_to.year, date_to.month, date_to.day).strftime(
+                        '%Y-%m-%d') or False
+                    attendance_s.append(check_in)
+
+                    if slip.contract_id.wage_type == 'daily':
+
+                        str_time_from = str(slip.contract_id.resource_calendar_id.attendance_ids[0].hour_from)
+                        str_time_to = str(slip.contract_id.resource_calendar_id.attendance_ids[0].hour_to)
+                        str_hour_form = str_time_from.split('.')[0]
+                        str_hour_form = int(str_hour_form)
+                        str_hour_to = str_time_to.split('.')[0]
+                        str_hour_to = int(str_hour_to)
+                        str_hour_actual = (str_hour_to - str_hour_form) - 1
+                        str_rate = float(
+                            slip.contract_id.overtime_structure_id.hr_ov_structure_rule_attendance_ids[0].rate)
+
+                        actual_hr = pytz.utc.localize(
+                            datetime.strptime(att.check_out, DATETIME_FORMAT)).astimezone(
+                            tz) - pytz.utc.localize(
+                            datetime.strptime(att.check_in, DATETIME_FORMAT)).astimezone(
+                            tz)
+                        actual_hr = actual_hr - timedelta(hours=1)
+                        float_actual_hr = slip.get_float_from_time(str(actual_hr))
+                        print(float_actual_hr)
+                        if int(float_actual_hr) > str_hour_actual:
+                            ot_time = int(float_actual_hr) - str_hour_actual
+                            print(ot_time)
+                            ot_overtime += ((((slip.contract_id.wage / str_hour_actual) * str_rate)) * ot_time)
+                            print(ot_overtime)
+                            days += 1
+                        elif int(float_actual_hr) == str_hour_actual:
+                            days += 1
+                        elif int(float_actual_hr) < str_hour_actual:
+                            print('==================1')
+                            print(int(float_actual_hr))
+                            print(str_hour_actual)
+                            t_total_wage += ((slip.contract_id.wage * int(float_actual_hr)) / str_hour_actual)
+
+                total_wage += total_wage + (slip.contract_id.wage * days)
+
+            print(ot_overtime)
+            if slip.contract_id.wage_type == 'monthly':
+
+                if slip.contract_id.overtime_structure_id.overtime_method == 'ov_attendance':
+                    date_from = datetime.strptime(slip.date_from, "%Y-%m-%d").date()
+                    date_to = datetime.strptime(slip.date_to, "%Y-%m-%d").date()
+                    num = 0
+                    date_s = []
+                    att_date_s = []
+
+                    date_from1 = slip.date_from
+                    date_to1 = slip.date_to
+                    start_time = datetime.strptime('00:00:00', '%H:%M:%S')
+                    finish_time = datetime.strptime('23:59:59', '%H:%M:%S')
+                    start_time = start_time.time()
+                    finish_time = finish_time.time()
+                    date_from1 = strToDate(date_from1)
+                    date_to1 = strToDate(date_to1)
+                    start_time_of_the_day = tz.localize(datetime.combine(date_from1, start_time))
+                    finish_time_of_the_day = tz.localize(datetime.combine(date_to1, finish_time))
+
+                    att_ids = self.env['hr.attendance'].search(
+                        [('employee_id', '=', slip.employee_id.id),
+                         ('check_in', '>', str(start_time_of_the_day)),
+                         ('check_in', '<', str(finish_time_of_the_day))])
+
+                    if att_ids:
+                        for att_s in att_ids:
+                            att_date_s.append(att_s)
+
+                    if slip.contract_id.resource_calendar_id.shift.employee_working_schedule_ids:
+                        for working in slip.contract_id.resource_calendar_id.shift.employee_working_schedule_ids:
+                            if working.date >= str(date_from) and working.date <= str(date_to):
+                                date_s.append(working.date)
+
+                    if att_date_s:
+
+                        for att_d in att_date_s:
+                            date_to = strToDate(att_d.check_in)
+                            check_in = datetime(date_to.year, date_to.month, date_to.day).strftime(
+                                '%Y-%m-%d') or False
+
+                            if check_in not in date_s:
+                                num += 1
+
+                    if slip.contract_id.overtime_structure_id.is_check_manager:
+
+                        if att_ids:
+                            for att in att_ids:
+                                str_time_from = str(slip.contract_id.resource_calendar_id.attendance_ids[0].hour_from)
+                                str_time_to = str(slip.contract_id.resource_calendar_id.attendance_ids[0].hour_to)
+                                str_hour_form = str_time_from.split('.')[0]
+                                str_hour_form = int(str_hour_form)
+                                str_hour_to = str_time_to.split('.')[0]
+                                str_hour_to = int(str_hour_to)
+                                str_hour_actual = (str_hour_to - str_hour_form) - 1
+                                str_rate = float(
+                                    slip.contract_id.overtime_structure_id.hr_ov_structure_rule_attendance_ids[0].rate)
+
+                                check_date = datetime.strptime(att.check_in, "%Y-%m-%d  %H:%M:%S").date()
+                                hour_from_s = str(str_time_from).split(".")
+                                h = hour_from_s[0]
+                                m = hour_from_s[1]
+                                if len(str(h)) < 2:
+                                    h = '0' + str(h)
+                                if len(str(m)) < 2:
+                                    m = str(m) + '0'
+                                start_time = datetime.strptime(str(h) + ':' + str(m) + ':' + '00', '%H:%M:%S')
+                                start_time = start_time.time()
+                                start_time_of_date = tz.localize(datetime.combine(check_date, start_time))
+
+                                actual_hr = pytz.utc.localize(
+                                    datetime.strptime(att.check_out, DATETIME_FORMAT)).astimezone(
+                                    tz) - start_time_of_date
+
+                                actual_hr = actual_hr - timedelta(hours=1)
+                                float_actual_hr = slip.get_float_from_time(str(actual_hr))
+                                if int(float_actual_hr) > str_hour_actual:
+                                    ot_time = int(float_actual_hr) - str_hour_actual
+
+                                    if ot_time > slip.contract_id.overtime_structure_id.ot_hour:
+                                        ot_time = slip.contract_id.overtime_structure_id.ot_hour
+                                    else:
+                                        ot_time = ot_time
+                                    ot_overtime += (((
+                                            ((slip.contract_id.wage / str_hour_actual) / 30) * str_rate)) * ot_time)
+
+                            num = 0
+                            for line in slip.contract_id.public_holiday_type.line_ids:
+                                if line.date in attendance_s:
+                                    num += 1
+
+                            overtime = round(((slip.contract_id.wage / 30) * num), 2)
+                    total_wage = slip.contract_id.wage
+                    slip.update({
+                        'overtime': round(ot_overtime),
+                        'total_wage': total_wage,
+                        'allow18': overtime,
+                    })
+
+                else:
+                    print('================================request')
+
+                    ot_ids = self.env['hr.overtime'].search(
+                        [('employee_id', '=', slip.employee_id.id), ('from_date', '>=', slip.date_from),
+                         ('to_date', '<=', slip.date_to), ('state', '=', 'approve')])
+
+                    ot_time = 0.00
+                    for ot in ot_ids:
+                        # print ot.name
+                        if not ot.approve_ot_time:
+                            # print "OT-11111111111"
+                            ot_time += ot.cal_ot(False)
+                        else:
+                            # print "OT-2222222222"
+                            ot_time += ot.approve_ot_time
+
+                    total_wage = slip.contract_id.wage
+
+
+                    if ot_time:
+                        print(total_wage)
+                        ot_overtime1 = ((total_wage / 30) / 8) * ot_time
+
+                    slip.update({
+                        'overtime': round(ot_overtime1),
+                        'total_wage': total_wage,
+                    })
+
+            else:
+
+                num = 0
+                num1 = 0
+                num2 = 0
+                for line in slip.contract_id.public_holiday_type.line_ids:
+                    if line.is_pay_holiday:
+                        if line.date in attendance_s:
+                            num2 += 1
+                        else:
+                            num1 += 1
+                    else:
+                        if line.date in attendance_s:
+                            num += 1
+
+                    # if line.is_pay_holiday:
+                    #     num1 += 1
+                    # if line.date in attendance_s:
+                    #     num += 1
+                overtime = round(((slip.contract_id.wage * 1) * num), 2)
+                print(ot_overtime)
+                print(overtime)
+                slip.update({
+                    'overtime': round(ot_overtime),
+                    'total_wage': ((total_wage + t_total_wage) - (slip.contract_id.wage * num)) + round(overtime),
+                    'allow18': (slip.contract_id.wage * num2) + round(overtime) + (slip.contract_id.wage * num1),
+                })

@@ -1,0 +1,45 @@
+<odoo>
+
+    <record id="view_invoice_report_wizard_form" model="ir.ui.view">
+        <field name="name">inventory.filter.form</field>
+        <field name="model">inventory.filter</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Report IV">
+                <group>
+                    <group>
+                        <field name="ref_from"/>
+                        <field name="inv_from"/>
+                    </group>
+                    <group>
+                        <field name="ref_to"/>
+                        <field name="inv_to"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="button_ok" string="ตกลง" type="object" default_focus="1" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action for Invoice Report Wizard -->
+    <record id="action_inventory_filter" model="ir.actions.act_window">
+        <field name="name">Filter Inventory</field>
+        <field name="res_model">inventory.filter</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_invoice_report_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem name="Filter Inventory" id="inventory_filter_id" parent="stock.menu_warehouse_report"
+              action="action_inventory_filter" sequence="141"/>
+
+
+
+
+</odoo>

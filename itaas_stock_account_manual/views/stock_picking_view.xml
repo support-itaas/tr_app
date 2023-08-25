@@ -1,0 +1,27 @@
+<odoo>
+
+    <record id="view_stock_picking_advance" model="ir.ui.view">
+            <field name="name">stock.picking.advance.wizard</field>
+            <field name="model">stock.picking.advance</field>
+            <field name="arch" type="xml">
+                <form string="Create Account move">
+                    <footer>
+                        <button string='Cancel Picking' name="action_cancel" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+    </record>
+
+    <act_window
+            id="action_stock_picking_multiple_cancel"
+            name="Cancel Picking"
+            res_model="stock.picking.advance"
+            src_model="stock.picking"
+            view_mode="form"
+            multi="True"
+            target="new"
+            key2="client_action_multi"
+        />
+
+</odoo>

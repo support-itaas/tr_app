@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="action_purchase_import_so" model="ir.actions.act_window">
+            <field name="name">Import Purchase To Sale Order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.import.so</field>
+            <field name="view_mode">tree,form</field>
+            <!--            <field name="target">inline</field>-->
+            <!--            <field name="context">{'module' : 'excel_extended'}</field>-->
+        </record>
+
+        <record id="view_ipurchase_import_so_tree" model="ir.ui.view">
+            <field name="name">purchase.import.so.tree</field>
+            <field name="model">purchase.import.so</field>
+            <field name="arch" type="xml">
+                <tree string="Invoice Line">
+                    <field name="file_name"/>
+                    <field name="upload_file" filename="file_name"/>
+
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_purchase_import_so_form" model="ir.ui.view">
+            <field name="name">purchase.import.so.form</field>
+            <field name="model">purchase.import.so</field>
+            <field name="arch" type="xml">
+                <form string="Import PO To SO">
+                    <header>
+                        <!--         header               -->
+                    </header>
+                    <group>
+                        <group>
+                            <label for="file_name"/>
+                            <div>
+                                <field name="file_name" class="oe_inline"/>
+                            </div>
+                            <label for="upload_file"/>
+                            <div>
+                                <field name="upload_file" filename="file_name" class="oe_inline"/>
+                            </div>
+                        </group>
+
+                    </group>
+                    <footer>
+                        <button name="read_file"  string="Upload File" type="object" class="btn-primary" />
+
+                    </footer>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <menuitem id= "menu_sales_config"
+                  parent= "sale.sale_order_menu"
+                  sequence= "99"
+                  name= "Import Sale Orders"
+                  action="action_purchase_import_so"
+                  groups= "sales_team.group_sale_manager,account.group_account_manager,account.group_account_user"/>
+        <!--            groups= "sales_team.group_sale_manager,account.group_account_manager,account.group_account_user"/>-->
+
+        <!--    <record id="product_template_tree_view_inherit" model="ir.ui.view">-->
+        <!--        <field name="name">product_template_tree_view_inherit: add In Coming, Out Going, Min.Stock</field>-->
+        <!--        <field name="model">product.template</field>-->
+        <!--        <field name="inherit_id" ref="product.product_template_tree_view" />-->
+        <!--        <field name="arch" type="xml">-->
+        <!--            <xpath expr="//tree/field[@name='type']" position="after">-->
+        <!--                <field name="incoming_qty" />-->
+        <!--                <field name="outgoing_qty"/>-->
+        <!--            </xpath>-->
+        <!--        </field>-->
+        <!--    </record>-->
+
+
+    </data>
+
+</odoo>

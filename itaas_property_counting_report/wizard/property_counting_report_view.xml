@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_print_property_counting_report_form" model="ir.ui.view">
+        <field name="name">Print Property Counting Report</field>
+        <field name="model">property.counting.report</field>
+        <field name="arch" type="xml">
+            <form string="Print Property Counting Report">
+                <group>
+                    <group>
+                        <field name="date_to"/>
+<!--                        <field name="category_id"/>-->
+                    </group>
+                    <group>
+<!--                        <field name="date_to"/>-->
+                        <field name="department_id"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="print_report_excel" string="Print"  type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+   <record id="action_property_counting_report_excel" model="ir.actions.act_window">
+        <field name="name">การตรวจนับทรัพย์สิน</field>
+        <field name="res_model">property.counting.report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_print_property_counting_report_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_property_counting_report" action="action_property_counting_report_excel"  parent="thai_accounting.menu_finance_accounting_reports" />
+</odoo>

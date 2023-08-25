@@ -226,7 +226,7 @@ class WizardShopApi(models.Model):
             return {'success': 'False', 'message': 'Please provide a payment date in parameter', 'data': []}
         else:
             # print ('shop_user----',shop_user)
-            # shop_user = 399
+            shop_user = 399
             # print('DATA---',data)
             # user_id = self.env['res.partner'].sudo().search([('user_ids.id', '=', shop_user)], limit=1)
             user_id = self.env['res.partner'].sudo().search([('user_ids.id', '=', shop_user)],limit=1)
@@ -301,7 +301,8 @@ class WizardShopApi(models.Model):
     def payment_slip_verification(self, data):
         transref = data.get('transref')
         sendingbank = data.get('sendingbank')
-        url = 'https://api-sandbox.partners.scb/partners/sandbox/v1/payment/billpayment/transactions/{' + transref + '}?sendingBank=' + sendingbank + ' '
+        url = 'https://api-uat.partners.scb/partners/v1/payment/billpayment/transactions/{' + transref + '}?sendingBank=' + sendingbank + ' '
+        # url = 'https://api-sandbox.partners.scb/partners/sandbox/v1/payment/billpayment/transactions/{' + transref + '}?sendingBank=' + sendingbank + ' '
         payload = {}
         headers = {
             'authorization': 'Bearer 994f52ea-ef3d-4328-a073-591f95fcc38c',

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <template id="sps1-03-1_report_id">
+          <t t-foreach="docs" t-as="o">
+             <t t-set="bank_id" t-value="o.company_id.company_registry" />
+             <t t-set="branch" t-value="o.company_id.branch_no" />
+             <t t-set="schedule" t-value="o.contract_ids.schedule_pay" />
+             <t t-set="birth" t-value="o.birthday" />
+             <t t-set="ident" t-value="o.identification_id" />
+             <t t-call="report.internal_layout">
+                <div class="page" t-attf-style="background-image:url('/signature/static/sps1-03-1.jpg'); background-size:365mm 520mm; width:365mm; height:520mm;">
+                    <div style="position: absolute; left: 19%;">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/> <p/>
+                        <font style="font-size: 18px;">
+                            <span t-field="o.company_id.name" />
+                        </font>
+                    </div>
+                    <div style="position: absolute; left: 15%">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/> <p/>
+                        <font style="font-size: 18px;">
+                            <t t-if="bank_id">
+                            <span t-esc="bank_id[0]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="bank_id[1]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="bank_id[2]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="bank_id[3]" />&amp;nbsp;&amp;nbsp;
+                            <span t-esc="bank_id[4]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="bank_id[5]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="bank_id[6]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="bank_id[7]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="bank_id[8]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="bank_id[9]" />
+                            </t>
+                        </font>
+                    </div>
+                    <div style="position: absolute; left: 15%">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/> <p/>
+                        <font style="font-size: 18px;">
+                            <t t-if="branch">
+                            <span t-esc="branch[0]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="branch[1]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="branch[2]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="branch[3]" />&amp;nbsp;&amp;nbsp;
+                            <span t-esc="branch[4]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="branch[5]" />&amp;nbsp;&amp;nbsp;
+                            </t>
+                        </font>
+                    </div>
+                    <div style="position: absolute; left: 22%">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/> <p/>
+                        <font style="font-size: 18px;">
+                            <span t-field="o.contract_ids.date_start" />
+                        </font>
+                    </div>
+                    <div style="position: absolute; left: 24.5%">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/> <p/>
+                        <font style="font-size: 30px;">
+                            <t t-if="schedule == 'monthly' " >
+                                <span>/</span>
+                            </t>
+                        </font>
+                    </div>
+                    <div style="position: absolute; left: 17%">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/> <p/>
+                        <font style="font-size: 30px;">
+                            <t t-if="schedule != 'monthly' " >
+                                <span>/</span>
+                            </t>
+                        </font>
+                    </div>
+                    <div style="position: absolute; left: 31%">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <br/><br/><br/>
+                        <font style="font-size: 18px;">
+                            <span t-field="o.name" />
+                        </font>
+                    </div>
+                    <div style="position: absolute; left: 11%">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <br/><br/><br/><br/> <p/>
+                        <font style="font-size: 30px;">
+                            <t t-if="o.gender == 'male' " >
+                                <span>/</span>
+                            </t>
+                        </font>
+                    </div>
+                    <div style="position: absolute; left: 18%">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <br/><br/><br/><br/> <p/>
+                        <font style="font-size: 30px;">
+                            <t t-if="o.gender == 'female' " >
+                                <span>/</span>
+                            </t>
+                        </font>
+                    </div>
+                    <div style="position: absolute; left: 12%">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <br/><br/><br/><br/><br/><br/><br/>
+                        <font style="font-size: 18px;">
+                            <span t-field="o.country_id.name" />
+                        </font>
+                    </div>
+                    <div style="position: absolute; left: 13%">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <font style="font-size: 18px;">
+                            <t t-if="birth">
+                            <span t-esc="birth[8]" />
+                            <span t-esc="birth[9]" />
+                            </t>
+                        </font>
+                    </div>
+                    <div style="position: absolute; left: 24%">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <font style="font-size: 18px;">
+                            <t t-if="birth">
+                            <span t-esc="birth[5]" />
+                            <span t-esc="birth[6]" />
+                            </t>
+                        </font>
+                    </div>
+                    <div style="position: absolute; left: 50%">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <font style="font-size: 18px;">
+                            <t t-if="birth">
+                            <span t-esc="birth[0]" />
+                            <span t-esc="birth[1]" />
+                            <span t-esc="birth[2]" />
+                            <span t-esc="birth[3]" />
+                            </t>
+                        </font>
+                    </div>
+                    <div style="position: absolute; left: 24%">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <font style="font-size: 18px;">
+                            <t t-if="ident">
+                            <span t-esc="ident[0]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="ident[1]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="ident[2]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="ident[3]" />&amp;nbsp;&amp;nbsp;
+                            <span t-esc="ident[4]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="ident[5]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="ident[6]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="ident[7]" />&amp;nbsp;&amp;nbsp;
+                            <span t-esc="ident[8]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="ident[9]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="ident[10]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="ident[11]" />&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-esc="ident[12]" />
+                            </t>
+                        </font>
+                    </div>
+                    <div style="position: absolute; left: 8%">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <font style="font-size: 30px;">
+                            <t t-if="o.marital == 'single'" >
+                                <span>/</span>
+                            </t>
+                        </font>
+                    </div>
+                    <div style="position: absolute; left: 17%">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <font style="font-size: 30px;">
+                            <t t-if="o.marital == 'married'" >
+                                <span>/</span>
+                            </t>
+                        </font>
+                    </div>
+                    <div style="position: absolute; left: 27%">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <font style="font-size: 30px;">
+                            <t t-if="o.marital == 'widower'" >
+                                <span>/</span>
+                            </t>
+                        </font>
+                    </div>
+                    <div style="position: absolute; left: 35%">
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                        <font style="font-size: 30px;">
+                            <t t-if="o.marital == 'divorced'" >
+                                <span>/</span>
+                            </t>
+                        </font>
+                    </div>
+
+                </div>
+              </t>
+          </t>
+        </template>
+        
+    </data>
+</openerp>

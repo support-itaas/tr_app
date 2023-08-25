@@ -1,0 +1,14 @@
+<odoo>
+    <record id="view_hr_period_form_itaas_inherit" model="ir.ui.view">
+        <field name="name">hr.period.itaas.inherit</field>
+        <field name="model">hr.period</field>
+        <field name="inherit_id" ref="hr_period.view_hr_period_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//header" position="inside">
+                <button name="action_set_tax" string="Set tax" type="object" groups="base.group_no_one"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

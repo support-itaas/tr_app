@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_stock_inventory" inherit_id="stock.report_inventory">
+        <xpath expr="//div[@class='page']" position="replace">
+
+            <div class="page">
+                <!--<t t-call="report.internal_layout">-->
+                <style>
+                    .header{width:100%; height:80px;}
+                    .content{width:100%; height:1000px;}
+                    .footer{width:100%; height:200px;}
+                    table.table-bordered1{
+                    border:1px solid black;
+                    margin-top:20px;
+                    border-collapse: collapse;
+                    width: 100%;
+                    }
+                    table.table-bordered1 &gt; thead &gt; tr &gt; th{
+                    border:1px solid black;
+                    border-collapse: collapse;
+                    }
+                    table.table-bordered1 &gt; thead &gt; tr &gt; td{
+                    border:1px solid black;
+                    border-left: 1px solid black;
+                    border-collapse: collapse;
+                    }
+                    table.table-bordered1 &gt; tbody &gt; tr &gt; td{
+                    border:1px solid black;
+                    border-left: 1px solid black;
+                    border-collapse: collapse;
+                    height: 40px;
+                    }
+                    table.table-bordered1 &gt; tfoot &gt; tr &gt; td{
+                    border:1px solid black;
+                    border-collapse: collapse;
+                    }
+                    table.table-bordered &gt; thead &gt; tr &gt; th{
+                    border:1px solid black;
+                    border-collapse: collapse;
+                    }
+                    table.table-bordered &gt; tbody &gt; tr &gt; td{
+                    border:1px solid black;
+                    <!--border-left: 1px solid;-->
+                    border-collapse: collapse;
+                    }
+                    table.table-bordered &gt; tfoot &gt; tr &gt; td{
+                    border:1px solid black;
+                    border-collapse: collapse;
+                    }
+                </style>
+
+                <h2>
+                    Stock Inventory
+                </h2>
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th><strong>Inventory</strong></th>
+                            <th><strong>Date</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span t-field="o.name"/>
+                            </td>
+                            <td>
+                                <span t-field="o.date"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th><strong>Location</strong></th>
+                            <th><strong>Product</strong></th>
+                            <th><strong>Product Code</strong></th>
+                            <th><strong>Production Lot</strong></th>
+                            <th><strong>Package</strong></th>
+                            <th class="text-right"><strong>Theory Quantity</strong></th>
+                            <th class="text-right"><strong>Check Quantity</strong></th>
+                        </tr>
+                    </thead>
+                    <tr t-foreach="o.line_ids" t-as="line">
+                        <td><span t-field="line.location_id"/></td>
+                        <td><span t-field="line.product_id.name"/></td>
+                        <td><span t-field="line.product_id.default_code"/></td>
+                        <td><span t-field="line.prod_lot_id"/></td>
+                        <td><span t-field="line.package_id"/></td>
+                        <td class="text-right"><span t-field="line.theoretical_qty"/> <span t-field="line.product_uom_id" groups="product.group_uom"/></td>
+                        <td class="text-right"><span t-field="line.product_qty"/> <span t-field="line.product_uom_id" groups="product.group_uom"/></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </table>
+                <t t-if="o.filter == 'product' and o.product_id">
+                    <div class="row">
+                        <div class="col-xs-4 pull-right">
+                            <table class="table table-condensed">
+                                <tr class="border-black">
+                                    <td><strong>Total Quantity</strong></td>
+                                    <td class="text-right">
+                                        <span t-field="o.total_qty"/> <span t-field="o.product_id.uom_id"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </xpath>
+    </template>
+</odoo>

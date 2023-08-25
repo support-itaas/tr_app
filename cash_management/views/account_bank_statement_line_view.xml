@@ -1,0 +1,144 @@
+<odoo>
+    <!--	 inherit account bank statement form-->
+
+
+    <record id="view_bank_statement_line_form_add_voucher_link" model="ir.ui.view">
+        <field name="name">account.bank.statement.line.form.itaas.new</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="inherit_id" ref="account.view_bank_statement_line_form"/>
+        <field name="arch" type="xml">
+            <field name="note" position="after">
+                <field name="account_voucher_id"/>
+                <field name="voucher_copy"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_bank_statement_tree_for_pos_order_line" model="ir.ui.view">
+        <field name="name">account.bank.statement.line.tree.itaas.new</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="arch" type="xml">
+            <tree string="Statements">
+                <field name="pos_config"/>
+                <field name="date"/>
+                <field name="note"/>
+                <field name="amount"/>
+                <field name="name"/>
+                <field name="journal_id"/>
+                <field name="pos_statement_id"/>
+                <field name="partner_id"/>
+                <field name="ref"/>
+
+                <!--<field name="balance_start" invisible="1"/>-->
+                <!--<field name="balance_end_real" invisible="1"/>-->
+                <!--<field name="balance_end" invisible="1"/>-->
+                <!--<field name="currency_id" invisible="1"/>-->
+                <!--<field name="account_voucher_id" readonly="1"/>-->
+
+                <!--<field name="amount"/>-->
+                <field name="state"/>
+                <field name="is_done"/>
+                <field name="account_voucher_id"/>
+
+                <!--<field name="is_difference_zero" invisible="1"/>-->
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_bank_statement_line_search_group_by_date" model="ir.ui.view">
+        <field name="name">account.bank.statement.line.search</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="inherit_id" ref="account.view_bank_statement_line_search"/>
+        <field name="arch" type="xml">
+            <field name="date" position="after">
+                <filter string="Date (Month)" name="group_by_date_month" domain="[]" context="{'group_by':'date'}"/>
+                <filter string="Date (Day)" name="group_by_date_month" domain="[]" context="{'group_by':'date:day'}"/>
+            </field>
+        </field>
+    </record>
+
+
+
+    <!--	###################################ใบนำฝาก 08/05/2020 #################################-->
+
+    <record id="action_pos_order_line_payment_record" model="ir.actions.act_window">
+        <field name="name">รายการชำระหน้าร้าน</field>
+        <field name="res_model">account.bank.statement.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('pos_statement_id','!=',False),('is_not_post','!=',True)]</field>
+        <!--        <field name="context">{'default_voucher_type': 'sale', 'voucher_type': 'sale','default_voucher_type_new': 'normal','default_pay_now': 'pay_now'}</field>-->
+        <field name="view_id" eval="view_bank_statement_tree_for_pos_order_line"/>
+        <!--        <field name="search_view_id" eval="account.view_bank_statement_line_search"/>-->
+        <field name="target">current</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to register a bank statement.
+            </p>
+        </field>
+    </record>
+
+    <menuitem action="action_pos_order_line_payment_record" id="pos_payment_record" name="รายการชำระหน้าร้าน" parent="account.menu_finance_receivables" sequence="10" groups="thai_accounting.group_account_ar"/>
+
+    <!--    ###################################ใบนำฝาก#################################3-->
+
+
+    <record id="view_bank_statement_post_to_voucher" model="ir.ui.view">
+        <field name="name">บันทึกใบนำฝาก</field>
+        <field name="model">bank.statement.account.voucher</field>
+        <field name="arch" type="xml">
+            <form string="ยืนยันรายการที่เลือกเพื่อใบทึกนำฝาก">
+                <group>
+                    <field name="post_date"/>
+                    <field name="journal_id"/>
+                    <field name="is_existing_voucher"/>
+                    <field name="existing_voucher_id" attrs="{'invisible': [('is_existing_voucher','=',False)]}"/>
+                </group>
+                <footer>
+                    <button name="confirm_order" string="ยืนยันการบันทึก" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_view_bank_statement_post_to_voucher" model="ir.actions.act_window">
+        <field name="name">บันทึกใบนำฝาก</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">bank.statement.account.voucher</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <!--            <field name="groups_id" eval="[(4,ref('sales_team.group_sale_salesman'))]"/>-->
+        <!-- TODO: check if we need this -->
+        <field name="binding_model_id" ref="account.model_account_bank_statement_line" />
+    </record>
+
+    <record id="action_view_cheque_post_to_voucher" model="ir.actions.act_window">
+        <field name="name">บันทึกใบนำฝาก</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">bank.statement.account.voucher</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <!--            <field name="groups_id" eval="[(4,ref('sales_team.group_sale_salesman'))]"/>-->
+        <!-- TODO: check if we need this -->
+        <field name="binding_model_id" ref="thai_accounting.model_account_cheque_statement" />
+    </record>
+
+    <record id="account_journal_form_itaas_inherit_for_pos_post" model="ir.ui.view">
+        <field name="name">account.่journal.inherit.view.for.pos.post</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="thai_accounting.account_journal_form_itaas_inherit"/>
+        <field name="arch" type="xml">
+            <field name="bank_for_cheque_account_id" position="attributes">
+                <attribute name="string">Reference Account</attribute>
+                <attribute name="attrs">{'invisible': [('type','!=','bank')],'required': [('bank_cheque','=',True)]}</attribute>
+            </field>
+        </field>
+    </record>
+
+
+
+
+</odoo>

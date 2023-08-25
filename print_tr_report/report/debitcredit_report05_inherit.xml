@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="debitcredit05_report_inherit_id"
+              inherit_id="thai_accounting.debitcredit05_report_id">
+
+
+        <xpath expr="//div[@class='header']" position="replace">
+            <t t-set="sum_debit" t-value="0"/>
+            <t t-set="sum_credit" t-value="0"/>
+            <t t-set="check_wht_ref" t-value="o.line_ids.filtered(lambda o: o.wht_reference)"/>
+            <div class="header">
+
+                <div class="col-xs-12" style="margin-top:20px;">
+                    <table width="100%">
+                        <tr>
+                            <td width="30%" align="center" style="vertical-align: middle;">
+                                <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % to_text(o.company_id.logo)" style="max-height: 300px; max-width: 180px;"/>
+                            </td>
+                            <td width="70%">
+                                <font style="font-size: 20px;text-align:center">
+                                    <strong><span t-field="o.company_id.name"/></strong>
+                                    <t t-if="o.company_id.show_head_office">&amp;nbsp;<strong>(สำนักงานใหญ่)</strong></t><br/>
+                                </font>
+                                <font style="font-size: 15px;">
+                                    <!--company address-->
+                                    <t t-set="company_address" t-value="o.company_id.get_company_full_address()"/>
+                                    <span t-esc="' '.join([ address for address in company_address ])"/><br/>
+                                    <!--company contact-->
+                                    <span t-if="o.company_id.phone">โทร/Tel :&amp;nbsp;<span t-esc="o.company_id.phone"/>&amp;nbsp;</span>
+                                    <span t-if="o.company_id.email">อีเมล/E-mail :&amp;nbsp;<span t-esc="o.company_id.email"/></span><br/>
+                                    <span t-if="o.company_id.vat">เลขประจำตัวผู้เสียภาษี/Tax :&amp;nbsp;<span t-esc="o.company_id.vat"/></span>
+                                </font>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="col-xs-12" style="margin-top:40px;">
+                    <table width="100%">
+                        <tr>
+                            <td style="text-align: center;">
+                                <font style="font-size: 20px;">
+                                    <strong>สมุดรายวันจ่าย<br/>Payment Voucher</strong><br/>
+                                </font>
+                                <br/><br/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="col-xs-12">
+                    <font style="font-size: 18px;">
+                        <t t-if="o.partner_id">
+                            <span>จ่ายให้แก่/To</span>&amp;nbsp;&amp;nbsp;<span t-field="o.partner_id.name"/><br/>
+                        </t>
+                        <t t-if="not o.partner_id">
+                            <span>จ่ายให้แก่/To</span>&amp;nbsp;&amp;nbsp;<span t-field="o.supplier_name_text"/><br/>
+                        </t>
+                        <span>รายละเอียด/Description</span><br/>
+                        <span t-field="o.remark"/>
+                    </font>
+                </div>
+
+                <table width="100%" style="font-size: 16px;">
+                    <tr>
+                        <td width="60%" style="text-align: right;">
+                            <strong>เลขที่/No.</strong>
+                        </td>
+                        <td width="5%"/>
+                        <td width="15%">
+                            <span t-esc="o.name"/>
+                            <!--                            แก้ไขฟอร์มใบสำคัญจ่าย (#2102)-->
+
+                            <!--                            <t t-set="payment_ids" t-value="o.line_ids.mapped('payment_id')"/>-->
+                            <!--                            <t t-if="payment_ids">-->
+                            <!--                                <span t-esc="payment_ids[0].name"/>-->
+                            <!--                            </t>-->
+                            <!--                            <t t-if="not payment_ids">-->
+                            <!--                                <span t-esc="o.name"/>-->
+                            <!--                            </t>-->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <strong>วันที่/Date</strong>
+                        </td>
+                        <td/>
+                        <td>
+                            <span t-field="o.date"/>
+                        </td>
+                    </tr>
+                    <t t-if="o.wht_reference">
+                        <tr>
+                            <td style="text-align: right;">
+                                <strong>อ้างอิงหัก ณ ที่จ่าย/Reference</strong>
+                            </td>
+                            <td/>
+                            <td>
+                                <span t-esc="o.wht_reference"/>
+                            </td>
+                        </tr>
+                    </t>
+                </table>
+                <table width="100%" style="font-size: 16px;">
+                    <tr>
+                        <td width="30%">
+                            <strong>เลขที่อ้างอิง/Reference</strong>
+                        </td>
+                        <td><span t-field="o.ref"/></td>
+
+                    </tr>
+                </table>
+
+            </div>
+        </xpath>
+
+        <xpath expr="//div[@class='page']" position="replace">
+            <div class="page">
+                <div class="col-xs-12">
+                    <br/>
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th class="col-xs-1" style="text-align:center">
+                                    <font style="font-size: 18px;">ลำดับที่</font>
+                                </th>
+                                <th class="col-xs-2" style="text-align:center">
+                                    <font style="font-size: 18px;">เลขที่บัญชี</font>
+                                </th>
+                                <th class="col-xs-2" style="text-align:left">
+                                    <font style="font-size: 16px;">แผนก</font>
+                                </th>
+                                <th class="col-xs-2" style="text-align:center">
+                                    <font style="font-size: 18px;">ชื่อบัญขี</font>
+                                </th>
+
+                                <!--<th class="col-xs-3" style="text-align:center">-->
+                                <!--<font style="font-size: 18px;">รายละเอียด</font>-->
+                                <!--</th>-->
+                                <th class="col-xs-2" style="text-align:center">
+                                    <font style="font-size: 18px;">เดบิท</font>
+                                </th>
+                                <th class="col-xs-2" style="text-align:center">
+                                    <font style="font-size: 18px;">เครดิต</font>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="sale_tbody">
+                            <t t-set="i" t-value="0"/>
+                            <t t-foreach="o.print_account()" t-as="l">
+                                <t t-if="l['debit'] == 0.00">
+                                    <t t-if="l['credit'] == 0.00">
+                                        <span/>
+                                    </t>
+                                </t>
+                            </t>
+                            <t t-foreach="o.print_account()" t-as="l">
+                                <t t-if="l['debit'] != 0.00">
+                                    <t t-if="l['credit'] == 0.00">
+                                        <t t-set="i" t-value="i+1"/>
+                                        <tr>
+                                            <td style="text-align:center">
+                                                <font style="font-size: 16px;">
+                                                    <span t-esc="i"/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:left">
+                                                <font style="font-size: 16px;">
+                                                    <span t-esc="l['account_id_code']"/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:left">
+                                                <font style="font-size: 16px;">
+                                                    <span t-esc="l['department_id_name']"/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:left">
+                                                <font style="font-size: 16px;">
+                                                    <t t-if="l['debit'] == 0.00">
+                                                        <t t-if="l['credit'] == 0.00">
+                                                            <span/>
+                                                        </t>
+                                                    </t>
+                                                    <t t-if="l['debit'] != 0.00">
+                                                        <t t-if="l['credit'] == 0.00">
+                                                            <span t-esc="l['account_id_name']"/>
+                                                        </t>
+                                                    </t>
+                                                    <t t-if="l['debit'] == 0.00">
+                                                        <t t-if="l['credit'] != 0.00">
+                                                            <span t-esc="l['account_id_name']"/>
+                                                        </t>
+                                                    </t>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <t t-if="l['debit'] == 0.00">
+                                                    <span/>
+                                                </t>
+                                                <t t-if="l['debit'] != 0.00">
+                                                    <font style="font-size: 16px;">
+                                                        <t t-set="sum_debit" t-value="sum_debit + l['debit']"/>
+                                                        <span t-esc="'{0:,.2f}'.format(l['debit'])"/>
+                                                    </font>
+                                                </t>
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <t t-if="l['credit'] == 0.00">
+                                                    <span/>
+                                                </t>
+                                                <t t-if="l['credit'] != 0.00">
+                                                    <font style="font-size: 16px;">
+                                                        <t t-set="sum_credit" t-value="sum_credit + l['credit']"/>
+                                                        <span t-esc="'{0:,.2f}'.format(l['credit'])"/>
+                                                    </font>
+                                                </t>
+                                            </td>
+                                        </tr>
+                                    </t>
+
+                                </t>
+                            </t>
+                            <t t-foreach="o.print_account()" t-as="l">
+                                <t t-if="l['debit'] == 0.00">
+                                    <t t-if="l['credit'] != 0.00">
+                                        <t t-set="i" t-value="i+1"/>
+                                        <tr>
+                                            <td style="text-align:center">
+                                                <font style="font-size: 16px;">
+                                                    <span t-esc="i"/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:left">
+                                                <font style="font-size: 16px;">
+                                                    <span t-esc="l['account_id_code']"/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:left">
+                                                <font style="font-size: 16px;">
+                                                    <span t-esc="l['department_id_name']"/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:left">
+                                                <font style="font-size: 16px;">
+                                                    <t t-if="l['debit'] == 0.00">
+                                                        <t t-if="l['credit'] == 0.00">
+                                                            <span/>
+                                                        </t>
+                                                    </t>
+                                                    <t t-if="l['debit'] != 0.00">
+                                                        <t t-if="l['credit'] == 0.00">
+                                                            <span t-esc="l['account_id_name']"/>
+                                                        </t>
+                                                    </t>
+                                                    <t t-if="l['debit'] == 0.00">
+                                                        <t t-if="l['credit'] != 0.00">
+                                                            <span t-esc="l['account_id_name']"/>
+                                                        </t>
+                                                    </t>
+                                                </font>
+                                            </td>
+
+
+                                            <td style="text-align:right;">
+                                                <t t-if="l['debit'] == 0.00">
+                                                    <span/>
+                                                </t>
+                                                <t t-if="l['debit'] != 0.00">
+                                                    <font style="font-size: 16px;">
+                                                        <t t-set="sum_debit" t-value="sum_debit + l['debit']"/>
+                                                        <span t-esc="'{0:,.2f}'.format(l['debit'])"/>
+                                                    </font>
+                                                </t>
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <t t-if="l['credit'] == 0.00">
+                                                    <span/>
+                                                </t>
+                                                <t t-if="l['credit'] != 0.00">
+                                                    <font style="font-size: 16px;">
+                                                        <t t-set="sum_credit" t-value="sum_credit + l['credit']"/>
+                                                        <span t-esc="'{0:,.2f}'.format(l['credit'])"/>
+                                                    </font>
+                                                </t>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </t>
+                            <t t-foreach="check_wht_ref" t-as="line">
+                                <tr>
+                                    <td></td>
+                                    <td>ใบหักภาษี#</td>
+                                    <td><span t-field="line.wht_reference"/></td>
+                                    <td colspan="3">
+                                        <span t-field="line.date"/> &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                        <span t-esc="'{0:,.2f}'.format(line.amount_before_tax)"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                        <t t-if="line.debit">
+                                            <span t-esc="'{0:,.2f}'.format(line.debit)"/>
+                                        </t>
+                                        <t t-if="line.credit">
+                                            <span t-esc="'{0:,.2f}'.format(line.credit)"/>
+                                        </t>
+                                        <br/>
+                                        &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                        <span>หักไว้</span>
+                                        <span t-field="line.wht_type"/> &amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                        <span>สำหรับ</span>
+                                        <span t-field="line.name"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
+        </xpath>
+
+        <xpath expr="//div[@class='footer']" position="replace">
+            <div class="footer">
+                <t t-set="sum_money" t-value="0.0"/>
+                <t t-foreach="o.line_ids" t-as="l">
+                    <t t-if="l.account_id.is_cheque">
+                        <t t-set="sum_money" t-value="sum_money + l.credit"/>
+                    </t>
+                </t>
+
+                <div  class="row last-page" style="page-break-inside: avoid">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td colspan="8">
+                                <div class="col-xs-10">
+                                    <font style="font-size: 15px;">
+                                        <span>(<span t-field="o.amount_total_invoice_text"/>)</span>
+                                    </font>
+                                </div>
+                                <div class="col-xs-2" style="text-align:right">
+                                    <font style="font-size: 15px;">
+                                        <span>รวม</span>
+                                    </font>
+                                </div>
+                            </td>
+                            <td colspan="2">
+                                <div style="text-align:right">
+                                    <font style="font-size: 15px;">
+                                        <span t-esc="'{0:,.2f}'.format(o.amount)"/>
+                                    </font>
+                                </div>
+                            </td>
+                            <td colspan="2">
+                                <div style="text-align:right">
+                                    <font style="font-size: 15px;">
+                                        <span t-esc="'{0:,.2f}'.format(o.amount)"/>
+                                    </font>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <div style="text-align:left">
+                                    <font style="font-size: 15px;">
+                                        <t t-foreach="o.line_ids[0].partner_id.bank_ids" t-as="t">
+                                            <t t-esc="t.acc_number"/>
+                                        </t>
+                                        <!--                                        <span t-field="o.line_ids[0].partner_id.bank_ids.acc_number"/>-->
+                                    </font>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <t t-set="num_acc" t-value="0"/>
+                                <t t-foreach="o.line_ids" t-as="x">
+                                    <t t-if="x.account_id.is_cheque">
+                                        <t t-set="num_acc" t-value="num_acc+1"/>
+                                    </t>
+                                </t>
+                                <t t-if="o.cheque_bank and not num_acc">
+                                    <font style="font-size: 15px;">
+                                        <table width="100%">
+                                            <tr>
+                                                <td width="12%">
+                                                    <font style="font-size: 20px;">
+                                                        <span>☐</span>
+                                                    </font>
+                                                    <font style="font-size: 15px;">
+                                                        <span> เงินสด </span>
+                                                    </font>
+                                                    <font style="font-size: 20px;">
+                                                        <span>☐</span>
+                                                    </font>
+                                                </td>
+                                                <td width="20%"><span>เช็คเลขที่&amp;nbsp;&amp;nbsp;</span>___________</td>
+                                                <td width="21%"><span>ลงวันที่&amp;nbsp;&amp;nbsp;</span>___________</td>
+                                                <td width="24%"><span>ธนาคาร&amp;nbsp;&amp;nbsp;</span>___________</td>
+                                                <td width="23%"><span>จำนวนเงิน&amp;nbsp;</span>___________</td>
+                                                <!--whattttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt-->
+                                            </tr>
+                                        </table>
+                                    </font>
+                                </t>
+                                <t t-if="not o.cheque_bank and not num_acc">
+                                    <font style="font-size: 15px;">
+                                        <table width="100%">
+                                            <tr>
+                                                <td width="12%">
+                                                    <font style="font-size: 20px;">
+                                                        <span>☐</span>
+                                                    </font>
+                                                    <font style="font-size: 15px;">
+                                                        <span> เงินสด </span>
+                                                    </font>
+                                                    <font style="font-size: 20px;">
+                                                        <span>☐</span>
+                                                    </font>
+                                                </td>
+                                                <td width="23%"><span>เช็คเลขที่&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span>______________</td>
+                                                <td width="20%"><span>ลงวันที่&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span>___________</td>
+                                                <td width="22%"><span>ธนาคาร&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span>_____________</td>
+                                                <td width="22%"><span>จำนวนเงิน&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span>_____________</td>
+                                                <!--whattttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt-->
+                                            </tr>
+                                        </table>
+                                    </font>
+                                </t>
+                                <t t-if="num_acc">
+                                    <font style="font-size: 15px;">
+                                        <table width="100%">
+                                            <tr>
+                                                <td width="12%">
+                                                    <font style="font-size: 20px;">
+                                                        <span>☐</span>
+                                                    </font>
+                                                    <font style="font-size: 15px;">
+                                                        <span> เงินสด </span>
+                                                    </font>
+                                                    <font style="font-size: 20px;">
+                                                        <span>☐</span>
+                                                    </font>
+                                                </td>
+                                                <td width="23%">เช็คเลขที่ ______________</td>
+                                                <td width="20%">ลงวันที่ ___________</td>
+                                                <td width="22%">ธนาคาร _____________</td>
+                                                <td width="22%">จำนวนเงิน _____________</td>
+                                                <!--whattttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt-->
+                                            </tr>
+                                        </table>
+                                    </font>
+                                </t>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div style="text-align: center">
+                                    <font style="font-size: 15px;">
+                                        <span>แผนกบัญชี</span><br/>
+                                        <br/><br/>
+                                        <span>ผู้จัดทำ___________/____/____</span>
+                                    </font>
+                                </div>
+                            </td>
+                            <td colspan="3">
+                                <div style="text-align: center">
+                                    <font style="font-size: 15px;">
+                                        <span>แผนกการเงิน</span><br/>
+                                        <br/><br/>
+                                        <span>ผู้จัดทำ____________/____/____</span>
+                                    </font>
+                                </div>
+                            </td>
+                            <td colspan="3"/>
+                            <td colspan="3"/>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div style="text-align: center">
+                                    <font style="font-size: 15px;">
+                                        <br/><br/>
+                                        <span>____________/____/____</span><br/>
+                                        <span>ผู้ตรวจสอบ/ผู้อนุมัติ</span><br/>
+                                    </font>
+                                </div>
+                            </td>
+                            <td colspan="3">
+                                <div style="text-align: center">
+                                    <font style="font-size: 15px;">
+                                        <br/><br/>
+                                        <span>____________/____/____</span><br/>
+                                        <span>ผู้ตรวจสอบ</span><br/>
+                                    </font>
+                                </div>
+                            </td>
+                            <td colspan="3">
+                                <div style="text-align: center">
+                                    <font style="font-size: 15px;">
+                                        <br/>
+                                        <span>____/____/____</span><br/>
+                                        <span>ผู้อนุมัติจ่าย</span><br/>
+                                    </font>
+                                </div>
+                            </td>
+                            <td colspan="3">
+                                <div style="text-align: center">
+                                    <font style="font-size: 15px;">
+                                        <br/>
+                                        <span>____/____/____</span><br/>
+                                        <span>ชื่อผู้รับเงิน</span><br/>
+                                        <span>ได้รับเงินถูกต้องเรียบร้อย</span>
+                                    </font>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- inherit account invoice form -->
+        <record id="invoice_form_customer_debit_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.form.customer.debit.itaas</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+
+                <button name="%(account.action_account_invoice_refund)d" position="attributes">
+                    <attribute name="string">Credit Note</attribute>
+                </button>
+                <button name="%(account.action_account_invoice_refund)d" position="after">
+                    <button name="%(action_account_invoice_debit)d" type='action' string='Debit Note' groups="base.group_user" attrs="{'invisible': ['|',('type', '=', 'out_refund'),'|',('debit_note', '=', True), ('state', 'not in', ('open','proforma2','paid'))]}"/>
+                </button>
+                <button name="%(account.action_account_invoice_refund)d" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|',('type', '=', 'out_refund'),'|',('debit_note', '=', True), ('state', 'not in', ('open','proforma2','paid'))]}</attribute>
+                </button>
+
+                <field name="date_invoice" position="after">
+                    <field name="debit_note" invisible="1"/>
+                </field>
+
+            </field>
+        </record>
+
+
+
+        <!-- inherit account supplier invoice form -->
+        <record id="invoice_form_supplier_debit_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.form.supplier.debit.itaas</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <button name="%(account.action_account_invoice_refund)d" position="after">
+                    <button name="%(action_account_invoice_debit)d" type='action' string='Debit Note' groups="base.group_user" attrs="{'invisible': ['|',('type', '=', 'in_refund'),'|',('debit_note', '=', True), ('state', 'not in', ('open','proforma2','paid'))]}"/>
+                </button>
+                <button name="%(account.action_account_invoice_refund)d" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|',('type', '=', 'in_refund'),'|',('debit_note', '=', True), ('state', 'not in', ('open','proforma2','paid'))]}</attribute>
+                </button>
+
+                <field name="date_invoice" position="after">
+                    <field name="debit_note" invisible="1"/>
+                </field>
+
+            </field>
+        </record>
+
+        <record id="view_account_invoice_refund_itaas" model="ir.ui.view">
+            <field name="name">account.invoice.refund.form</field>
+            <field name="model">account.invoice.refund</field>
+            <field name="inherit_id" ref="account.view_account_invoice_refund"/>
+            <field name="arch" type="xml">
+                <field name="date_invoice" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                    <attribute name="string">CN Date</attribute>
+                </field>
+                <field name="filter_refund" position="attributes">
+                    <attribute name="string">CN Option</attribute>
+                </field>
+                <field name="description" position="after">
+                    <field name="other_reason" attrs="{'invisible': [('description','!=','ref05')]}"/>
+                </field>
+
+
+            </field>
+        </record>
+
+
+        <!--##############################################################################-->
+        <!--<record id="action_account_customer_invoice_refund" model="ir.actions.act_window">-->
+            <!--<field name="name">Credit Note</field>-->
+            <!--<field name="res_model">account.invoice</field>-->
+            <!--<field name="view_type">form</field>-->
+            <!--<field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>-->
+            <!--<field eval="False" name="view_id"/>-->
+            <!--<field name="domain">[('type','=','out_refund')]</field>-->
+            <!--<field name="context">{'default_type': 'out_refund', 'type': 'out_refund', 'journal_type': 'sale'}</field>-->
+            <!--<field name="search_view_id" ref="account.view_account_invoice_filter"/>-->
+            <!--<field name="help" type="html">-->
+                <!--<p class="oe_view_nocontent_create">-->
+                    <!--Click to record a new customer credit note.-->
+                <!--</p><p>-->
+            <!--</p>-->
+            <!--</field>-->
+            <!--&lt;!&ndash;<field name="view_id" ref="account.invoice_tree"/>&ndash;&gt;-->
+        <!--</record>-->
+
+        <!--<record id="action_invoice_refund_out_form_credit_note" model="ir.actions.act_window.view">-->
+            <!--<field eval="2" name="sequence"/>-->
+            <!--<field name="view_mode">form</field>-->
+            <!--<field name="view_id" ref="account.invoice_form"/>-->
+            <!--<field name="act_window_id" ref="action_account_customer_invoice_refund"/>-->
+        <!--</record>-->
+        <!--<record id="action_invoice_refund_out_tree_credit_note" model="ir.actions.act_window.view">-->
+            <!--<field eval="1" name="sequence"/>-->
+            <!--<field name="view_mode">tree</field>-->
+            <!--<field name="view_id" ref="account.invoice_tree"/>-->
+            <!--<field name="act_window_id" ref="action_account_customer_invoice_refund"/>-->
+        <!--</record>-->
+
+        <!--<record id="action_account_supplier_invoice_refund" model="ir.actions.act_window">-->
+            <!--<field name="name">Credit Note</field>-->
+            <!--<field name="res_model">account.invoice</field>-->
+            <!--<field name="view_mode">tree,form,kanban,calendar,pivot,graph</field>-->
+            <!--<field name="domain">[('type','=','in_refund')]</field>-->
+            <!--<field name="context">{'default_type': 'in_refund', 'type': 'in_refund', 'journal_type': 'purchase'}</field>-->
+            <!--<field name="view_id" ref="account.invoice_supplier_tree"/>-->
+        <!--</record>-->
+
+        <!--<menuitem action="action_account_customer_invoice_refund"-->
+                  <!--id="menu_invoice_refund"-->
+                  <!--name="Credit Note"-->
+                  <!--parent="account.menu_finance_receivables"-->
+                  <!--sequence="3"-->
+                  <!--groups="thai_accounting.group_account_ar"/>-->
+        <!--###############################################################################-->
+
+        <record id="action_account_customer_invoice_debite_note" model="ir.actions.act_window">
+            <field name="name">Debit Note</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field eval="False" name="view_id"/>
+            <field name="domain">[('type','=','out_invoice'),('debit_note','=',True)]</field>
+            <field name="context">{'default_type': 'out_invoice', 'type': 'out_invoice', 'default_journal_type': 'sale','default_debit_note': True}</field>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to record a new customer credit note.
+                </p><p>
+            </p>
+            </field>
+
+        </record>
+
+
+
+
+        <record id="action_invoice_refund_out_form_debit_note" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="account.invoice_form"/>
+            <field name="act_window_id" ref="action_account_customer_invoice_debite_note"/>
+        </record>
+        <record id="action_invoice_refund_out_tree_debit_note" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="account.invoice_tree"/>
+            <field name="act_window_id" ref="action_account_customer_invoice_debite_note"/>
+        </record>
+
+        <menuitem action="action_account_customer_invoice_debite_note"
+                  id="menu_invoice_debit_note"
+                  name="Debite Note"
+                  parent="account.menu_finance_receivables_documents"
+                  sequence="3"
+                  groups="thai_accounting.group_account_ar"/>
+
+
+        <!--########################################-->
+
+        <record id="action_account_supplier_invoice_debite_note" model="ir.actions.act_window">
+            <field name="name">Debit Note</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field eval="False" name="view_id"/>
+            <field name="domain">[('type','=','in_invoice'),('debit_note','=',True)]</field>
+            <field name="context">{'default_type': 'in_invoice', 'type': 'in_invoice', 'default_journal_type': 'purchase','default_debit_note': True}</field>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to record a new customer debit note.
+                </p><p>
+            </p>
+            </field>
+
+        </record>
+
+        <record id="action_invoice_debit_form_debit_note" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="account.invoice_supplier_form"/>
+            <field name="act_window_id" ref="action_account_supplier_invoice_debite_note"/>
+        </record>
+        <record id="action_invoice_debit_tree_debit_note" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="account.invoice_supplier_tree"/>
+            <field name="act_window_id" ref="action_account_supplier_invoice_debite_note"/>
+        </record>
+
+        <!--<menuitem action="action_account_supplier_invoice_refund"-->
+                  <!--id="menu_invoice_refund_supplier"-->
+                  <!--name="Credite Note"-->
+                  <!--parent="account.menu_finance_payables_documents"-->
+                  <!--sequence="3"-->
+                  <!--groups="thai_accounting.group_account_ap"/>-->
+
+        <menuitem action="action_account_supplier_invoice_debite_note"
+                  id="menu_supplier_invoice_debit_note"
+                  name="Debite Note"
+                  parent="account.menu_finance_payables_documents"
+                  sequence="4"
+                  groups="thai_accounting.group_account_ap"/>
+
+
+    </data>
+</openerp>

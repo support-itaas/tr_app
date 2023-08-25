@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="vdl assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/customers_credit_limit/static/src/js/customers_credit_limit.js"></script>
+        </xpath>
+   </template>
+
+</odoo>

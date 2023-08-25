@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="PosTicket">
+        <!-- replace -->
+            <t t-jquery=".pos-sale-ticket" t-operation="replace">
+                <div class="pos-sale-ticket">
+                    <div style='text-align:center'>
+                        <!--<span>บริษัท คอฟฟี่บอย รีเทล จำกัด</span>-->
+                        <!--<br/>-->
+                        <t t-set="txt_company" t-value="''"/>
+                        <t t-set="txt_start" t-value="0"/>
+                        <t t-set="txt_end" t-value="0"/>
+                        <t t-set="count" t-value="0"/>
+                        <t t-set="count_s" t-value="0"/>
+                        <t t-if="widget.pos.company.name">
+                            <t t-foreach="widget.pos.company.name" t-as="l">
+                                <t t-if="widget.pos.company.name[l] == '('">
+
+                                    <t t-set="txt_start" t-value="count-1"/>
+                                </t>
+                                <t t-if="widget.pos.company.name[l] == ')'">
+
+                                    <t t-set="txt_end" t-value="count"/>
+                                </t>
+                                <t t-set="count" t-value="count+1"/>
+                            </t>
+                        </t>
+                        <t t-foreach="widget.pos.company.name" t-as="s">
+                            <t t-if="count_s &lt;= txt_start">
+                                <t t-set="txt_company" t-value="txt_company + widget.pos.company.name[s]"/>
+                            </t>
+                            <t t-if="count_s &gt; txt_end">
+                                <t t-set="txt_company" t-value="txt_company + widget.pos.company.name[s]"/>
+                            </t>
+                            <t t-set="count_s" t-value="count_s+1"/>
+                        </t>
+                        <span><t t-esc="txt_company"/></span><br/>
+                        <span><t t-esc="widget.pos.config.rml_header1"/></span>
+                        <br/>
+                        <span>TAX ID#<t t-esc="widget.pos.company.vat || ''"/></span><span style="margin-left:20px;">Branch#<t t-esc="widget.pos.company.branch_no || ''"/></span>
+                        <br />
+                        <t t-if="widget.pos.config.pos_id || ''">
+                            <div style='text-align:center'>
+                                POS ID:<t t-esc="widget.pos.config.pos_id" /> <span>*** VAT Included ***</span><br/>
+                            </div>
+                        </t>
+                        <t t-if="widget.pos.config.tax_header == true">
+                            <span>ใบเสร็จรับเงิน/ใบกำกับภาษีอย่างย่อ</span>
+                        </t>
+                        <t t-if="widget.pos.config.tax_header == false">
+                            <span>ใบเสร็จรับเงิน</span>
+                        </t>
+                        <br/>
+
+                    </div>
+
+                    <table class='receipt-orderlines'>
+                        <colgroup>
+                            <col width='50%' />
+                            <col width='25%' />
+                            <col width='25%' />
+                        </colgroup>
+
+                        <tr t-foreach="orderlines" t-as="orderline">
+                            <td>
+                                <t t-esc="orderline.get_product().display_name"/>
+                                 <t t-if="orderline.get_discount() > 0">
+                                    <div class="pos-disc-font">
+                                        With a <t t-esc="orderline.get_discount()"/>% discount
+                                    </div>
+                                </t>
+                            </td>
+                            <td class="pos-right-align">
+                                <t t-esc="orderline.get_quantity_str_with_unit()"/>
+                            </td>
+                            <td class="pos-right-align">
+                                <t t-esc="widget.format_currency(orderline.get_display_price())"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                    <table class='receipt-total'>
+                        <tr>
+                            <td>Subtotal:</td>
+                            <td class="pos-right-align">
+                                <!--[<t t-esc="widget.format_currency(order.get_total_without_tax())"/>]-->
+                                <!--<t t-esc="widget.format_currency(order.get_total_without_tax()*1.07)"/>-->
+                                <t t-set="subtotal" t-value="0"/>
+                                <t t-set="subtotal_s" t-value="0"/>
+                                <t t-set="subtotal_amount" t-value="0"/>
+                                <t t-set="subtotal_before_amount" t-value="0"/>
+                                <t t-set="promotion_amount_total" t-value="0"/>
+                                <t t-foreach="orderlines" t-as="orderline">
+                                    <t t-if="orderline.get_product_promotion()!=true">
+                                        <!--<t t-esc="widget.format_currency(orderline.get_display_price())"/>-->
+                                        <t t-set="subtotal" t-value="subtotal + orderline.get_display_price()" />
+                                    </t>
+                                </t>
+
+                                <t t-foreach="orderlines" t-as="orderline">
+                                  <t t-if="orderline.get_product_promotion()==true">
+                                      <!--<t t-esc="widget.format_currency(orderline.get_display_price())"/>-->
+                                      <t t-set="promotion_amount_total" t-value="promotion_amount_total + orderline.get_display_price()"/>
+                                  </t>
+                                </t>
+                                <!--[<t t-esc="subtotal"/>]-->
+                                <t t-set="total_promotion_amount" t-value="widget.format_currency(order.promotion_amount * 1.07)"/>
+
+                                <t t-set="subtotal_amount" t-value="((subtotal + promotion_amount_total))"/>
+                                <!--{[<t t-esc="subtotal_amount"/>]}-->
+                                <t t-set="subtotal_before_amount" t-value="subtotal_amount - (subtotal_amount * 7)/107"/>
+                                <t t-esc="widget.format_currency(subtotal_before_amount)"/>
+                                <!--[<t t-esc="subtotal"/> - <t t-esc="total_promotion_amount"/>]-->
+                            </td>
+                        </tr>
+                        <t t-set="before_tax" t-value="0"/>
+                        <t t-set="get_before_tax" t-value="0"/>
+                        <t t-foreach="order.get_tax_details()" t-as="taxdetail">
+                            <tr>
+                                <td><t t-esc="taxdetail.name" /></td>
+                                <td class="pos-right-align">
+                                    <t t-set="before_tax" t-value="order.get_total_without_tax()- (order.get_total_without_tax()*7/100)"/>
+                                    <t t-set="get_before_tax" t-value="before_tax * 7 / 100"/>
+                                    <!--[<t t-esc="widget.format_currency(get_before_tax)" />]]-->
+                                    <!--[[<t t-esc="subtotal_before_amount"/>]]-->
+                                    <!--[<t t-esc="subtotal_amount"/>]-->
+                                    <t t-set="get_before_tax" t-value="subtotal_amount - subtotal_before_amount"/>
+                                    <t t-esc="widget.format_currency(get_before_tax)"/>
+                                </td>
+                            </tr>
+                        </t>
+                        <!--<tr>-->
+                            <!--<td>Discount:</td>-->
+                            <!--<td class="pos-right-align">-->
+                                <!--<t t-esc="widget.format_currency(order.get_total_discount())"/>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <tr class="emph">
+                            <td>Total:</td>
+                            <td class="pos-right-align">
+                                <t t-set="tax" t-value="order.get_total_without_tax()/1.07"/>
+                                <t t-set="before_tax2" t-value="order.get_total_without_tax() - (order.get_total_without_tax()/1.07)"/>
+                                <t t-esc="widget.format_currency(order.get_total_with_tax())"/>
+                                <t t-set="t_total" t-value="order.get_total_with_tax()"/>
+                            </td>
+                        </tr>
+                        <!--<tr>-->
+                            <!--<td colspan="2" style="text-align: center; vertical-align: middle;">*** VAT Included ***</td>-->
+
+                        <!--</tr>-->
+                    </table>
+                    <br />
+                    <table class='receipt-paymentlines'>
+                        <t t-set="t_cash" t-value="0" />
+                        <t t-foreach="paymentlines" t-as="line">
+                          <tr>
+                              <td>
+                                  <t t-esc="line.name"/>
+                              </td>
+                              <td class="pos-right-align">
+                                  <t t-esc="widget.format_currency(line.get_amount())"/>
+                                  <t t-set="t_cash" t-value="t_cash + line.get_amount()" />
+                              </td>
+                          </tr>
+                        </t>
+                    </table>
+                    <br />
+                    <table class='receipt-change'>
+                        <tr><td>Change:</td><td class="pos-right-align">
+                            <t t-esc="widget.format_currency(t_cash - t_total)"/>
+                            </td></tr>
+                    </table>
+
+                    <div style='text-align:center'>
+                        <!--<t t-esc="moment().format('L LT')"/>-->
+                        <!--<br/>-->
+                        <t t-set="c" t-value="0"/>
+                        <t t-set="n" t-value="0"/>
+                        <t t-set="txt_date" t-value="''"/>
+                        <t t-set="txt_y" t-value="''"/>
+                        <t t-set="txt_m" t-value="''"/>
+                        <t t-set="txt_d" t-value="''"/>
+                        <t t-set="txt_t" t-value="''"/>
+                        <t t-set="txt_lang" t-value="''"/>
+                        <t t-foreach="moment().format('L LT')" t-as="d">
+                            <t t-if="c &gt;= 2 and c &lt;= 2 ">
+                                <t t-if="moment().format('L LT')[d] == '/'">
+                                    <t t-set="txt_lang" t-value="txt_lang + 'EN'"/>
+                                    <!--[[<t t-esc="moment().format('L LT')[d]"/>]]-->
+                                </t>
+                                <t t-if="moment().format('L LT')[d] != '/'">
+                                    <t t-set="txt_lang" t-value="txt_lang + 'TH'"/>
+                                    <!--{<t t-esc="moment().format('L LT')[d]"/>}-->
+                                </t>
+                            </t>
+                            <t t-set="c" t-value="c + 1"/>
+                        </t>
+                        <!--<t t-esc="txt_lang"/>-->
+                        <t t-foreach="moment().format('L LT')" t-as="z">
+                            <t t-if="txt_lang == 'TH'">
+                                <!--2018/10/30-->
+                                <!--<t t-esc="n"/>-->
+                                <t t-if="n &gt;= 0 and n &lt;= 9 ">
+                                    <t t-set="txt_date" t-value="txt_date + moment().format('L LT')[z]"/>
+                                </t>
+                                <t t-if="n &gt;= 0 and n &lt;= 3 ">
+                                    <t t-set="txt_y" t-value="txt_y + moment().format('L LT')[z]"/>
+                                </t>
+                                <t t-if="n &gt;= 5 and n &lt;= 6 ">
+                                    <t t-set="txt_m" t-value="txt_m + moment().format('L LT')[z]"/>
+                                </t>
+                                <t t-if="n &gt;= 8 and n &lt;= 9 ">
+                                    <!--[<t t-esc="moment().format('L LT')[z]"/>]-->
+                                    <t t-set="txt_d" t-value="txt_d + moment().format('L LT')[z]"/>
+                                </t>
+                                <t t-if="n > 9">
+                                    <t t-set="txt_t" t-value="txt_t + moment().format('L LT')[z]"/>
+                                </t>
+                                <t t-set="n" t-value="n + 1"/>
+                            </t>
+                            <t t-if="txt_lang == 'EN'">
+                                <!--10/30/2018-->
+
+                                <t t-if="n &gt;= 6 and n &lt;= 9 ">
+                                    <t t-set="txt_y" t-value="txt_y + moment().format('L LT')[z]"/>
+                                </t>
+                                <t t-if="n &gt;= 0 and n &lt;= 1 ">
+                                    <t t-set="txt_m" t-value="txt_m + moment().format('L LT')[z]"/>
+                                </t>
+                                <t t-if="n &gt;= 3 and n &lt;= 4 ">
+                                    <t t-set="txt_d" t-value="txt_d + moment().format('L LT')[z]"/>
+                                </t>
+                                <t t-if="n > 10">
+                                    <t t-set="txt_t" t-value="txt_t + moment().format('L LT')[z]"/>
+                                </t>
+                                <t t-set="n" t-value="n + 1"/>
+                            </t>
+
+                        </t>
+                        <!--<span t-esc="txt_date"/>-->
+                        <!--<br/>-->
+                        <div>
+                            <t t-if="txt_lang == 'TH'">
+                                <span t-esc="txt_d"/>/<span t-esc="txt_m"/>/<span t-esc="txt_y"/>
+                                <span t-esc="txt_t"/>
+                            </t>
+                            <t t-if="txt_lang == 'EN'">
+                                <span t-esc="txt_d"/>/<span t-esc="txt_m"/>/<span t-esc="txt_y"/>
+                                <span t-esc="txt_t"/>
+                            </t>
+                            <br/>
+                        </div>
+                        <t t-set="j" t-value="0"/>
+                        <t t-set="txt_name" t-value="''"/>
+                        <t t-foreach="order.name" t-as="l">
+                            <t t-if="j > 5">
+                                <!--[<span t-esc="l"/>]-->
+                                <t t-set="txt_name" t-value="txt_name + order.name[l]"/>
+                            </t>
+                            <t t-set="j" t-value="j + 1"/>
+                        </t>
+                        R#<span t-esc="txt_name"/>
+                        <br/>
+                        <div style="word-wrap:break-word;width:270px;margin-right:10px;">
+                            <span t-esc="order.order_note"/>
+                        </div>
+                        <div class="pos-sale-ticket-user" style='text-align:left'>
+                            <span>User: <t t-esc='receipt.cashier' /></span><br/>
+                            <span><t t-esc="receipt.footer" /></span>
+                        </div>
+                        <!--<span t-esc="order.name"/>-->
+                        <!--<t t-set="test" t-value="order.updatetxt(order.name)"/>-->
+                        <!--<t t-set="test" t-value="order.get_all_pos_orderline(order.name)"/>-->
+                        <!--<t t-foreach="order.get_tax_details()" t-as="taxdetail">-->
+                        <!--</t>-->
+                        <!--<span t-esc="test"/>-->
+
+                    </div>
+
+                    <!--<t t-if="receipt.footer">-->
+                    <!--<br />-->
+                    <!--<div style='text-align:center'>-->
+                    <!--<t t-esc="receipt.footer" />-->
+                    <!--</div>-->
+                    <!--</t>-->
+                </div> <!-- end sale pos ticket -->
+
+            </t>
+
+        <!-- -->
+    </t>
+</templates>

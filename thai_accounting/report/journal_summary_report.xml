@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="journal_summary_report">
+             <t t-call="web.basic_layout">
+                <div class="page">
+                    <t t-set="company_id" t-value="company_id"/>
+                    <t t-set="date_form" t-value="date_form"/>
+                    <t t-set="date_to" t-value="date_to"/>
+                    <style>
+                        .title{width:100%; height:30px;}
+                        .header{width:100%; height:20px;}
+                        .content{width:100%; height:30px;}
+                        .footer{width:100%; height:200px;}
+                        .doubleUnderline{border-bottom: 3px double;}
+                        .singleUnderline{border-bottom: 3px single;}
+                    </style>
+
+                    <!--title-->
+                    <div class="title" style="text-align:center">
+                        <font style="font-size: 16px;">
+                            <h><span t-esc="company_id.name" /></h><br/>
+                            <h><span>รายงานสมุดบัญชี-สรุป</span></h>
+                        </font>
+                        <br/>
+                        <font style="font-size: 12px;">
+                            <strong>จากวันที่:</strong>
+                            <span t-esc="date_from" />
+                            <strong>ถึงวันที่</strong>
+                            <span t-esc="date_to" />
+
+                        </font>
+                    </div>
+                    <br/>
+                    <t t-set="total_beginning" t-value="0"/>
+                    <t t-set="total_debit" t-value="0"/>
+                    <t t-set="total_credit" t-value="0"/>
+                    <t t-set="balance" t-value="0"/>
+                    <br/>
+                    <br/>
+                    <div class="col-xs-4" style="text-align:right">
+                        <strong>สมุดบัญชี : </strong>
+                    </div>
+                    <t t-foreach="docs" t-as="o">
+                        <div class="col-xs-2">
+                            <font style="font-size: 12px;">
+                                <span t-esc="o['name']"/>
+                                <span>,</span>
+                            </font>
+                        </div>
+                    </t>
+
+                 <br/>
+
+                        <div>
+                            <div class="col-xs-12">
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-xs-2" style="text-align:center">
+                                                <font style="font-size: 12px;">รหัสสมุดบัญชี</font>
+                                            </th>
+                                            <th class="col-xs-2" style="text-align:center">
+                                                <font style="font-size: 12px;">ชื่อสมุดบัญชี</font>
+                                            </th>
+                                            <th class="col-xs-2" style="text-align:right">
+                                                <font style="font-size: 12px;">ยอดยกมา</font>
+                                            </th>
+                                            <th class="col-xs-2" style="text-align:right">
+                                                <font style="font-size: 12px;">ยอดรับ</font>
+                                            </th>
+                                            <th class="col-xs-2" style="text-align:right">
+                                                <font style="font-size: 12px;">ยอดจ่าย</font>
+                                            </th>
+                                            <th class="col-xs-2" style="text-align:right">
+                                                <font style="font-size: 12px;">ยอดคงเหลือ</font>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="sale_tbody">
+                                        <t t-set="i" t-value="1" />
+                                        <t t-foreach="docs" t-as="o">
+                                            <tr>
+                                                <td style="text-align:center">
+                                                    <font style="font-size: 12px;">
+                                                        <span t-esc="o['code']"/>
+                                                    </font>
+                                                </td>
+                                                <td style="text-align:center">
+                                                    <font style="font-size: 12px;">
+                                                        <span t-esc="o['name']"/>
+                                                    </font>
+                                                </td>
+                                                <td style="text-align:right">
+                                                    <font style="font-size: 12px;">
+                                                        <span>0</span>
+                                                    </font>
+                                                </td>
+                                                <td style="text-align:right">
+                                                    <font style="font-size: 12px;">
+                                                        <span t-esc="o['debit']"/>
+                                                         <t t-set="total_debit" t-value="total_debit + o['debit']"/>
+                                                    </font>
+                                                </td>
+                                                <td style="text-align:right">
+                                                    <font style="font-size: 12px;">
+                                                        <span t-esc="o['credit']"/>
+                                                        <t t-set="total_credit" t-value="total_credit + o['credit']"/>
+                                                    </font>
+                                                </td>
+                                                <td style="text-align:right">
+                                                    <font style="font-size: 12px;">
+                                                        <span t-esc="o['balance']"/>
+                                                        <t t-set="balance" t-value="balance + o['balance']"/>
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    <br/>
+                    <div style="page-break-inside: avoid">
+                            <div class="col-xs-4" style="text-align:center">
+                                <font style="font-size: 12px;">
+                                    <strong>รวม</strong>
+                                </font>
+                            </div>
+                            <div class="col-xs-2" style="text-align:right">
+                                <font style="font-size: 12px;">
+                                    <span t-esc="total_beginning"/>
+                                    <span class="doubleUnderline">&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span>
+                                </font>
+                            </div>
+                            <div class="col-xs-2" style="text-align:right">
+                                <font style="font-size: 12px;">
+                                    <span t-esc="total_debit"/>
+                                    <span class="doubleUnderline">&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span>
+                                </font>
+                            </div>
+                            <div class="col-xs-2" style="text-align:right">
+                                <font style="font-size: 12px;">
+                                    <span t-esc="total_credit"/>
+                                    <span class="doubleUnderline">&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span>
+                                </font>
+                            </div>
+                        <div class="col-xs-2" style="text-align:right">
+                                <font style="font-size: 12px;">
+                                    <span t-esc="balance"/>
+                                    <span class="doubleUnderline">&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</span>
+                                </font>
+                            </div>
+                        </div>
+                </div>
+             </t>
+        </template>
+    </data>
+</openerp>

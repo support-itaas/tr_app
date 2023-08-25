@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="debitnote_report_id">
+            <t t-foreach="docs" t-as="o">
+                <t t-if="o.get_tax_invoice()">
+                    <t t-set="get_tax" t-value="o.get_tax_invoice_id()"/>
+                </t>
+                <t t-if="not o.get_tax_invoice()">
+                    <t t-set="get_tax" t-value="0"/>
+                </t>
+                <t t-set="amount_untaxed" t-value="o.amount_untaxed"/>
+                <t t-set="amount_tax" t-value="o.amount_tax"/>
+                <t t-set="amount_total" t-value="o.amount_total"/>
+                <t t-if="get_tax">
+                    <t t-set="amount_diff" t-value="amount_untaxed - get_tax.amount_untaxed" />
+                </t>
+                <t t-set="amount_diff_tax" t-value="amount_diff * 0.07"/>
+                <t t-set="amount_diff_total" t-value="amount_diff + amount_diff_tax"/>
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <style>
+                            .header{width:100%; height:30px;}
+                            .content{width:100%; height:700px;}
+                            .footer{width:100%; height:200px;}
+                            .doubleUnderline{border-bottom: 3px double;}
+                            table.table-bordered1{
+                            border:1px solid black;
+                            margin-top:20px;
+                            border-collapse: collapse;
+                            width: 100%;
+                            }
+                            table.table-bordered1 &gt; thead &gt; tr &gt; th{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            }
+                            table.table-bordered1 &gt; tbody &gt; tr &gt; td{
+                            border:0px solid white;
+                            border-left: 1px solid black;
+                            border-collapse: collapse;
+                            height: 40px;
+                            }
+                            table.table-bordered1 &gt; tfoot &gt; tr &gt; td{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            }
+                            table.table-bordered &gt; thead &gt; tr &gt; th{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            }
+                            table.table-bordered &gt; tbody &gt; tr &gt; td{
+                            border:1px solid black;
+                            <!--border-left: 1px solid;-->
+                            border-collapse: collapse;
+                            }
+                            table.table-bordered &gt; tfoot &gt; tr &gt; td{
+                            border:1px solid black;
+                            border-collapse: collapse;
+                            }
+                            table.table-table1 {
+                            border:1px solid black;
+                            margin-top:20px;
+                            border-collapse: collapse;
+                            border-left: 1px solid;
+                            border-right: 1px solid;
+                            border-bottom: 1px solid;
+                            border-top: 1px solid;
+                            width: 100%;
+                            }
+                        </style>
+
+                        <div class="content">
+                            <div class="col-xs-12" style="text-align:center">
+                                <font style="font-size: 22px;">
+                                    <strong>ใบเพิ่มหนี้หนี้/ใบกำกับภาษี</strong><br/>
+                                    <strong>DEBIT NOTE/TAX INVOICE</strong><br/>
+                                    <br/>
+                                </font>
+                            </div>
+                            <div class="col-xs-6">
+                                <font style="font-size: 16px;">
+                                    <strong>ลูกค้า/CUSTOMER:</strong><br/>
+                                </font>
+                                <font style="font-size: 14px;">
+                                    <!--&amp;nbsp;&amp;nbsp;&amp;nbsp;รหัส:&amp;nbsp;<span>ยังไม่มีข้อมูล</span><br/>-->
+                                    <span t-if="o.partner_id.parent_id">
+                                        <strong>ชื่อ/NAME:</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;<span t-field="o.partner_id.parent_id.name" /><br/>
+                                    </span>
+                                    <span t-if="not o.partner_id.parent_id">
+                                        <strong>ชื่อ/NAME:</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;<span t-field="o.partner_id.name" /><br/>
+                                    </span>
+
+                                    <strong>ที่อยู่/ADDRESS:</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;<span t-field="o.partner_id.street" /><span t-field="o.partner_id.street2"/>&amp;nbsp;
+                                    <span t-field="o.partner_id.city" />&amp;nbsp;<span t-field="o.partner_id.state_id.name" />&amp;nbsp;<span t-field="o.partner_id.zip" /><br/>
+
+                                    <span t-if="o.partner_id.parent_id">
+                                        <strong>เลขประจำตัวผู้เสียภาษี/Tax ID:</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;<span t-field="o.partner_id.parent_id.vat" /><br/>
+                                    </span>
+                                    <span t-if="not o.partner_id.parent_id">
+                                        <strong>เลขประจำตัวผู้เสียภาษี/Tax ID:</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;<span t-field="o.partner_id.vat" /><br/>
+                                    </span>
+
+                                </font>
+
+                            </div>
+                            <br/>
+                            <br/>
+                            <div class="col-xs-1"/>
+                            <div class="col-xs-5">
+                                <font style="font-size: 12px;">
+                                    <strong>เลขที่/NO.:</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;<span t-field="o.number"/><br/>
+                                    <strong>วันที่/DATE:</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;<span t-field="o.date_invoice"/><br/>
+                                    <strong>อ้างอิง/INVOICE REFERENCE:</strong>&amp;nbsp;&amp;nbsp;&amp;nbsp;<span t-field="o.origin"/><br/>
+                                </font>
+                            </div>
+
+                            <table class="table table-bordered1">
+                                <thead>
+                                    <tr>
+                                        <tr>
+                                            <th class="col-xs-0.5" style="text-align:center">
+                                                <font style="font-size: 14px;">ลำดับ<br/>NO</font>
+                                            </th>
+                                            <th class="col-xs-0.5" style="text-align:center">
+                                                <font style="font-size: 14px;">รหัส<br/>CODE</font>
+                                            </th>
+                                            <th class="col-xs-5" style="text-align:center">
+                                                <font style="font-size: 14px;">รายการ<br/>DESCRIPTION</font>
+                                            </th>
+                                            <th class="col-xs-1" style="text-align:center">
+                                                <font style="font-size: 14px;">จำนวน<br/>QTY</font>
+                                            </th>
+                                            <th class="col-xs-2" style="text-align:center">
+                                                <font style="font-size: 14px;">ราคาต่อหน่วย<br/>UNIT PRICE</font>
+                                            </th>
+                                            <th class="col-xs-1.5" style="text-align:center">
+                                                <font style="font-size: 14px;">ส่วนลด<br/>DISCOUNT</font>
+                                            </th>
+                                            <th class="col-xs-1.5" style="text-align:center">
+                                                <font style="font-size: 14px;">ราคา<br/>AMOUNT</font>
+                                            </th>
+                                        </tr>
+                                    </tr>
+                                </thead>
+                                <tbody class="sale_tbody">
+                                    <t t-set="i" t-value="1"/>
+                                    <t t-set="count" t-value="1"/>
+                                    <t t-set="max" t-value="10"/>
+                                    <t t-foreach="o.invoice_line_ids" t-as="l">
+                                        <tr>
+
+
+                                            <td style="text-align:center">
+                                                <font style="font-size: 14px;">
+                                                    <span t-esc="i"/>
+                                                </font>
+                                            </td>
+                                            <t t-set="i" t-value="i+1"/>
+                                            <t t-if="count &gt; 13">
+                                                <t t-set="count" t-value="1"/>
+                                            </t>
+                                            <t t-if="count &lt; 14">
+                                                <t t-set="count" t-value="count + l.get_line(l.name) + 1"/>
+                                            </t>
+                                            <t t-if="l.product_id.default_code">
+                                                <td style="text-align:center">
+                                                    <font style="font-size: 14px;">
+                                                        <span t-field="l.product_id.default_code"/>
+                                                    </font>
+                                                </td>
+                                            </t>
+                                            <t t-if="not l.product_id.default_code">
+                                                <td style="text-align:center">
+                                                    <font style="font-size: 14px;">
+                                                        <span>-</span>
+                                                    </font>
+                                                </td>
+                                            </t>
+                                            <td style="text-align:left">
+                                                <font style="font-size: 14px;">
+                                                    <span t-field="l.name"/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:center">
+                                                <font style="font-size: 14px;">
+                                                    <span t-field="l.quantity"/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:right">
+                                                <font style="font-size: 14px;">
+                                                    <span t-field="l.price_unit"/>
+                                                </font>
+                                            </td>
+                                            <td style="text-align:right">
+                                                <font style="font-size: 14px;">
+                                                    <span t-field="l.discount"/> %
+                                                </font>
+                                            </td>
+                                            <td style="text-align:right">
+                                                <font style="font-size: 14px;">
+                                                    <span t-esc="'{0:,.2f}'.format(float(l.price_subtotal))"/>&amp;nbsp;<span t-field="o.currency_id.name"/>
+                                                </font>
+                                            </td>
+                                            <!--</t>-->
+                                        </tr>
+
+                                    </t>
+                                    <t t-foreach="range(count, 10)" t-as="x">
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+
+                            </table>
+                            <table class="table table-bordered1" style="width:100%;page-break-inside: avoid">
+                                <tr>
+                                    <td colspan="2">
+                                        <font style="font-size: 14px;">
+                                            <span t-field="o.comment"/><br/><br/>
+                                            (<span t-field="o.amount_total_invoice_text"/>)
+                                        </font>
+                                    </td>
+                                    <td colspan="2">
+                                        <font style="font-size: 14px;">
+                                            <span>มูลค่าตามใบกำกับภาษีเดิม<br/>ORIGINAL TAX INVOICE</span><br/>
+                                            <span>มูลค่าที่ถูกต้อง<br/>RIGHT VALUE</span><br/>
+                                            <span>ส่วนต่าง<br/>DIFFERENCE</span><br/>
+                                            <span>ภาษีมูลค่าเพิ่ม 7%<br/>VAT</span><br/>
+                                            <span>ยอดเงินสุทธิ<br/>NET TOTAL</span>
+                                        </font>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <font style="font-size: 14px;">
+                                            <!--<span t-field="o.amount_untaxed"/><br/><br/>-->
+                                            <t t-if="get_tax and get_tax.amount_untaxed">
+                                                <span t-esc="'{0:,.2f}'.format(float(get_tax.amount_untaxed))"/>
+                                            </t>
+                                            <t t-if="not get_tax">
+                                                <span>0.00</span>
+                                            </t>
+                                            <br/><br/>
+                                            <t t-if="get_tax">
+                                                <span t-esc="'{0:,.2f}'.format(float(amount_untaxed))"/>
+                                            </t>
+                                            <t t-if="not get_tax">
+                                                <span>0.00</span>
+                                            </t>
+                                            <br/><br/>
+                                            <span t-esc="'{0:,.2f}'.format(float(amount_diff))" /><br/><br/>
+                                            <span t-esc="'{0:,.2f}'.format(float(amount_diff_tax))"/><br/><br/>
+                                            <span t-esc="'{0:,.2f}'.format(float(amount_diff_total))"/>
+                                        </font>
+                                    </td>
+                                </tr>
+
+                            </table>
+                            <font style="font-size: 14px;">
+                                <span>เหตุผลในการเพิ่มหนี้ : </span>
+                                <span t-field="o.name"/>
+                            </font>
+                            <!--</div>-->
+                            <div class="row" style="text-align: center; page-break-inside: avoid;">
+                                <div class="col-xs-4">
+                                    <br/><br/>
+                                    <font style="font-size: 14px;">
+                                        <span>__________________________</span><br/><br/>
+                                        <span>ผู้มีอำนาจลงนาม</span><br/><br/>
+                                        <span>Date ____/____/______</span>
+                                    </font>
+                                </div>
+                                <div class="col-xs-4">
+                                    <br/><br/>
+                                    <font style="font-size: 14px;">
+                                        <span>__________________________</span><br/><br/>
+                                        <span>ผู้จัดทำเอกสาร</span><br/><br/>
+                                        <span>Date ____/____/______</span>
+                                    </font>
+                                </div>
+                                <div class="col-xs-4">
+                                    <br/><br/>
+                                    <font style="font-size: 14px;">
+                                        <span>__________________________</span><br/><br/>
+                                        <span>ผู้รับเอกสาร</span><br/><br/>
+                                        <span>Date ____/____/______</span>
+                                    </font>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

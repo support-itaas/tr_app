@@ -1,0 +1,77 @@
+<odoo>
+    <record id="account_account_form_itaas_inherit" model="ir.ui.view">
+        <field name="name">account.account.form.itaas</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="arch" type="xml">
+            <field name="deprecated" position="after">
+                <field name="wht"/>
+                <field name="bank_fee"/>
+                <field name="diff_little_money"/>
+                <!--<field name="payment_cut_off"/>-->
+                <field name="sale_tax_report"/>
+                <field name="purchase_tax_report"/>
+            </field>
+        </field>
+    </record>
+
+    <!--#make chart of account not ediable for generate report only-->
+    <record id="view_account_list_only" model="ir.ui.view">
+        <field name="name">account.account.list</field>
+        <field name="model">account.account</field>
+        <field name="arch" type="xml">
+            <tree string="Chart of accounts" create="false" import="false">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="user_type_id"/>
+                <field name="currency_id" options="{'no_create': True}" groups="base.group_multi_currency"/>
+                <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_account_list" model="ir.actions.act_window">
+        <field name="name">GL by Accounts</field>
+        <field name="res_model">account.account</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+        <field name="search_view_id" ref="account.view_account_search"/>
+        <field name="view_id" ref="view_account_list_only"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to add an account.
+            </p><p>
+            An account is part of a ledger allowing your company
+            to register all kinds of debit and credit transactions.
+            Companies present their annual accounts in two main parts: the
+            balance sheet and the income statement (profit and loss
+            account). The annual accounts of a company are required by law
+            to disclose a certain amount of information.
+        </p>
+        </field>
+    </record>
+
+    <!--<record model="ir.ui.view" id="view_account_config_settings_itaas">-->
+    <!--<field name="name">account.config.settings.itaas</field>-->
+    <!--<field name="model">account.config.settings</field>-->
+    <!--<field name="inherit_id" ref="account.view_account_config_settings"/>-->
+    <!--<field name="arch" type="xml">-->
+    <!--<xpath expr="//form/group[7]" position="after">-->
+    <!--<group name="General Setting">-->
+    <!--<field name="payment_info"/>-->
+    <!--<field name="invoice_step"/>-->
+    <!--<field name="disable_excel_tax_report"/>-->
+    <!--</group>-->
+    <!--</xpath>-->
+    <!--</field>-->
+    <!--</record>-->
+
+    <menuitem action="action_account_list" id="menu_action_account_list" parent="menu_finance_accounting_reports" sequence="20"/>
+
+    <record model="ir.ui.menu" id="account.menu_finance">
+        <field name="name">Accounting</field>
+
+    </record>
+
+
+</odoo>

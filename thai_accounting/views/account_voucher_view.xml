@@ -1,0 +1,101 @@
+<odoo>
+    <!-- inherit account journal form -->
+    <record id="view_sale_receipt_form_cheque_extended" model="ir.ui.view">
+        <field name="name">account.voucher.form.itaas</field>
+        <field name="model">account.voucher</field>
+        <field name="inherit_id" ref="account_voucher.view_sale_receipt_form"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+
+                <label for="cheque_bank" string="Cheque Payment"/>
+                <div>
+                    <field name="bank_cheque" invisible="1"/>
+                    <field name="cheque_bank" placeholder="Bank" class="oe_inline" width="30" attrs="{'required':[('bank_cheque','=',True)]}"/>
+                    <field name="cheque_branch" placeholder="Branch" class="oe_inline" width="10" attrs="{'required':[('bank_cheque','=',True)]}"/>
+                    <field name="cheque_number" placeholder="Number" class="oe_inline" width="10" attrs="{'required':[('bank_cheque','=',True)]}"/>
+                    <field name="cheque_date" placeholder="Date" class="oe_inline" width="10" attrs="{'required':[('bank_cheque','=',True)]}"/>
+                </div>
+            </field>
+
+            <!--<xpath expr="//notebook/page[1]/field[@name='line_ids']/tree/field[@name='price_unit']" position="after">-->
+            <!--<field name="wht_type"/>-->
+            <!--</xpath>-->
+
+
+
+        </field>
+    </record>
+
+
+    <record id="view_sale_receipt_form_purchase_cheque_extended" model="ir.ui.view">
+        <field name="name">account.voucher.purchase.form.itaas</field>
+        <field name="model">account.voucher</field>
+        <field name="inherit_id" ref="account_voucher.view_purchase_receipt_form"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <label for="cheque_bank" string="Cheque Payment"/>
+                <div>
+                    <field name="bank_cheque" invisible="1"/>
+                    <field name="cheque_bank" placeholder="Bank" class="oe_inline" width="30" attrs="{'required':[('bank_cheque','=',True)]}"/>
+                    <field name="cheque_branch" placeholder="Branch" class="oe_inline" width="10" attrs="{'required':[('bank_cheque','=',True)]}"/>
+                    <field name="cheque_number" placeholder="Number" class="oe_inline" width="10" attrs="{'required':[('bank_cheque','=',True)]}"/>
+                    <field name="cheque_date" placeholder="Date" class="oe_inline" width="10" attrs="{'required':[('bank_cheque','=',True)]}"/>
+                </div>
+            </field>
+
+            <!--<button name="cancel_voucher" position="after">-->
+            <!--<button name="update_bill_date" string="Update Bill Date" type="object"/>-->
+            <!--</button>-->
+
+
+
+            <xpath expr="//sheet/group/group/field[@name='account_id']" position="attributes">
+                <attribute name="domain">[]</attribute>
+            </xpath>
+
+            <xpath expr="//notebook/page[1]/field[@name='line_ids']/tree/field[@name='product_id']" position="before">
+                <field name="partner_id"/>
+
+            </xpath>
+            <xpath expr="//notebook/page[1]/field[@name='line_ids']/tree/field[@name='product_id']" position="after">
+                <field name="bill_ref"/>
+                <field name="bill_date"/>
+            </xpath>
+
+            <xpath expr="//notebook/page[1]/field[@name='line_ids']/tree/field[@name='price_unit']" position="after">
+                <field name="amount_before_tax"/>
+                <field name="wht_type"/>
+                <field name="wht_personal_company"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="account_voucher.action_purchase_receipt" model="ir.actions.act_window">
+        <field name="name">Purchase Receipts</field>
+        <field name="res_model">account.voucher</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,kanban</field>
+        <field name="domain">[('voucher_type','=','purchase')]</field>
+        <field name="context">{'default_voucher_type': 'purchase', 'voucher_type': 'purchase'}</field>
+        <!--<field name="view_id" eval="view_voucher_tree_purchase"/>-->
+        <!--<field name="search_view_id" eval="view_voucher_filter_vendor"/>-->
+        <field name="target">current</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to register a purchase receipt.
+            </p><p>
+            When the purchase receipt is confirmed, you can record the
+            vendor payment related to this purchase receipt.
+        </p>
+        </field>
+    </record>
+
+    <!--<record id="account_voucher.action_purchase_receipt" model="ir.actions.act_window">-->
+    <!--<field name="domain">[('voucher_type','=','purchase')]</field>-->
+    <!--</record>-->
+
+
+
+
+</odoo>

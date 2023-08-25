@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--add by book 01142020 ಠ_ಠ-->
+    <record id="mt_rfq_draft" model="mail.message.subtype">
+        <field name="name">Purchase Order Draft</field>
+        <field name="res_model">purchase.order</field>
+        <field name="default" eval="True"/>
+        <field name="description">Purchase Order Draft</field>
+    </record>
+
+    <record id="mt_rfq_sent" model="mail.message.subtype">
+        <field name="name">Purchase Order Sent</field>
+        <field name="res_model">purchase.order</field>
+        <field name="default" eval="True"/>
+        <field name="description">Purchase Order Sent</field>
+    </record>
+
+    <record id="mt_rfq_cancel" model="mail.message.subtype">
+        <field name="name">Purchase Order Cancel</field>
+        <field name="res_model">purchase.order</field>
+        <field name="default" eval="True"/>
+        <field name="description">Purchase Order Cancel</field>
+    </record>
+
+    <record id="mt_request_draft" model="mail.message.subtype">
+        <field name="name">Purchase Request Draft</field>
+        <field name="res_model">purchase.request</field>
+        <field name="default" eval="True"/>
+        <field name="description">Purchase Request Draft</field>
+    </record>
+
+
+</odoo>

@@ -8,3 +8,6 @@ class AccountJournal(models.Model):
     _inherit = 'account.journal'
 
     is_in_app_wallet = fields.Boolean(string="Used in App wallet",  defaut=False)
+
+
+

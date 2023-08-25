@@ -29,6 +29,48 @@
                     </group>
                 </group>
             </xpath>
+
+            <xpath expr="//form/sheet/notebook/page[@name='extra']" position="after">
+                <page name="coupon" string="Coupon" groups="account.group_account_user">
+                    <field name="coupon_ids" nolabel="1" readonly="1" options="{'no_open':True,'no_create':True,'no_create_edit':True}"/>
+                </page>
+            </xpath>
+
+            <button name="refund" position="after">
+                <button name="delete_coupon" string="Delete Coupon" type="object" attrs="{'invisible':['|',('state','not in',('paid','done','invoiced')),('coupon_ids','=',False)]}" groups="wizard_pos.group_coupon_manager"/>
+            </button>
+            <button name="refund" position="after">
+                <button name="delete_payment" string="Delete Payment" type="object" attrs="{'invisible':['|',('state','not in',('paid','done','invoiced')),('statement_ids','=',False)]}" groups="wizard_pos.group_coupon_manager"/>
+            </button>
+            <button name="refund" position="after">
+                <button name="create_coupons" string="Create Coupon" type="object" attrs="{'invisible':[('state','not in',('paid','done','invoiced'))]}" groups="wizard_pos.group_coupon_manager"/>
+            </button>
+
+            <field name="date_order" position="after">
+                <field name="is_create_coupon"/>
+            </field>
+
+<!--            <xpath expr="//field[@name='lines']/tree//field[@name='product_id']" position="attributes">-->
+<!--                <attribute name="domain">[('select_stock_bom','=', True),]</attribute>-->
+<!--            </xpath>-->
         </field>
     </record>
+
+
+    <!--    <record id="action_return_order_menu" model="ir.actions.act_window">-->
+    <!--        <field name="name">POS Order</field>-->
+    <!--        <field name="type">ir.actions.act_window</field>-->
+    <!--        <field name="res_model">pos.order</field>-->
+    <!--        <field name="view_type">form</field>-->
+    <!--        <field name="view_mode">tree</field>-->
+    <!--        <field name="domain">[('amount_total', '&lt;', 0)]</field>-->
+    <!--    </record>-->
+
+    <!--    <menuitem id="return_order_menu"-->
+    <!--              name="Return Order"-->
+    <!--              parent="point_of_sale.menu_point_of_sale"-->
+    <!--              action="action_return_order_menu"-->
+    <!--              groups="account.group_account_user"-->
+    <!--              sequence="5"/>-->
+
 </odoo>

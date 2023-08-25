@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!--employee form view-->
+        <record id="hr_contract_view_form_wage_by_job" model="ir.ui.view">
+            <field name="name">hr.contract.form.by.job</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form" />
+            <field name="arch" type="xml">
+                <xpath expr='//notebook/page[2]' position="after">
+
+                    <page name="employee_tax_deduction" string="Employee Tax Deduction" groups="hr.group_hr_manager">
+						<field name="hr_tax_deduction_ids" nolabel="0">
+							<tree editable="bottom">
+								<field name="hr_contract_id" invisible="True"/>
+								<field name="employee_tax_deduction_id" options="{'no_create': True, 'no_open':True}"/>
+								<field name="person"/>
+								<field name="rate_amount" string="Max Rax/Person" readonly="1"/>
+								<field name="amount" sum="Total Amount"/>
+							</tree>
+						</field>
+					</page>
+
+
+
+                </xpath>
+
+                <field name="wage" position="after">
+                        <field name="total_deduction_amount"/>
+                    </field>
+
+            </field>
+        </record>
+
+
+
+    </data>
+
+</openerp>

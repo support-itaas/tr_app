@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="payroll_salary_report">
+            <t t-call="web.basic_layout">
+                <div class="header">
+                    <div class="col-xs-3" style="font-family:TH SarabunPSK; src:url(/wizard_payroll_report/static/THSarabun.ttf); font-size: 20px;">
+                        <span>สำหรับงวดการจ่ายวันที่
+                            <!--                            <span t-esc="date_payment"/>-->
+                            <span t-esc="datetime.datetime.strptime(str(date_payment), '%Y-%m-%d').strftime('%d/%m/%Y')"/>
+                        </span>
+                    </div>
+                    <div class="col-xs-6" align="center" style="font-family:TH SarabunPSK;          src:url(/wizard_payroll_report/static/THSarabun.ttf); font-size: 20px;">
+                        <span><span t-esc="company.name"/></span><br/>
+                        <span>รายงานบัญชีเงินเดือน รายงวด</span>
+                    </div>
+                    <div class="col-xs-3" style="font-family:TH SarabunPSK;          src:url(/wizard_payroll_report/static/THSarabun.ttf); font-size: 20px;">
+                        <span>พิมพ์วันที่
+                            <!--                            <span t-esc="date_today"/>-->
+                            <span t-esc="datetime.datetime.strptime(str(date_today), '%Y-%m-%d').strftime('%d/%m/%Y')"/>
+                        </span>
+                        <span>หน้า </span><span class="page"/>
+                    </div>
+                </div>
+                <t t-set="total_list" t-value="0"/>
+                <t t-set="sum_total_last" t-value="0"/>
+                <div class="page">
+                    <style>
+                        table.table-bordered &gt; thead &gt; tr &gt; th{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered &gt; tbody &gt; tr &gt; td{
+                        border:1px solid black;
+                        <!--border-left: 1px solid;-->
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered &gt; tfoot &gt; tr &gt; td{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                    </style>
+                    <table width="100%" style="padding-left:10px; font-family:TH SarabunPSK;src:url(/wizard_payroll_report/static/THSarabun.ttf); font-size: 20px;">
+                        <thead>
+                            <tr>
+                                <th style="border:1px solid black; text-align:center;">
+                                    <div style="width:90px;">
+                                        <span>รหัส</span>
+                                    </div>
+                                </th>
+                                <th align="center" style="border:1px solid black;">
+                                    <div align="center" style="width:210px;">
+                                        <span>ชื่อพนักงาน</span>
+                                    </div>
+                                </th>
+                                <!--                                <th style="border:1px solid black; text-align:center;">-->
+                                <!--                                    <div style="width:100px;">-->
+                                <!--                                        <span>ตำแหน่ง</span>-->
+                                <!--                                    </div>-->
+                                <!--                                </th>-->
+                                <!--                                <th style=" border:1px solid black; text-align:center;">-->
+                                <!--                                    <div style="width:90px;">-->
+                                <!--                                        <span>งวดที่</span>-->
+                                <!--                                    </div>-->
+                                <!--                                </th>-->
+                                <!--                                <th style=" border:1px solid black; text-align:center;">-->
+                                <!--                                    <div style="width:100px;">-->
+                                <!--                                        <span>ปิดงวดรับที่</span>-->
+                                <!--                                    </div>-->
+                                <!--                                </th>-->
+                                <t t-foreach="rule_ids" t-as="line">
+                                    <th align="center" style="border:1px solid black; text-align:center;">
+                                        <span><span t-esc="line.name"/></span>
+                                    </th>
+                                </t>
+                                <th  style="border:1px solid black; text-align:center;">ยอดเงินสุทธิ</th>
+                            </tr>
+                        </thead>
+                        <t t-set="sum_1" t-value="0"/>
+                        <t t-set="sum_2" t-value="0"/>
+                        <t t-set="sum_3" t-value="0"/>
+                        <t t-set="sum_4" t-value="0"/>
+                        <t t-set="sum_5" t-value="0"/>
+                        <t t-set="sum_6" t-value="0"/>
+                        <t t-set="sum_7" t-value="0"/>
+                        <t t-set="sum_8" t-value="0"/>
+                        <t t-set="sum_9" t-value="0"/>
+                        <t t-set="sum_10" t-value="0"/>
+                        <t t-set="sum_11" t-value="0"/>
+                        <t t-set="sum_12" t-value="0"/>
+                        <t t-set="sum_13" t-value="0"/>
+                        <t t-set="sum_14" t-value="0"/>
+                        <t t-set="sum_15" t-value="0"/>
+                        <t t-foreach="docs" t-as="o">
+                            <t t-set="total_rule" t-value="0"/>
+                            <t t-set="count" t-value="5"/>
+                            <t t-set="sum_total" t-value="0"/>
+                            <t t-set="total_list" t-value="total_list + 1"/>
+                            <tbody>
+                                <tr>
+                                    <td style="border:1px solid black;" align="center"><span t-esc="o[0]"/></td>
+                                    <td style="border:1px solid black;" align="left">&amp;nbsp;<span t-esc="o[1]"/></td>
+                                    <!--                                    <td style="border:1px solid black;" align="center"><span t-esc="o[2]"/></td>-->
+                                    <!--                                    <td style="border:1px solid black;" align="center"><span t-esc="o[3]"/>/12</td>-->
+                                    <!--                                    <td style="border:1px solid black;" align="center">-->
+                                    <!--                                        &lt;!&ndash;                                        <span t-esc="o[4]"/>&ndash;&gt;-->
+                                    <!--                                        <span t-esc="datetime.datetime.strptime(str(o[4]), '%Y-%m-%d').strftime('%d/%m/%Y')"/>-->
+                                    <!--                                    </td>-->
+                                    <t t-foreach="rule_ids" t-as="line">
+                                        <td style="border:1px solid black;" align="right">
+                                            <!--                                                <span t-esc="o[count]"/>-->
+                                            <span t-esc="'{0:,.2f}'.format(float(o[count]))"/>
+                                            <t t-set="sum_total" t-value="sum_total + o[count]"/>
+                                            <t t-set="sum_total_last" t-value="sum_total_last + sum_total"/>
+                                            <t t-if="count == 5">
+                                                <t t-set="sum_1" t-value="sum_1 + o[count]"/>
+                                            </t>
+                                            <t t-if="count == 6">
+                                                <t t-set="sum_2" t-value="sum_2 + o[count]"/>
+                                            </t>
+                                            <t t-if="count == 7">
+                                                <t t-set="sum_3" t-value="sum_3 + o[count]"/>
+                                            </t>
+                                            <t t-if="count == 8">
+                                                <t t-set="sum_4" t-value="sum_4 + o[count]"/>
+                                            </t>
+                                            <t t-if="count == 9">
+                                                <t t-set="sum_5" t-value="sum_5 + o[count]"/>
+                                            </t>
+                                            <t t-if="count == 10">
+                                                <t t-set="sum_6" t-value="sum_6 + o[count]"/>
+                                            </t>
+                                            <t t-if="count == 11">
+                                                <t t-set="sum_7" t-value="sum_7 + o[count]"/>
+                                            </t>
+                                            <t t-if="count == 12">
+                                                <t t-set="sum_8" t-value="sum_8 + o[count]"/>
+                                            </t>
+                                            <t t-if="count == 13">
+                                                <t t-set="sum_9" t-value="sum_9 + o[count]"/>
+                                            </t>
+                                            <t t-if="count == 14">
+                                                <t t-set="sum_10" t-value="sum_10 + o[count]"/>
+                                            </t>
+                                            <t t-if="count == 15">
+                                                <t t-set="sum_11" t-value="sum_11 + o[count]"/>
+                                            </t>
+                                            <t t-if="count == 16">
+                                                <t t-set="sum_12" t-value="sum_12 + o[count]"/>
+                                            </t>
+                                            <t t-if="count == 17">
+                                                <t t-set="sum_13" t-value="sum_13 + o[count]"/>
+                                            </t>
+                                            <t t-if="count == 18">
+                                                <t t-set="sum_14" t-value="sum_14 + o[count]"/>
+                                            </t>
+                                            <t t-if="count == 19">
+                                                <t t-set="sum_15" t-value="sum_15 + o[count]"/>
+                                            </t>
+                                            <t t-set="count" t-value="count + 1"/>
+                                        </td>
+                                    </t>
+                                    <td style="border:1px solid black;" align="right"><span t-esc="'{0:,.2f}'.format(float(sum_total))"/></td>
+                                </tr>
+                            </tbody>
+                        </t>
+                        <tr>
+                            <td style="border:1px solid black;"/>
+                            <td style="border:1px solid black;"/>
+                            <t t-set="count_check" t-value="5"/>
+                            <t t-foreach="rule_ids" t-as="line">
+                                <t t-if="count_check == 5">
+                                    <td style="border:1px solid black;" align="right"><span t-esc="'{0:,.2f}'.format(float(sum_1))"/></td>
+                                </t>
+                                <t t-if="count_check == 6">
+                                    <td style="border:1px solid black;" align="right"><span t-esc="'{0:,.2f}'.format(float(sum_2))"/></td>
+                                </t>
+                                <t t-if="count_check == 7">
+                                    <td style="border:1px solid black;" align="right"><span t-esc="'{0:,.2f}'.format(float(sum_3))"/></td>
+                                </t>
+                                <t t-if="count_check == 8">
+                                    <td style="border:1px solid black;" align="right"><span t-esc="'{0:,.2f}'.format(float(sum_4))"/></td>
+                                </t>
+                                <t t-if="count_check == 9">
+                                    <td style="border:1px solid black;" align="right"><span t-esc="'{0:,.2f}'.format(float(sum_5))"/></td>
+                                </t>
+                                <t t-if="count_check == 10">
+                                    <td style="border:1px solid black;" align="right"><span t-esc="'{0:,.2f}'.format(float(sum_6))"/></td>
+                                </t>
+                                <t t-if="count_check == 11">
+                                    <td style="border:1px solid black;" align="right"><span t-esc="'{0:,.2f}'.format(float(sum_7))"/></td>
+                                </t>
+                                <t t-if="count_check == 12">
+                                    <td style="border:1px solid black;" align="right"><span t-esc="'{0:,.2f}'.format(float(sum_8))"/></td>
+                                </t>
+                                <t t-if="count_check == 13">
+                                    <td style="border:1px solid black;" align="right"><span t-esc="'{0:,.2f}'.format(float(sum_9))"/></td>
+                                </t>
+                                <t t-if="count_check == 14">
+                                    <td style="border:1px solid black;" align="right"><span t-esc="'{0:,.2f}'.format(float(sum_10))"/></td>
+                                </t>
+                                <t t-if="count_check == 15">
+                                    <td style="border:1px solid black;" align="right"><span t-esc="'{0:,.2f}'.format(float(sum_11))"/></td>
+                                </t>
+                                <t t-if="count_check == 16">
+                                    <td style="border:1px solid black;" align="right"><span t-esc="'{0:,.2f}'.format(float(sum_12))"/></td>
+                                </t>
+                                <t t-if="count_check == 17">
+                                    <td style="border:1px solid black;" align="right"><span t-esc="'{0:,.2f}'.format(float(sum_13))"/></td>
+                                </t>
+                                <t t-if="count_check == 18">
+                                    <td style="border:1px solid black;" align="right"><span t-esc="'{0:,.2f}'.format(float(sum_14))"/></td>
+                                </t>
+                                <t t-if="count_check == 19">
+                                    <td style="border:1px solid black;" align="right"><span t-esc="'{0:,.2f}'.format(float(sum_15))"/></td>
+                                </t>
+                                <t t-set="count_check" t-value="count_check + 1"/>
+                            </t>
+                            <td style="border:1px solid black;" align="right"><span t-esc="'{0:,.2f}'.format(float(sum_1+sum_2+sum_3+sum_4+sum_5+sum_6+sum_7+sum_8+sum_9+sum_10+sum_11+sum_12+sum_13+sum_14+sum_15))"/></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="footer">
+                    <table width="100%" class="last-page">
+                        <tr>
+                            <td>รวมพนักงาน <span t-esc="total_list"/> คน</td>
+                            <td align="right"><span t-esc="'{0:,.2f}'.format(float(sum_total_last))"/>&amp;nbsp;&amp;nbsp;</td>
+                        </tr>
+                    </table>
+
+                </div>
+            </t>
+        </template>
+    </data>
+</openerp>
+
+
+

@@ -1,0 +1,44 @@
+<odoo>
+    <record id="mrp_bom_view" model="ir.ui.view">
+        <field name="name">mrp.bom.form.inherit</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='routing_id']" position="after">
+                <field name="permission_type" string="Permission Type" groups="tr_extended.group_manufacturing_bom_machine, tr_extended.group_manufacturing_bom_cleanser"/>
+
+            </xpath>
+
+                        <xpath expr="/form/sheet/notebook/page[1]" position='after'>
+                <page string="Process Description" name="process_description">
+                        <field name="bom_description_line_ids">
+                            <tree editable="bottom">
+                                <field name="description"/>
+
+                            </tree>
+                        </field>
+                </page>
+            </xpath>
+
+
+
+        </field>
+    </record>
+    <record id="mrp_bom_view1" model="ir.ui.view">
+        <field name="name">mrp.bom.form.inherit</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_tree_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="permission_type" string="Permission Type" groups="tr_extended.group_manufacturing_bom_machine, tr_extended.group_manufacturing_bom_cleanser"/>
+
+            </xpath>
+
+
+        </field>
+    </record>
+
+
+</odoo>

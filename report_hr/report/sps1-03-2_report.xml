@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="sps1_03_2_report_id">
+
+            <t t-set="info" t-value="get_header_info"/>
+            <t t-set="info1" t-value="get_salary_info"/>
+            <t t-set="info2" t-value="get_period_info"/>
+            <t t-set="i" t-value="0"/>
+            <t t-foreach="range(0, int(info1['sum_sso_no_employee_7']/7))" t-as="x">
+                <t t-call="web.basic_layout">
+                    <div class="page" t-attf-style="background-image:url('/report_hr/static/description/sps1-03-11.jpg'); background-size:520mm 365mm; width:520mm; height:365mm; font-family:Tahoma; src:url(/report_hr/static/tahoma.ttf);">
+                        <style>
+                            .header{width:100%;}
+                            .content{width:100%;}
+                        </style>
+                        <div class="header">
+                        </div>
+                        <div style="position: absolute; left: 14%; top: 170px;">
+                            <font style="font-size: 24px;">
+                                <span t-esc="info['con_branch_partner_name']"/>
+                            </font>
+                        </div>
+                        <div style="position: absolute; left: 71%; top: 180px;">
+                            <font style="font-size: 24px;">
+                                <t t-if="info and info['con_branch_bank_ac']">
+                                    <t t-set="account_id" t-value="info['con_branch_bank_ac']"/>
+                                    <span t-esc="account_id[0]"/>
+                                    &amp;nbsp;
+                                    <span t-esc="account_id[1]"/>
+                                    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="account_id[2]"/>
+                                    &amp;nbsp;&amp;nbsp;
+                                    <span t-esc="account_id[3]"/>
+                                    &amp;nbsp;&amp;nbsp;
+                                    <span t-esc="account_id[4]"/>
+                                    &amp;nbsp;
+                                    <span t-esc="account_id[5]"/>
+                                    &amp;nbsp;
+                                    <span t-esc="account_id[6]"/>
+                                    &amp;nbsp;
+                                    <span t-esc="account_id[7]"/>
+                                    &amp;nbsp;&amp;nbsp;
+                                    <span t-esc="account_id[8]"/>
+                                    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="account_id[9]"/>
+                                </t>
+                            </font>
+                        </div>
+                        <div style="position: absolute; left: 14%; top: 230px;">
+                            <font style="font-size: 24px;">
+                                <span t-esc="info['con_branch_description']"/>
+                            </font>
+                        </div>
+                        <div style="position: absolute; left: 79%; top: 250px;">
+                            <font style="font-size: 24px;">
+                                <t t-if="info and info['con_branch_ids']">
+                                    <t t-set="branch" t-value="info['con_branch_ids']"/>
+                                    &amp;nbsp;
+                                    <span t-esc="branch[0]"/>
+                                    &amp;nbsp;&amp;nbsp;
+                                    <span t-esc="branch[1]"/>
+                                    &amp;nbsp;&amp;nbsp;
+                                    <span t-esc="branch[2]"/>
+                                    &amp;nbsp;
+                                    <span t-esc="branch[3]"/>
+                                    &amp;nbsp;&amp;nbsp;
+                                    <span t-esc="branch[4]"/>
+                                    &amp;nbsp;
+                                    <t t-if="len(branch) == 6">
+                                        <span t-esc="branch[5]"/>
+                                    </t>
+                                </t>
+                            </font>
+                        </div>
+                        <div style="position: absolute; left: 21%; top: 280px; ">
+                            <font style="font-size: 24px;">
+                                <span t-esc="info['con_branch_house_number']"/>
+                                <!--                                <span t-esc="info['company_roomnumber']"/>-->
+                            </font>
+                        </div>
+                        <div style="position: absolute; left: 32%; top: 280px;">
+                            <font style="font-size: 24px;">
+                                <span t-esc="info['con_branch_moo_number']"/>
+                            </font>
+                        </div>
+                        <div style="position: absolute; left: 43%; top: 280px;">
+                            <font style="font-size: 24px;">
+                                <span t-esc="info['con_branch_soi_number']"/>
+                            </font>
+                        </div>
+                        <div style="position: absolute; left: 60%; top: 280px;">
+                            <font style="font-size: 24px;">
+                                <span t-esc="info['con_branch_street']"/>
+                            </font>
+                        </div>
+                        <div style="position: absolute; left: 79%; top: 280px;">
+                            <font style="font-size: 24px;">
+                                <span t-esc="info['con_branch_tumbon']"/>
+                                <!--<t t-if="add_num == o.con_branch_id.street">-->
+                                <!--    <span />-->
+                                <!--</t>-->
+                                <!--<t t-if="add_num != o.con_branch_id.street">-->
+                                <!--<span t-field="o.con_branch_id.street" />-->
+                                <!--</t>-->
+                            </font>
+                        </div>
+                        <div style="position: absolute; left: 78%; top: 280px;">
+                            <font style="font-size: 24px;">
+                                <span t-esc="info['con_branch_street2']"/>
+                            </font>
+                        </div>
+                        <div style="position: absolute; left: 8%; top: 320px;">
+                            <font style="font-size: 24px;">
+                                <span t-esc="info['con_branch_city']"/>
+                            </font>
+                        </div>
+                        <div style="position: absolute; left: 34%; top: 320px;">
+                            <font style="font-size: 24px;">
+                                <span t-esc="info['con_branch_province']"/>
+                            </font>
+                        </div>
+                        <div style="position: absolute; left: 61%; top: 330px;">
+                            <font style="font-size: 24px;">
+                                <t t-if="info and info['con_branch_name']">
+                                    <t t-set="zip_code" t-value="info['con_branch_code']"/>
+                                    <span t-esc="zip_code[0]"/>&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="zip_code[1]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="zip_code[2]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="zip_code[3]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                    <span t-esc="zip_code[4]"/>
+                                </t>
+                            </font>
+                        </div>
+                        <div style="position: absolute; left: 76%; top: 320px;">
+                            <font style="font-size: 24px;">
+                                <span t-esc="info['con_branch_phone']"/>
+                            </font>
+                        </div>
+
+
+                        <div class="content" style="position: absolute; top: 530px;">
+                            <font style="font-size: 24px;">
+                                <t t-foreach="range(x * 7, (x * 7)+7)" t-as="y">
+                                    <t t-if="y &lt; info1['sum_sso_no_employee']">
+                                        <t t-set="i" t-value="i+1"/>
+                                        <div style="position: absolute; left: 3%;">
+                                            <span t-esc="y+1"/>
+                                        </div>
+                                        <div style="position: absolute; left: 7%;">
+                                            <t t-if="info2[y] and info2[y]['employee_vat']">
+                                                <t t-set="ident" t-value="info2[y]['employee_vat']"/>
+                                                <span t-esc="ident[0]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                                <span t-esc="ident[1]"/>&amp;nbsp;
+                                                <span t-esc="ident[2]"/>&amp;nbsp;
+                                                <span t-esc="ident[3]"/>&amp;nbsp;
+                                                <span t-esc="ident[4]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                                <span t-esc="ident[5]"/>&amp;nbsp;&amp;nbsp;
+                                                <span t-esc="ident[6]"/>&amp;nbsp;
+                                                <span t-esc="ident[7]"/>&amp;nbsp;&amp;nbsp;
+                                                <span t-esc="ident[8]"/>&amp;nbsp;
+                                                <span t-esc="ident[9]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                                <span t-esc="ident[10]"/>&amp;nbsp;&amp;nbsp;
+                                                <span t-esc="ident[11]"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                                <span t-esc="ident[12]"/>
+                                            </t>
+                                        </div>
+                                        <div style="position: absolute; left: 35%;">
+                                            <span t-esc="info2[y]['employee_name']"/>
+                                        </div>
+                                        <div style="position: absolute; left: 62%;">
+                                            <span t-esc="info2[y]['employee_date']"/>
+                                        </div>
+                                        <div style="position: absolute; left: 72%;">
+                                            <span t-esc="info2[y]['employee_work']"/>
+                                        </div>
+                                        <br style="line-height: 45px"/>
+                                    </t>
+                                    <!--<t t-if="y &gt; (o.count_sso - 1)">-->
+                                    <!--    <br style="line-height: 45px"/>-->
+                                    <!--</t>-->
+                                </t>
+                            </font>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

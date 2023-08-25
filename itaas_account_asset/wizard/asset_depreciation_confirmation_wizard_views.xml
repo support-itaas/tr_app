@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_asset_depreciation_confirmation_wizard_add_category" model="ir.ui.view">
+        <field name="name">asset.depreciation.confirmation.wizard.add.category</field>
+        <field name="model">asset.depreciation.confirmation.wizard</field>
+        <field name="inherit_id" ref="account_asset.view_asset_depreciation_confirmation_wizard"/>
+        <field name="arch" type="xml">
+            <field name="date" position="after">
+                <field name="asset_category_id"/>
+            </field>
+        </field>
+    </record>
+
+
+</odoo>

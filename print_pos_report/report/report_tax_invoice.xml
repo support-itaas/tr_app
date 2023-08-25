@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="report_tax_invoice">
+            <t t-call="web.basic_layout">
+                <t t-foreach="docs" t-as="o">
+                    <dev class="header">
+                        <table width="100%" style="font-family:TH SarabunPSK;  src:url(/print_pos_report/static/THSarabunttf); font-size: 18px;">
+                            <div class="col-xs-12" style="text-align:center; font-size:25px">
+                                <tr>
+                                    <td width="50%" align="center">
+                                        <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % to_text(o.company_id.logo)" style="max-height: 80px;"/>
+                                    </td>
+                                </tr>
+                            </div>
+                        </table>
+                        <table>
+                            <div class="col-xs-12" style="text-align:center; font-size:16px">
+                                <span>บริษัท ที.อาร์.โปรดักส์ แอนด์ มาร์เก็ตติ้ง จำกัด</span>
+                            </div>
+                            <div class="col-xs-12" style="text-align:center;">
+                                <tr>
+                                    <td align="center" width="100%">
+                                        <font style="text-align:center; font-size: 16px;">
+
+                                            <!--                                                                                                <span t-if="o.company_id.building"><span t-field="o.company_id.building"/>&amp;nbsp;</span>-->
+                                            <!--                                                                                                <span t-if="o.company_id.roomnumber">ห้องที่&amp;nbsp;<span t-field="o.company_id.roomnumber"/>&amp;nbsp;</span>-->
+                                            <!--                                                                                                <span t-if="o.company_id.floornumber">ชั้นที่&amp;nbsp;<span t-field="o.company_id.floornumber"/>&amp;nbsp;</span>-->
+                                            <!--                                                                                                <span t-if="o.company_id.village">หมู่บ้าน&amp;nbsp;<span t-field="o.company_id.village"/>&amp;nbsp;</span>-->
+                                            <!--                                                                                                <span t-if="o.company_id.house_number"><span t-field="o.company_id.house_number"/>&amp;nbsp;</span>-->
+                                            <!--                                                                                                <span t-if="o.company_id.moo_number">หมู่&amp;nbsp;<span t-field="o.company_id.moo_number"/>&amp;nbsp;</span>-->
+                                            <!--                                                                                                <span t-if="o.company_id.soi_number">ซอย&amp;nbsp;<span t-field="o.company_id.soi_number"/>&amp;nbsp;</span>-->
+                                            <!--                                                                                                <span t-if="o.company_id.street"><span t-esc="o.company_id.street"/>&amp;nbsp;</span>-->
+                                            <!--                                                                                                <span t-if="o.company_id.street2"><span t-esc="o.company_id.street2"/>&amp;nbsp;</span>-->
+                                            <!--                                                                                                <span t-if="o.company_id.city and o.company_id.state_id and o.company_id.state_id.code == 'BKK'">เขต<span t-field="o.company_id.city"/>&amp;nbsp;</span>-->
+                                            <!--                                                                                                <span t-if="o.company_id.city and o.company_id.state_id and o.company_id.state_id.code != 'BKK'">อ.<span t-field="o.company_id.city"/>&amp;nbsp;</span>-->
+                                            <!--                                                                                                <span t-if="o.company_id.state_id and o.company_id.state_id.code == 'BKK'">&amp;nbsp;<span t-field="o.company_id.state_id.name"/>&amp;nbsp;</span>-->
+                                            <!--                                                                                                <span t-if="o.company_id.state_id and o.company_id.state_id.code != 'BKK'">จ.&amp;nbsp;<span t-field="o.company_id.state_id.name"/>&amp;nbsp;</span>-->
+                                            <span>210/4 ซอยลาดพร้าว 71 ถนนลาดพร้าว แขวงคลองเจ้าคุณสิงห์ <br/>&amp;nbsp;&amp;nbsp;เขตวังทองหลาง กรุงเทพมหานคร 10310</span>
+                                            <span t-if="o.company_id.phone">โทร: 02-955-9887 &amp;nbsp;</span><br/>
+
+                                            <!--<span t-if="o.company_id.fax">แฟกซ์ :&amp;nbsp;<span t-esc="o.company_id.fax"/>&amp;nbsp;</span>-->
+                                            <!--                                            <span t-if="o.company_id.email">อีเมล :&amp;nbsp;<span t-esc="o.company_id.email"/></span><br/>-->
+                                            <!--                                            <span t-if="o.company_id.vat">เลขประจำตัวผู้เสียภาษีอากร:<span t-esc="o.company_id.vat"/></span><br/>-->
+                                        </font>
+                                    </td>
+                                </tr>
+                            </div>
+                        </table>
+                    </dev>
+                    <dev class="page">
+                        <table width="100%" style="font-family:TH SarabunPSK;  src:url(/print_pos_report/static/THSarabunttf); font-size: 22px;">
+                            <div class="col-xs-12" style="text-align:left; font-size:18px">
+                                <span t-if="o.company_id.vat">เลขประจำตัวผู้เสียภาษีอากร: &amp;nbsp;<span t-esc="o.company_id.vat"/></span><br/>
+                                <span>สาขาที่&amp;nbsp;<span t-esc="o.company_id.branch_no"/></span><br/>
+                                <span>
+                                    <font style="font-size: 18px;">
+                                        <span>ใบเสร็จรับเงิน/ใบกำกับภาษี</span>
+                                    </font>
+                                </span>
+                            </div>
+                            <!--<div class="col-xs-12" style="text-align:left; font-size:18px">-->
+                            <!--    <span>เลขที่ :&amp;nbsp;<span t-field="o.invoice_id.number"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;-->
+                            <!--        <span>Ref#<span t-field="o.session_id"/></span>-->
+                            <!--    </span><br/>-->
+                            <!--    <span t-field="o.date_order"/>-->
+                            <!--    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;-->
+                            <!--    <span>PID#<span t-field="o.session_id"/>-->
+                            <!--    </span><br/>-->
+                            <!--</div>-->
+                             <div class="col-xs-6" style="text-align:left; font-size:16px">
+                                <span>เลขที่ :&amp;nbsp;<span t-field="o.invoice_id.number"/></span><br/>
+                                <span t-field="o.date_order"/>
+                            </div>
+                            <div class="col-xs-6" style="text-align:right; font-size:16px">
+                                <span>Ref#<span t-field="o.session_id"/></span> <br/>
+                                <span>PID#<span t-field="o.session_id"/></span>
+                            </div>
+                            <div class="col-xs-12" style="text-align:left; font-size:18px">
+                                <span >ลูกค้า :&amp;nbsp;<span t-field="o.partner_id.ref"/></span><br/>
+                                <span>เลขที่ประจำตัวผู้เสียภาษี :&amp;nbsp;<span t-field="o.partner_id.vat"/> </span><br/>
+                                <span>ชื่อ :&amp;nbsp;<span t-field="o.partner_id.name"/> </span><br/>
+                                <span>ที่อยู่ :
+                                    <span width="60%">
+                                        <span t-field="o.partner_id.street"/>&amp;nbsp;
+                                        <span t-field="o.partner_id.street2"/>&amp;nbsp;
+                                        <span t-if="o.partner_id.city and o.partner_id.state_id and o.partner_id.state_id.code == 'BKK'">เขต&amp;nbsp;<span t-field="o.partner_id.city"/>&amp;nbsp;</span>
+                                        <span t-if="o.partner_id.city and o.partner_id.state_id and o.partner_id.state_id.code != 'BKK'">อำเภอ&amp;nbsp;<span t-field="o.partner_id.city"/>&amp;nbsp;</span>
+                                        <span t-if="o.partner_id.state_id.name">จังหวัด&amp;nbsp;<span t-field="o.partner_id.state_id.name"/>&amp;nbsp;</span>
+                                        <span t-field="o.partner_id.zip"/><br/>
+                                    </span>
+                                </span>
+                            </div>
+                        </table>
+
+                        <t t-set="amount_untaxed" t-value="0.0"/>
+                        <table width="100%"  style=" border:0px solid white;">
+                            <tbody>
+                                <t t-set="num" t-value="0"/>
+                                <t t-set="num" t-value="num+1"/>
+                                <tr t-foreach="o.lines" t-as="line">
+                                    <td>
+                                        <span><span t-esc="num"/>.</span>
+                                        <t t-set="num" t-value="num+1"/>
+                                        <t t-set="start" t-value="0"/>
+                                    </td>
+                                    <td style="text-align:left;">
+                                        <span t-field="line.product_id.name"/>
+                                    </td>
+                                    <!--                                        <td class="text-right">-->
+                                    <!--                                            <t t-if="o.state != 'cancel' and o.statement_ids">-->
+                                    <!--                                                <span t-field="line.qty"/>-->
+                                    <!--                                            </t>-->
+                                    <!--                                        </td>-->
+                                    <td align="right" colspan="6" style="tborder:1px solid black; text-align:right">
+                                        <t t-if="o.state != 'cancel' and o.statement_ids">
+                                            <!--                                            <span t-esc="line.id" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>-->
+                                            <span t-esc="line.price_subtotal_incl" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                            <t t-set="amount_untaxed" t-value="amount_untaxed + line.price_subtotal"/>
+                                        </t>
+                                        <t t-if="line.discount != 0.0">
+                                            <span t-esc="line.discount"/>%
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"/>
+                                    <td colspan="3" style="tborder:1px solid black; text-align:right">
+                                        <font style="font-size: 18px;">
+                                            <span>มูลค่าสินค้า&amp;nbsp;</span>
+                                        </font>
+                                    </td>
+                                    <td align="right" colspan="3" style="tborder:1px solid black; text-align:right">
+                                        <span t-esc="o.invoice_id.amount_untaxed" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                    </td>
+                                    <br/>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"/>
+                                    <td colspan="3" style="tborder:1px solid black; text-align:right">
+                                        <font style="font-size: 18px;">
+                                            <t t-if="o.lines[0].product_id[0]">
+                                                <span>ภาษีมูลค่าเพิ่ม&amp;nbsp;</span>
+                                            </t>
+                                        </font>
+                                    </td>
+                                    <td align="right" colspan="3" style="tborder:1px solid black; text-align:right">
+                                        <t t-if="o.lines[0].product_id[0]">
+                                            <span t-field="o.amount_tax" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                        </t>
+                                    </td>
+                                    <br/>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"/>
+                                    <td colspan="3" style="tborder:1px solid black; text-align:right">
+                                        <font style="font-size: 18px;">
+                                            <span>รวมเป็นเงินทั้งสิ้น&amp;nbsp;</span>
+                                        </font>
+                                    </td>
+                                    <td align="right" colspan="3" style="tborder:1px solid black; text-align:right">
+                                        <span t-esc="o.amount_total" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                    </td>
+                                    <br/><br/>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table width="100%">
+                            <div class="col-xs-12" style="text-align:left; font-size:18px">
+                                <span class="col-xs-12">*ราคารวมภาษีมูลค่าเพิ่มแล้ว</span><br/>
+                                <span>---------------------------------------------------------------------</span><br/>
+                                <tr t-foreach="o.statement_ids" t-as="line">
+                                   <span>ชำระโดย : &amp;nbsp;<span t-field="line.journal_id.name"/></span><br/>
+                                </tr>
+                                <span class="col-xs-12">เลขที่บัตร : &amp;nbsp;<span t-field="o.note"/></span><br/>
+                                <span class="col-xs-12">
+                                    <t>
+                                        <t>แต้มสะสมรวม :</t>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                        <t>แต้มครั้งนี้ :</t>
+                                    </t>
+                                </span><br/>
+                                <span class="col-xs-12">ตรวจสอบแต้มสะสมที่จุดบริการลุกค้า</span><br/>
+                                <span class="col-xs-12" >จำนวนแต้มอาจมีการเปลี่ยนแปลง</span><br/>
+                                <br/><br/>
+                            </div>
+                            <div class="col-xs-12" style="text-align:center; font-size:18px">
+                                <span>กรุณาเก็บใบเสร็จรับเงินไว้เพิ่มสิทธิประโยชน์ของท่าน</span><br/>
+                                <span>ขอบคุณที่ใช้บริการค่ะ</span><br/>
+                                <span>Branch-<span t-field="o.company_id.branch_no"/>,UserID-<span t-field="o.user_id"/>,พิมพ์-<span t-field="o.date_order"/></span>
+                            </div>
+                        </table>
+
+                    </dev>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

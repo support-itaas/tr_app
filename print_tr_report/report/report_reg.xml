@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+        <record id="paperformat_A4_Zero_Margin3_test" model="report.paperformat">
+            <field name="name">A4_Zero_Margin3</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">2</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">10</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+                id="holdingtax3_report_test_11"
+                model="account.move.line"
+                menu="True"
+                report_type="qweb-pdf"
+                string="ใบ ภงด.3"
+                paperformat="print_tr_report.paperformat_A4_Zero_Margin3_test"
+                name="print_tr_report.holdingtax3_report_id_testaa"
+                file="print_tr_report.holdingtax3_report_id_testaa"
+        />
+
+        <report
+                id="holdingtax53_report_test_11"
+                model="account.move.line"
+                menu="True"
+                report_type="qweb-pdf"
+                string="ใบ ภงด.53"
+                paperformat="print_tr_report.paperformat_A4_Zero_Margin3_test"
+                name="print_tr_report.holdingtax53_report_id_testaa"
+                file="print_tr_report.holdingtax53_report_id_testaa"
+        />
+
+
+
+        <record id="paperformat_A4_Zero_Margin53" model="report.paperformat">
+            <field name="name">A4_Zero_Margin53</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">0</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">10</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="paperformat_A4_Zero_Margin_asset_location" model="report.paperformat">
+            <field name="name">A4_Zero_Margin</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">60</field>
+            <field name="margin_bottom">120</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">50</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+                id="account_asset_asset_location"
+                model="asset.location.line"
+                menu="True"
+                report_type="qweb-pdf"
+                string="Asset Location"
+                paperformat="paperformat_A4_Zero_Margin_asset_location"
+                name="print_tr_report.asset_location_report_id"
+                file="print_tr_report.asset_location_report_id"
+        />
+
+        <record id="paperformat_A4_Zero_Margin3_new" model="report.paperformat">
+            <field name="name">A4_Zero_Margin3_new</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">0</field>
+            <field name="margin_bottom">5</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">10</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <!-- QWeb Reports for Product -->
+        <!--account-->
+        <record id="paperformat_A4_Zero_Margin_Debit_Credit" model="report.paperformat">
+            <field name="name">A4_Zero_Margin_debit_credit</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">90</field>
+            <field name="margin_bottom">60</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">85</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="paperformat_A4_Zero_Margin_Debit_Credit_bt" model="report.paperformat">
+            <field name="name">A4_Zero_Margin_debit_credit_bt</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">90</field>
+            <field name="margin_bottom">60</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">85</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+                id="debitcredit02_bt_report"
+                model="account.move"
+                menu="True"
+                report_type="qweb-pdf"
+                string="สมุดรายวันทั่วไป(BT)"
+                paperformat="print_tr_report.paperformat_A4_Zero_Margin_Debit_Credit_bt"
+                name="print_tr_report.debitcredit02_bt_report_id"
+                file="print_tr_report.debitcredit02_bt_report_id"
+        />
+
+        <record id="paperformat_A4_Zero_Margin_Debit_Credit_04" model="report.paperformat">
+            <field name="name">A4_Zero_Margin_debit_credit_04</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">90</field>
+            <field name="margin_bottom">80</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">85</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+                id="debitcredit01_report_inherit"
+                model="account.move"
+                menu="True"
+                report_type="qweb-pdf"
+                string="สมุดรายวันรับ"
+                paperformat="print_tr_report.paperformat_A4_Zero_Margin_Debit_Credit"
+                name="print_tr_report.debitcredit01_report_inherit_id"
+                file="print_tr_report.debitcredit01_report_inherit_id"
+        />
+         <record id="paperformat_A4_Zero_Margin_journal_report_inherit" model="report.paperformat">
+            <field name="name">A4_Zero_Margin_journal_report_inherit</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">90</field>
+            <field name="margin_bottom">60</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">85</field>
+            <field name="dpi">90</field>
+        </record>
+        <report
+                id="journal_report_inherit"
+                model="account.move"
+                menu="True"
+                report_type="qweb-pdf"
+                string="สมุดรายวัน(พิเศษ)"
+                paperformat="print_tr_report.paperformat_A4_Zero_Margin_journal_report_inherit"
+                name="print_tr_report.journal_report_inherit_id"
+                file="print_tr_report.journal_report_inherit_id"
+        />
+        <report
+                id="debitcredit02_report_inherit"
+                model="account.move"
+                menu="True"
+                report_type="qweb-pdf"
+                string="สมุดรายวันทั่วไป"
+                paperformat="print_tr_report.paperformat_A4_Zero_Margin_Debit_Credit"
+                name="print_tr_report.debitcredit02_report_inherit_id"
+                file="print_tr_report.debitcredit02_report_inherit_id"
+        />
+        <report
+                id="debitcredit05_report_inherit"
+                model="account.move"
+                menu="True"
+                report_type="qweb-pdf"
+                string="สมุดรายวันจ่าย"
+                paperformat="print_tr_report.paperformat_A4_Zero_Margin_Debit_Credit_04"
+                name="print_tr_report.debitcredit05_report_inherit_id"
+                file="print_tr_report.debitcredit05_report_inherit_id"
+        />
+        <record id="paperformat_A4_Zero_Margin_Creditnote" model="report.paperformat">
+            <field name="name">A4_Zero_Margin_Creditnote</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">105</field>
+            <field name="margin_bottom">95 </field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">100</field>
+            <field name="dpi">90</field>
+        </record>
+        <report
+                id="credit_note_report"
+                model="account.invoice"
+                menu="True"
+                report_type="qweb-pdf"
+                string="ใบรับคืนสินค้า/ใบลดหนี้"
+                paperformat="paperformat_A4_Zero_Margin_Creditnote"
+                name="print_tr_report.credit_note_report_id"
+                file="print_tr_report.credit_note_report_id"
+        />
+
+        <record id="A4_P_Zero_Margin_chack" model="report.paperformat">
+            <field name="name">A4_P_Zero_Margin_chack</field>
+            <field name="default" eval="False"/>
+            <field name="format">custom</field>
+            <field name="page_height">90</field>
+            <field name="page_width">180</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">0</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+                id="chack_report"
+                model="account.cheque.statement"
+                menu="True"
+                report_type="qweb-pdf"
+                string="Print Cheque"
+                paperformat="print_tr_report.A4_P_Zero_Margin_chack"
+                name="print_tr_report.chack_report_id"
+                file="print_tr_report.chack_report_id"
+        />
+
+        <record id="paperformat_A4_Zero_Margin_Invoice" model="report.paperformat">
+            <field name="name">paperformat_A4_Zero_Margin_Invoice</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">100</field>
+            <field name="margin_bottom">50</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">91</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+                id="debitnote_report"
+                model="account.invoice"
+                menu="True"
+                report_type="qweb-pdf"
+                string="ใบเพิ่มหนี้/ใบกำกับภาษี(A4)"
+                paperformat="print_tr_report.paperformat_A4_Zero_Margin_Invoice"
+                name="print_tr_report.debitnote_report_id"
+                file="print_tr_report.debitnote_report_id"
+        />
+
+        <record id="paperformat_A4_Zero_Margin_Invoice_1" model="report.paperformat">
+            <field name="name">paperformat_A4_Zero_Margin_Invoice_1</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">85</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">75</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="paperformat_A4_Zero_Margin_Invoice_2" model="report.paperformat">
+            <field name="name">paperformat_A4_Zero_Margin_Invoice_2</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">98</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">93</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+                id="tax_invoice01_report"
+                model="account.invoice"
+                menu="True"
+                report_type="qweb-pdf"
+                string="ใบรับสินค้า"
+                paperformat="paperformat_A4_Zero_Margin_Invoice_1"
+                name="print_tr_report.tax_invoice01_report_id"
+                file="print_tr_report.tax_invoice01_report_id"
+        />
+
+        <report
+                id="tax_invoice02_report"
+                model="account.invoice"
+                menu="True"
+                report_type="qweb-pdf"
+                string="ใบกำกับภาษี/ใบเสร็จรับเงิน"
+                paperformat="paperformat_A4_Zero_Margin_Invoice_2"
+                name="print_tr_report.tax_invoice02_report_id"
+                file="print_tr_report.tax_invoice02_report_id"
+        />
+
+
+        <!--#############################################################################################-->
+        <!--sale-->
+        <record id="paperformat_A4_Zero_Margin_quotations" model="report.paperformat">
+            <field name="name">A4_Zero_Margin_quotations</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">95</field>
+            <field name="margin_bottom">92</field>
+            <field name="margin_left">2</field>
+            <field name="margin_right">2</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">92</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+                id="quotations_report"
+                model="sale.order"
+                menu="True"
+                report_type="qweb-pdf"
+                string="ใบเสนอราคา"
+                paperformat="paperformat_A4_Zero_Margin_quotations"
+                name="print_tr_report.quotations_report_id"
+                file="print_tr_report.quotations_report_id"
+        />
+        <!--#############################################################################################-->
+        <!--purchase-->
+        <record id="paperformat_A4_Zero_Margin_purchase" model="report.paperformat">
+            <field name="name">A4_Zero_Margin_purchase</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">80</field>
+            <field name="margin_bottom">55</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">75</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+                id="purchase_order_report"
+                model="purchase.order"
+                menu="True"
+                report_type="qweb-pdf"
+                string="ใบสั่งซื้อ"
+                paperformat="paperformat_A4_Zero_Margin_purchase"
+                name="print_tr_report.purchase_order_report_id"
+                file="print_tr_report.purchase_order_report_id"
+        />
+
+        <!--#############################################################################################-->
+        <!--stock-->
+        <record id="paperformat_A4_Zero_Margin_product_bill" model="report.paperformat">
+            <field name="name">A4_Zero_Margin_product_bill</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">80</field>
+            <field name="margin_bottom">60</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">75</field>
+            <field name="dpi">90</field>
+        </record>
+
+         <record id="paperformat_A4_Zero_Margin_product_receive" model="report.paperformat">
+            <field name="name">A4_Zero_Margin_product_bill</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">80</field>
+            <field name="margin_bottom">60</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">75</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+                id="product_bill_report"
+                model="stock.picking"
+                menu="True"
+                report_type="qweb-pdf"
+                string="ใบเบิกสินค้า"
+                paperformat="paperformat_A4_Zero_Margin_product_bill"
+                name="print_tr_report.product_bill_report_id"
+                file="print_tr_report.product_bill_report_id"
+        />
+
+        <report
+                id="product_bill_report02"
+                model="stock.picking"
+                menu="True"
+                report_type="qweb-pdf"
+                string="ใบโอนสินค้าเข้าคลัง"
+                paperformat="paperformat_A4_Zero_Margin_product_bill"
+                name="print_tr_report.product_bill_report02_id"
+                file="print_tr_report.product_bill_report02_id"
+        />
+        <report
+                id="product_receipt_id"
+                model="stock.picking"
+                menu="True"
+                report_type="qweb-pdf"
+                string="ใบรับสินค้า"
+                paperformat="paperformat_A4_Zero_Margin_product_receive"
+                name="print_tr_report.product_receipt_itaas_id"
+                file="print_tr_report.product_receipt_itaas_id"
+        />
+
+        <!--#############################################################################################-->
+        <!--mrp-->
+        <record id="paperformat_A4_Zero_MO_report" model="report.paperformat">
+            <field name="name">A4_Zero_MO_report</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">50</field>
+            <field name="margin_bottom">40</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">45</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+                id="report_id_new1"
+                model="mrp.production"
+                menu="True"
+                report_type="qweb-pdf"
+                string="Print MO"
+                paperformat="paperformat_A4_Zero_MO_report"
+                name="print_tr_report.report_mo_report_id"
+                file="print_tr_report.report_mo_report_id"
+        />
+        <!--#############################################################################################-->
+        <!--wizard-->
+        <record id="paperformat_A4_Zero_Margin_supplier" model="report.paperformat">
+            <field name="name">A4_Zero_Margin_supplier</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">15</field>
+            <field name="margin_bottom">5</field>
+            <field name="margin_left">10</field>
+            <field name="margin_right">10</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+                id="report_supplier_evaluation"
+                model="supplier.evaluation.line"
+                menu="False"
+                report_type="qweb-pdf"
+                string="Report Supplier Evaluation"
+                paperformat="paperformat_A4_Zero_Margin_supplier"
+                name="print_tr_report.report_supplier_evaluation_id"
+                file="print_tr_report.report_supplier_evaluation_id"
+        />
+
+        <record id="paperformat_A4_Zero_Production_report" model="report.paperformat">
+            <field name="name">A4_Zero_Production_report</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">0</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+                id="report_id_production_new"
+                model="material.purchase.requisition"
+                menu="True"
+                report_type="qweb-pdf"
+                string="Print Production"
+                paperformat="paperformat_A4_Zero_Production_report"
+                name="print_tr_report.report_production_report_id"
+                file="print_tr_report.report_production_report_id"
+        />
+
+        <record id="paperformat_A4_Zero_Production_report_inven" model="report.paperformat">
+            <field name="name">A4_Zero_Margin_product_inventory</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">80</field>
+            <field name="margin_bottom">60</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">75</field>
+            <field name="dpi">90</field>
+        </record>
+
+
+
+        <record id="paperformat_A4_Zero_chack_report" model="report.paperformat">
+            <field name="name">A4_Zero_Production_report</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">0</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+                id="report_id_chack_new"
+                model="material.purchase.requisition"
+                menu="True"
+                report_type="qweb-pdf"
+                string="Print Chack"
+                paperformat="paperformat_A4_Zero_chack_report"
+                name="print_tr_report.report_chack_report_id"
+                file="print_tr_report.report_chack_report_id"
+        />
+        <!--#############################################################################################-->
+        <!--hr-->
+
+        <record id="paperformat_A5_Zero_Margin" model="report.paperformat">
+            <field name="name">A5_Zero_Margin</field>
+            <field name="default" eval="False"/>
+            <field name="format">A5</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">5</field>
+            <field name="dpi">90</field>
+        </record>
+
+
+        <report
+                id="print_payslip_report"
+                model="hr.payslip"
+                menu="True"
+                report_type="qweb-pdf"
+                string="Print Payslip"
+                paperformat="print_tr_report.paperformat_A5_Zero_Margin"
+                name="print_tr_report.print_payslip_report_id"
+                file="print_tr_report.print_payslip_report_id"
+        />
+
+
+    </data>
+</openerp>

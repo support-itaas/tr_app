@@ -70,10 +70,19 @@ class coupon_order(models.Model):
         coupon_id = self.env['wizard.coupon'].search([('barcode', '=', barcode)], limit=1)
 
         if coupon_id:
+            # if coupon_id.type == 'paper' and not coupon_id.order_id:
+            #     raise UserError(_("ไม่เจอคูปอง"))
+            # else:
+            #     self.coupon_ids.new({
+            #         'coupon_order_id': self.id,
+            #         'coupon_id': coupon_id.id,
+            #     })
+
             self.coupon_ids.new({
                 'coupon_order_id': self.id,
                 'coupon_id': coupon_id.id,
             })
+
         else:
             raise UserError(_("ไม่เจอคูปอง"))
 
@@ -82,14 +91,17 @@ class coupon_order(models.Model):
     def validate(self):
         print('def validate')
         if self.coupon_ids:
-            for coupon_line_id in self.coupon_ids:
+            for coupon_line_id in self.coupon_ids.sudo():
                 if not coupon_line_id.coupon_id.order_branch_id:
                     raise UserError(_("Please check purchase At"))
                 else:
                     if coupon_line_id.state == 'redeem':
                         raise UserError(_("คูปองนี้ได้ใช้ไปแล้ว"))
+                    # if coupon_line_id.coupon_id.type == 'paper' and not coupon_line_id.coupon_id.sudo().order_id:
+                    #     raise UserError(_("ไม่มีรายการคูปอง"))
+
                     else:
-                        coupon_line_id.coupon_id.button_redeem(self.plate_number_id,self.branch_id,self.date_order,coupon_line_id.product_id.default_code,coupon_line_id.product_id.barcode)
+                        coupon_line_id.sudo().coupon_id.sudo().button_redeem(self.plate_number_id,self.branch_id.sudo(),self.date_order,coupon_line_id.product_id.default_code,coupon_line_id.product_id.barcode)
         else:
             raise UserError(_("ไม่มีรายการคูปอง"))
         self.update({'state': 'validate'})

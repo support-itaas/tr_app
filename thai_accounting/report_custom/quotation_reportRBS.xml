@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="quotations_report_id1">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="report.external_layout1">
+                    <div class="page">
+                    <style>
+                        .header{width:100%; height:30px;}
+                        .content{width:100%; height:700px;}
+                        .footer{width:100%; height:30px;}
+                        .doubleUnderline{border-bottom: 3px double;}
+
+                        table.table-bordered1{
+                        border:1px solid black;
+                        margin-top:20px;
+                        border-collapse: collapse;
+                        width: 100%;
+                        }
+                        table.table-bordered1 &gt; thead &gt; tr &gt; th{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered1 &gt; tbody &gt; tr &gt; td{
+                        border:0px solid white;
+                        border-left: 1px solid black;
+                        border-collapse: collapse;
+                        height: 40px;
+                        }
+                        table.table-bordered1 &gt; tfoot &gt; tr &gt; td{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered &gt; thead &gt; tr &gt; th{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered &gt; tbody &gt; tr &gt; td{
+                        border:1px solid black;
+                        <!--border-left: 1px solid;-->
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered &gt; tfoot &gt; tr &gt; td{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                        .doubleUnderline {
+                        text-decoration:underline;
+                        border-bottom: 1px solid #000;
+                        }
+                        table.table-table1 {
+                        border:1px solid black;
+                        margin-top:20px;
+                        border-collapse: collapse;
+                        border-left: 1px solid;
+                        border-right: 1px solid;
+                        border-bottom: 1px solid;
+                        border-top: 1px solid;
+                        width: 100%;
+                        }
+                    </style>
+                    <div class="content" style="font-family: TH Krub;">
+                    <div class="col-xs-12" style="margin-top: 0cm;">
+                        <font style="font-size: 22px; text-align:center;">
+                            <strong>QUOTATION</strong>
+                        </font>
+                    </div>
+                    <br/>
+                    <div class="col-xs-9">
+                        <font style="font-size: 16px;">
+                            Attention:&amp;nbsp;
+                            <span t-field="o.contact_person.name"/>
+                            <br/>
+                        </font>
+                        <font style="font-size: 16px;">
+                            <!--&amp;nbsp;&amp;nbsp;&amp;nbsp;รหัส:&amp;nbsp;<span>ยังไม่มีข้อมูล</span><br/>-->
+                            <span t-if="o.partner_id.parent_id">
+                                Company:&amp;nbsp;
+                                <span t-field="o.partner_id.parent_id.name"/>
+                                <br/>
+                            </span>
+                            <span t-if="not o.partner_id.parent_id">
+                                Company:&amp;nbsp;
+                                <span t-field="o.partner_id.name"/>
+                                <br/>
+                            </span>
+
+                            Address:&amp;nbsp;
+                            <span t-field="o.partner_id.street"/>&amp;nbsp;
+                            <span t-field="o.partner_id.street2"/>&amp;nbsp;
+                            <span t-if="o.partner_id.city and o.partner_id.state_id and o.partner_id.state_id.code == 'BKK'">
+                                &amp;nbsp;<span t-field="o.partner_id.city"/>&amp;nbsp;
+                            </span>
+                            <span t-if="o.partner_id.city and o.partner_id.state_id and o.partner_id.state_id.code != 'BKK'">
+                                &amp;nbsp;<span t-field="o.partner_id.city"/>&amp;nbsp;
+                            </span>
+                            <span t-if="o.partner_id.state_id.name">&amp;nbsp;<span
+                                    t-field="o.partner_id.state_id.name"/>&amp;nbsp;
+                            </span>
+                            <span t-field="o.partner_id.zip"/>
+                            <br/>
+                            <span t-if="o.contact_person">
+                                Tel:&amp;nbsp;
+                                <span t-field="o.contact_person.phone"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                E-mail:&amp;nbsp;
+                                <span t-field="o.contact_person.email"/>
+                            </span>
+                            <span t-if="not o.contact_person">
+                                Tel:&amp;nbsp;
+                                <span t-field="o.partner_id.phone"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                E-mail:&amp;nbsp;
+                                <span t-field="o.partner_id.email"/>
+                            </span>
+                        </font>
+                    </div>
+                    <!--<div class="col-xs-1"/>-->
+                    <div class="col-xs-3">
+                        <font style="font-size: 16px;">
+                            No.&amp;nbsp;
+                            <span t-field="o.name"/>
+                            <br/>
+                            Date:&amp;nbsp;
+                            <span t-field="o.date_order" t-field-options='{"widget": "date"}'/>
+                            <br/>
+                            Remark:
+                        </font>
+                    </div>
+                    <br/>
+
+                    <div class="row" style="margin-top: 0cm;">
+                        <div class="col-xs-12">
+                            <div class="row">
+                                <table class="table table-bordered1"
+                                       style="width:100%; margin-top: 0cm; page-break-inside: avoid;">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-xs-0.5" style="text-align:center">
+                                                <font style="font-size: 16px;">NO
+                                                </font>
+                                            </th>
+                                            <th class="col-xs-7.5" style="text-align:center">
+                                                <font style="font-size: 16px;">Description
+                                                </font>
+                                            </th>
+                                            <th class="col-xs-0.5" style="text-align:center">
+                                                <font style="font-size: 16px;">QTY
+                                                </font>
+                                            </th>
+                                            <th class="col-xs-1.5" style="text-align:center">
+                                                <font style="font-size: 16px;">Price/Unit
+                                                </font>
+                                            </th>
+                                            <th class="col-xs-2" style="text-align:center">
+                                                <font style="font-size: 16px;">Amount
+                                                </font>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="sale_tbody">
+                                        <t t-set="i" t-value="1"/>
+                                        <t t-set="max" t-value="10"/>
+                                        <t t-set="count" t-value="1"/>
+                                        <t t-set="total" t-value="o.amount_untaxed"/>
+                                        <t t-set="total_multi" t-value="0"/>
+                                        <t t-foreach="o.order_line" t-as="l">
+                                            <tr>
+                                                <td style="text-align:center">
+                                                    <font style="font-size: 16px;">
+                                                        <span t-esc="i"/>
+                                                    </font>
+                                                </td>
+                                                <t t-set="i" t-value="i+1"/>
+                                                <t t-if="count &gt; 10">
+                                                    <t t-set="count" t-value="1"/>
+                                                </t>
+                                                <t t-if="count &lt; 11">
+                                                    <t t-set="count" t-value="count + l.get_line(l.name) + 1"/>
+                                                </t>
+                                                <td style="text-align:left">
+                                                    <font style="font-size: 16px;">
+                                                        <span t-field="l.name"/>
+                                                    </font>
+                                                </td>
+                                                <td style="text-align:center">
+                                                    <font style="font-size: 16px;">
+                                                        <span t-field="l.product_uom_qty"/>
+                                                    </font>
+                                                </td>
+                                                <td style="text-align:right">
+                                                    <font style="font-size: 16px;">
+                                                        <span t-esc="'{0:,.2f}'.format(float(l.price_unit))"/>
+                                                    </font>
+                                                </td>
+
+                                                <td style="text-align:right">
+                                                    <font style="font-size: 16px;">
+                                                        <span t-esc="'{0:,.2f}'.format(float(l.price_subtotal))"/>&amp;nbsp;
+                                                    </font>
+                                                </td>
+                                                <!--</t>-->
+                                            </tr>
+                                        </t>
+                                        <t t-foreach="range(count, 10)" t-as="x">
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                    <tfoot>
+                                        <td colspan="5">
+                                            <font style="font-size: 16px;">
+                                                <B> <U>Terms and Conditions</U></B><br/>
+                                                Price Validity: 90 Days
+                                                <br/>
+                                                Terms of delivery: 45 Days
+                                                <br/>
+                                                Payment: 20% at the PO date
+                                                <br/>
+                                                &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;40%
+                                                at the installation date
+                                                <br/>
+                                                &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;40%
+                                                within 30 days after the installation date
+                                            </font>
+                                        </td>
+                                    </tfoot>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="3">
+                                                <font style="font-size: 18px;">
+                                                    <strong>Remark</strong>&amp;nbsp;
+                                                    <span t-field="o.note"/>
+                                                    <br/>
+                                                    <br/>
+                                                </font>
+                                            </td>
+                                            <div class="col-xs-1.5">
+                                                <td>
+                                                    <font style="font-size: 16px; text-align:center">
+                                                        Grand Total
+                                                        <br/>
+                                                        VAT 7%
+                                                        <br/>
+                                                        Total
+                                                        <br/>
+                                                    </font>
+                                                </td>
+                                            </div>
+                                            <div class="col-xs-2">
+                                                <td>
+                                                    <font style="font-size: 16px; text-align:right">
+                                                        <span t-esc="'{0:,.2f}'.format(float(o.amount_untaxed))"/>
+                                                        <br/>
+                                                        <span t-esc="'{0:,.2f}'.format(float(o.amount_tax))"/>
+                                                        <br/>
+                                                        <span t-esc="'{0:,.2f}'.format(float(o.amount_total))"/>
+                                                        <br/>
+                                                    </font>
+                                                </td>
+                                            </div>
+                                        </tr>
+                                    </tfoot>
+
+
+
+
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 0cm;">
+                    <div class="col-xs-12">
+                        <div class="row">
+                            <table class="table table-bordered1"
+                                   style="width:100%; margin-top: 0cm; page-break-inside: avoid;">
+                                <tr>
+                                    <td class="col-xs-5" style="text-align:center">
+                                        <br/>
+                                        <br/>
+                                        <font style="font-size: 16px;">
+                                            ______________________________
+                                            <br/>
+                                            Purchaser Authorized Signature
+                                            <br/>
+                                        </font>
+                                        <font style="text-align:center font-size: 16px;">
+                                            Position: ______________________________
+                                        </font>
+                                    </td>
+                                    <td class="col-xs-4" style="text-align:center">
+                                        <br/>
+                                        <br/>
+                                        <font style="font-size: 16px;">
+                                            <span t-field="o.user_id.name"/>
+                                            <br/>
+                                            Sales Person
+                                            <br/>
+                                            Tel:&amp;nbsp;
+                                            <span t-field="o.user_id.mobile"/>
+                                        </font>
+                                    </td>
+                                    <td class="col-xs-3" style="text-align:center">
+                                        <br/>
+                                        <br/>
+                                        <br/>
+                                        <font style="font-size: 16px;">
+                                            Manager
+                                            <br/>
+                                        </font>
+                                        <font style="text-align:center font-size: 16px;">
+                                            Tel: 081-8279592
+                                        </font>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

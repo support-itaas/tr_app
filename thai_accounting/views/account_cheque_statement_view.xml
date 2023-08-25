@@ -1,0 +1,398 @@
+<odoo>
+
+
+
+
+    <record id="view_account_cheque_statement_search" model="ir.ui.view">
+        <field name="name">account.cheque.statement.search</field>
+        <field name="model">account.cheque.statement</field>
+        <field name="arch" type="xml">
+            <search string="Cheque Search">
+                <filter string="New" name="new_state" domain="[('state', '=', 'open')]"/>
+                <filter string="Confirm" name="confirm_state" domain="[('state', '=', 'confirm')]"/>
+                <separator/>
+                <filter string="Over Due" domain="[('cheque_date','&lt;', context_today().strftime('%%Y-%%m-%%d')),('state', '=', 'open')]" help = "Over Due"/>
+                <field name="cheque_number"/>
+                <field name="name" string="Number"/>
+                <field name="move_id" />
+                <field name="partner_id"/>
+                <field name="ref" />
+
+
+
+                <group expand="1" string="Group By">
+                    <filter string="Partner" name="partner_id" context="{'group_by':'partner_id'}"/>
+                    <filter string="Responsible Person" name='user' context="{'group_by':'user_id'}"/>
+                    <filter string="Bank" name="cheque_bank" context="{'group_by':'cheque_bank'}"/>
+                    <filter string="Status" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+
+    <record id="account_cheque_multi_confirm_view_form" model="ir.ui.view">
+        <field name="name">account.cheque.confirm.form</field>
+        <field name="model">account.cheque.confirm</field>
+        <field name="arch" type="xml">
+            <form string="Confirm Open Cheque">
+                <group>
+                    <field name="validate_date"/>
+                </group>
+                <footer>
+                    <button string="Confirm Cheque" name="cheque_confirm" type="object" default_focus="1" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="action_account_cheque_multi_confirm_view"
+                multi="True"
+                key2="client_action_multi" name="Confirm Open Cheque"
+                res_model="account.cheque.confirm" src_model="account.cheque.statement"
+                view_mode="form" target="new" view_type="form" />
+
+
+    <!-- tax report wizard form view -->
+    <record id="view_account_cheque_statement_receive_form" model="ir.ui.view">
+        <field name="name">account.cheque.statement.receive.form</field>
+        <field name="model">account.cheque.statement</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Cheque Receive">
+                <header>
+                    <button name="action_validate" string="Confirm" type="object" states="open" class="btn-primary"/>
+                    <button name="action_cancel" string="Cancel" type="object" states="open" class="btn-primary"/>
+                    <button name="action_reject" string="Reject" type="object" states="open" class="btn-primary"/>
+                    <!--<button name="action_set_draft" string="Send by Email" type="object" states="draft" class="btn-primary"/>-->
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet string="Cheque Receive Record">
+                    <group col="4" colspan="4" string="Cheque Item">
+                        <field name="partner_id" string="Customer"/>
+                        <field name="ref"/>
+                        <field name="journal_id"/>
+                        <field name="account_id"/>
+                        <field name="cheque_bank"/>
+                        <field name="payment_id"/>
+                        <field name="cheque_branch"/>
+                        <field name="user_id"/>
+                        <field name="cheque_number"/>
+                        <field name="communication"/>
+                        <field name="cheque_date"/>
+                        <field name="amount"/>
+                        <field name="over_due" invisible="1"/>
+                        <!--<field name="allow_dup_cheque_no"/>-->
+                        <field name="company_id" invisible="1"/>
+                        <field name="type" invisible="0"/>
+                    </group>
+                    <group col="4" colspan="4" string="Transaction Info">
+                        <field name="move_id"/>
+                        <field name="issue_date"/>
+                        <field name="move_new_id" attr="{'invisible': [('move_new_id','=',False)]}"/>
+                        <field name="validate_date" attr="{'invisible': [('validate_date','=',False)]}"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+
+            </form>
+        </field>
+    </record>
+
+    <!-- tax report wizard form view -->
+    <record id="view_account_cheque_statement_payment_form" model="ir.ui.view">
+        <field name="name">account.cheque.statement.pay.form</field>
+        <field name="model">account.cheque.statement</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Cheque Payment">
+                <header>
+                    <button name="action_validate" string="Confirm" type="object" states="open" class="btn-primary"/>
+                    <button name="action_cancel" string="Cancel" type="object" states="open" class="btn-primary"/>
+                    <button name="action_reject" string="Reject" type="object" states="open" class="btn-primary"/>
+                    <!--<button name="action_set_draft" string="Send by Email" type="object" states="draft" class="btn-primary"/>-->
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet string="Cheque Payment Record">
+                    <group col="4" colspan="4" string="Cheque Item">
+
+                        <!--<field name="name"/>-->
+                        <field name="partner_id" string="Supplier"/>
+                        <field name="ref"/>
+                        <field name="journal_id"/>
+                        <field name="account_id"/>
+                        <field name="cheque_bank"/>
+                        <field name="payment_id"/>
+                        <field name="cheque_branch"/>
+                        <field name="user_id"/>
+                        <field name="cheque_number"/>
+                        <field name="communication"/>
+                        <field name="cheque_date"/>
+                        <field name="amount"/>
+                        <!--<field name="allow_dup_cheque_no"/>-->
+                        <field name="company_id" invisible="1"/>
+                        <field name="type" invisible="0"/>
+                    </group>
+                    <group col="4" colspan="4" string="Transaction Info">
+                        <field name="move_id"/>
+                        <field name="issue_date"/>
+                        <field name="move_new_id" attr="{'invisible': [('move_new_id','=',False)]}"/>
+                        <field name="validate_date" attr="{'invisible': [('validate_date','=',False)]}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_account_cheque_statement_view_both_form" model="ir.ui.view">
+        <field name="name">account.cheque.statement.view.both.form</field>
+        <field name="model">account.cheque.statement</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Cheque Payment">
+                <header>
+                    <button name="action_validate" string="Confirm" type="object" states="open" class="btn-primary"/>
+                    <button name="action_cancel" string="Cancel" type="object" states="open" class="btn-primary"/>
+                    <button name="action_reject" string="Reject" type="object" states="open" class="btn-primary"/>
+                    <!--<button name="action_set_draft" string="Send by Email" type="object" states="draft" class="btn-primary"/>-->
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet string="Cheque Payment Record">
+                    <group col="4" colspan="4" string="Cheque Item">
+
+                        <!--<field name="name"/>-->
+                        <field name="partner_id" string="Supplier"/>
+                        <field name="ref"/>
+                        <field name="journal_id"/>
+                        <field name="account_id"/>
+                        <field name="cheque_bank"/>
+                        <field name="payment_id"/>
+                        <field name="cheque_branch"/>
+                        <field name="user_id"/>
+                        <field name="cheque_number"/>
+                        <field name="communication"/>
+                        <field name="cheque_date"/>
+                        <field name="amount"/>
+                        <!--<field name="allow_dup_cheque_no"/>-->
+                        <field name="company_id" invisible="1"/>
+                        <field name="type" invisible="1"/>
+                    </group>
+                    <group col="4" colspan="4" string="Transaction Info">
+                        <field name="move_id"/>
+                        <field name="issue_date"/>
+                        <field name="move_new_id" attr="{'invisible': [('move_new_id','=',False)]}"/>
+                        <field name="validate_date" attr="{'invisible': [('validate_date','=',False)]}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_move_cheque_view_both_tree" model="ir.ui.view">
+        <field name="name">account.cheque.statement.both.tree</field>
+        <field name="model">account.cheque.statement</field>
+        <field name="arch" type="xml">
+            <tree decoration-info="state == 'open'" decoration-danger="over_due == True" string="ทะเบียนเช็ค">
+                <field name="type" invisible="1"/>
+                <field name="over_due" invisible="1"/>
+                <field name="name"/>
+                <field name="partner_id" string="Customer"/>
+                <field name="issue_date"/>
+                <field name="ref"/>
+                <field name="cheque_bank"/>
+                <field name="cheque_branch"/>
+                <field name="cheque_number"/>
+                <field name="cheque_date"/>
+                <field name="validate_date"/>
+                <field name="journal_id" invisible="1"/>
+                <field name="account_id" invisible="0"/>
+                <field name="move_id" invisible="0"/>
+                <field name="move_new_id" invisible="1"/>
+                <field name="payment_id"/>
+                <field name="user_id"/>
+                <field name="state"/>
+                <field name="amount" sum="Total Amount"/>
+                <field name="communication" invisible="1"/>
+                <field name="company_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_cheque_both" model="ir.actions.act_window">
+        <field name="domain">[('type','=',('rec','pay'))]</field>
+        <field name="name">view both</field>
+        <field name="res_model">account.cheque.statement</field>
+        <field name="view_type">form</field>
+        <!--<field name="view_id" ref="view_move_cheque_rec_tree"/>-->
+        <!--<field name="search_view_id" ref="view_account_cheque_statement_search"/>-->
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_move_cheque_both_tree_1" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_move_cheque_view_both_tree"/>
+        <field name="act_window_id" ref="action_cheque_both"/>
+    </record>
+    <record id="view_move_cheque_both_form_1" model="ir.actions.act_window.view">
+        <field eval="2" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_account_cheque_statement_view_both_form"/>
+        <field name="act_window_id" ref="action_cheque_both"/>
+    </record>
+
+
+
+
+    <record id="view_move_cheque_rec_tree" model="ir.ui.view">
+        <field name="name">account.cheque.statement.tree</field>
+        <field name="model">account.cheque.statement</field>
+        <field name="arch" type="xml">
+            <tree decoration-info="state == 'open'" decoration-danger="over_due == True" string="ทะเบียนเช็ค">
+                <field name="type" invisible="1"/>
+                <field name="over_due" invisible="1"/>
+                <field name="name"/>
+                <field name="partner_id" string="Customer"/>
+                <field name="issue_date"/>
+                <field name="ref"/>
+                <field name="cheque_bank"/>
+                <field name="cheque_branch"/>
+                <field name="cheque_number"/>
+                <field name="cheque_date"/>
+                <field name="validate_date"/>
+                <field name="amount" sum="Total Amount"/>
+                <field name="journal_id" invisible="1"/>
+                <field name="account_id" invisible="0"/>
+                <field name="move_id" invisible="0"/>
+                <field name="payment_id"/>
+                <field name="move_new_id"/>
+                <field name="user_id"/>
+                <field name="state"/>
+                <field name="communication" invisible="1"/>
+                <field name="company_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_move_cheque_pay_tree" model="ir.ui.view">
+        <field name="name">account.cheque.statement.tree</field>
+        <field name="model">account.cheque.statement</field>
+        <field name="arch" type="xml">
+            <tree decoration-info="state == 'open'" decoration-danger="over_due == True" string="ทะเบียนเช็ค">
+                <field name="type" invisible="1"/>
+                <field name="over_due" invisible="1"/>
+                <field name="name"/>
+                <field name="partner_id" string="Supplier"/>
+                <field name="issue_date"/>
+                <field name="ref"/>
+                <field name="cheque_bank"/>
+                <field name="cheque_branch"/>
+                <field name="cheque_number"/>
+                <field name="cheque_date"/>
+                <field name="validate_date"/>
+                <field name="journal_id" invisible="1"/>
+                <field name="account_id" invisible="0"/>
+                <field name="move_id" invisible="0"/>
+                <field name="payment_id"/>
+                <field name="user_id"/>
+                <field name="state"/>
+                <field name="amount" sum="Total Amount"/>
+                <field name="communication" invisible="1"/>
+                <field name="company_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="cheque_reject_form" model="ir.ui.view">
+        <field name="name">account.cheque.statement.reject.form</field>
+        <field name="model">account.cheque.statement</field>
+        <field eval="20" name="priority"/>
+        <field name="arch" type="xml">
+            <form>
+                <p>คุณแน่ใจที่จะปฏิเสธการชำระด้วยเช็ครายการนี้!</p>
+                <p>รายการชำระเงินจะถูกยกเลิกและเปลี่ยนสถานะเป็น Draft!</p>
+                <group>
+                    <field name="name" readonly="1"/>
+                    <field name="partner_id" readonly="1"/>
+                    <field name="issue_date" readonly="1" />
+                    <field name="cheque_bank" readonly="1"/>
+                    <field name="cheque_number" readonly="1"/>
+                    <field name="communication"/>
+                </group>
+                <footer>
+                    <button string="Confirm" type="object" name="reject_cheque" class="oe_highlight" help="Click this button to reject the cheque"/>
+                    <button string="Close" special="cancel" class="oe_right oe_highlight" help="Click this button to close the window"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cheque_receive" model="ir.actions.act_window">
+        <field name="domain">[('type','=','rec')]</field>
+        <field name="name">เช็ครับ</field>
+        <field name="res_model">account.cheque.statement</field>
+        <field name="view_type">form</field>
+        <!--<field name="view_id" ref="view_move_cheque_rec_tree"/>-->
+        <!--<field name="search_view_id" ref="view_account_cheque_statement_search"/>-->
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_cheque_payment" model="ir.actions.act_window">
+        <field name="domain">[('type','=','pay')]</field>
+        <field name="name">เช็คจ่าย</field>
+        <field name="res_model">account.cheque.statement</field>
+        <field name="view_type">form</field>
+        <!--<field name="view_id" ref="view_move_cheque_pay_tree"/>-->
+        <!--<field name="search_view_id" ref="view_account_cheque_statement_search"/>-->
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!--receive form/tree-->
+    <record id="view_move_cheque_rec_tree_1" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_move_cheque_rec_tree"/>
+        <field name="act_window_id" ref="action_cheque_receive"/>
+    </record>
+    <record id="view_move_cheque_rec_form_1" model="ir.actions.act_window.view">
+        <field eval="2" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_account_cheque_statement_receive_form"/>
+        <field name="act_window_id" ref="action_cheque_receive"/>
+    </record>
+
+    <!--pay form/tree-->
+    <record id="view_move_cheque_pay_tree_1" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_move_cheque_pay_tree"/>
+        <field name="act_window_id" ref="action_cheque_payment"/>
+    </record>
+    <record id="view_move_cheque_pay_form_1" model="ir.actions.act_window.view">
+        <field eval="2" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_account_cheque_statement_payment_form"/>
+        <field name="act_window_id" ref="action_cheque_payment"/>
+    </record>
+
+    <record id="account_account_form_itaas_inherit_cheque" model="ir.ui.view">
+        <field name="name">account.account.form.itaas</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="arch" type="xml">
+            <field name="deprecated" position="after">
+                <field name="is_cheque"/>
+            </field>
+        </field>
+    </record>
+
+    <menuitem action="action_cheque_receive" id="menu_cheque_receive" name="Cheque (Receive)" parent="account.menu_finance_receivables_documents" sequence="10" groups="thai_accounting.group_account_ar"/>
+    <menuitem action="action_cheque_payment" id="menu_cheque_payment" name="Cheque (Payment)" parent="account.menu_finance_payables_documents" sequence="10" groups="thai_accounting.group_account_ap"/>
+    <menuitem action="action_cheque_both" id="menu_cheque_both" name="Cheque" parent="account.menu_finance_reports"/>
+
+</odoo>

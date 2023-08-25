@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="account_report_balance_inherit_view_itaas" model="ir.ui.view">
+        <field name="name">Trial Balance</field>
+        <field name="model">account.balance.report</field>
+        <field name="inherit_id" ref="account.account_report_balance_view" />
+        <field name="arch" type="xml">
+            <data>
+                <field name="date_from" position="after">
+                    <field name="is_only_summary"/>
+                </field>
+                <field name="date_to" position="after">
+                    <field name="is_first_year"/>
+                </field>
+            </data>
+        </field>
+    </record>
+
+</odoo>

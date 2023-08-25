@@ -1,0 +1,18 @@
+<odoo>
+
+
+
+	<record id="hr_payslip_line_tree_more_info" model="ir.ui.view">
+		<field name="name">hr.payslip.line.tree</field>
+		<field name="model">hr.payslip.line</field>
+		<field name="inherit_id" ref="hr_extended.hr_payslip_line_tree"/>
+		<field name="arch" type="xml">
+			<field name="employee_id" position="after">
+				<field name="department_id"/>
+				<field name="hr_period_id"/>
+			</field>
+
+		</field>
+	</record>
+
+</odoo>

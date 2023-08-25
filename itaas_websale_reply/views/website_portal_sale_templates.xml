@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="orders_followup_reply" name="Orders Reply Followup" inherit_id="purchase.portal_my_purchase_order">
+        <xpath expr="//div[@class='oe_structure mb32']" position="after">
+            <form method="post" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <br/>
+                <textarea name="websale_reply" value="" line="3" type="text" rows="4" cols="100"
+                          placeholder="Add a comment..."/>
+<!--                <input type="file" class="oe_inline" multiple="multiple" name="attachment_ids"/>-->
+                <span>
+                    <br/>
+                    <input type="submit" value="Send Now" class="btn btn-info" name="send"/>
+                </span>
+            </form>
+            <div class="row mt32">
+                <div class="col-md-12">
+                    <h4>
+                        <strong>Message and communication history</strong>
+                    </h4>
+                </div>
+                <div class="col-md-10 col-md-offset-1 mt16">
+                    <t t-call="itaas_websale_reply.message_thread_reply">
+                        <t t-set="object" t-value="order"/>
+                        <t t-set="chatter_mode" t-value="'json'"/>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+
+    </template>
+</odoo>

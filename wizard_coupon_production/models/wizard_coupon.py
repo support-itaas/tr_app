@@ -11,6 +11,10 @@ from odoo.tools import float_is_zero
 import math
 import re
 
+from dateutil.relativedelta import relativedelta
+
+def strToDate(dt):
+    return date(int(dt[0:4]), int(dt[5:7]), int(dt[8:10]))
 
 def ean_checksum(eancode):
     """returns the checksum of an ean string of length 13, returns -1 if
@@ -65,6 +69,23 @@ class WizardCoupon(models.Model):
     type = fields.Selection([('e-coupon','E-Coupon'),('paper','Paper')],default='e-coupon')
     production_id = fields.Many2one('wizard.coupon.production', string='Production')
 
+    count_type_paper = fields.Float(string='Coupon Paper', compute='_compute_check_type')
+    count_type_e_coupon = fields.Float(string='E-coupon', compute='_compute_check_type')
+
+    @api.one
+    @api.depends('type')
+    def _compute_check_type(self):
+        for obj in self:
+            if obj.type == 'e-coupon':
+                obj.count_type_paper = 0.00
+                obj.count_type_e_coupon = 1.00
+            elif obj.type == 'paper':
+                obj.count_type_paper = 1.00
+                obj.count_type_e_coupon = 0.00
+            else:
+                obj.count_type_paper = 0.00
+                obj.count_type_e_coupon = 0.00
+
 
 class WizardCouponProduction(models.Model):
     _name = 'wizard.coupon.production'
@@ -72,6 +93,7 @@ class WizardCouponProduction(models.Model):
     _description = 'Coupon Production'
 
     name = fields.Text(readonly=True, required=True, copy=False, default=lambda x: _('New'),string='หมายเลขการผลิต')
+    operating_unit_id = fields.Many2one('operating.unit','Branch')
     branch_id = fields.Many2one('project.project', string="Order Branch")
     date_order = fields.Date(string="Order Date")
     state = fields.Selection([('draft', 'Draft'), ('validate', 'Validate'), ('cancel', 'Cancel'),('done', 'Done')], string='state',
@@ -84,6 +106,21 @@ class WizardCouponProduction(models.Model):
     coupon_line = fields.One2many('wizard.coupon.line', 'production_id', string='Coupon Line')
     coupon_ids = fields.One2many('wizard.coupon','production_id', string='Coupon')
     #
+
+
+    def get_project_id_from_ou(self):
+        if self.operating_unit_id:
+            project_id = self.env['project.project'].sudo().search([('operating_branch_id','=',self.operating_unit_id.id)],limit=1)
+            if project_id:
+                return project_id.id
+            else:
+                raise UserError(_('ตรวจสอบว่าใส่ชื่อสาขาถูกต้องหรือไม่'))
+            # print (self.operating_unit_id)
+            # print (project_id)
+            # if project_id:
+            #     print ('CHECK')
+            #     self.sudo().write({'project_id': project_id.sudo()})
+            #     print ('CHEK-2')
 
     @api.model
     def create(self, vals):
@@ -100,11 +137,12 @@ class WizardCouponProduction(models.Model):
         for package_line_id in self.package_line:
             if package_line_id.package_id.is_pack:
                 for line in package_line_id.package_id.product_pack_id:
+                    start_date = strToDate(self.date_order) if self.date_order else date.today()
                     coupon_val = {
                         'coupon_id': line.product_id.id,
                         'package_id': package_line_id.package_id.id,
                         'quantity': line.product_quantity * package_line_id.quantity,
-                        'expire_date': date.today() + timedelta(days=package_line_id.day_to_expire),
+                        'expire_date': start_date + timedelta(days=package_line_id.day_to_expire),
                         'package_line_id':package_line_id.id,
                         'production_id': self.id,
                     }
@@ -124,7 +162,7 @@ class WizardCouponProduction(models.Model):
                     count_package += 1
                     val_pack_id = {
                         'name': str(order.name) + str(count_package),
-                        'branch_id': order.branch_id.id,
+                        'branch_id': order.get_project_id_from_ou(),
                         'production_id': order.id,
                         'package_id': package_line_id.package_id.id
                     }
@@ -136,21 +174,51 @@ class WizardCouponProduction(models.Model):
                                 'package_id': package_line_id.package_id.id,
                                 'partner_id': self.partner_id.id,
                                 'product_id': product_pack_line.product_id.id,
-                                'order_branch_id': self.branch_id.id,
+                                'order_branch_id': order.get_project_id_from_ou(),
                                 'production_id': self.id,
                                 'type': 'paper',
                                 'coupon_running': pack_id.name,
+                                # 'expiry_date': date.today() + timedelta(days=package_line_id.day_to_expire),
                             })
                             barcode = generate_ean(str(coupon_id.id))
                             coupon_id.update({'barcode': barcode})
+                            start_date = strToDate(self.date_order) if self.date_order else date.today()
+                            coupon_id.update({'expiry_date': start_date + timedelta(days=package_line_id.day_to_expire)})
 
         self.write({'state': 'done'})
 
     @api.multi
     def button_cancel(self):
-        if self.coupon_line:
-            self.coupon_line.unlink()
-        self.write({'state':'cancel'})
+        self.ensure_one()
+        date_order = self.date_order
+        date_order_month = strToDate(date_order) + relativedelta(days=5)
+        # print ("DATE--")
+        # print (date_order)
+        # print (date_order_month)
+        coupon_ids = self.env['wizard.coupon'].search([('redeem_date','>=',str(date_order)),('redeem_date','<=',str(date_order_month))])
+        for coupon in coupon_ids:
+            # print ('ALL COUPON')
+            # print (coupon.name)
+            move_ids = self.env['stock.move'].sudo().search([('name','=',coupon.name)],limit=5)
+            for move_id in move_ids:
+                if move_id and strToDate(move_id.date) != strToDate(coupon.redeem_date):
+                    # print ('Update MOVE DATE')
+                    # print (coupon.name)
+                    # print (move_id.date)
+                    # print (coupon.redeem_date)
+                    move_id.sudo().update({'date':coupon.redeem_date})
+
+            task_id = self.env['project.task'].sudo().search([('coupon_id','=',coupon.id),('date_deadline','!=',coupon.redeem_date)],limit=1)
+            if task_id:
+                task_id.sudo().update({'date_deadline': coupon.redeem_date})
+
+        # for coupon_id in self.coupon_ids:
+        #     coupon_line_id = self.coupon_line.filtered(lambda x: x.package_id == coupon_id.package_id and x.coupon_id == coupon_id.product_id)
+        #     coupon_id.update({'expiry_date': coupon_line_id[0].expire_date})
+
+        # if self.coupon_line:
+        #     self.coupon_line.unlink()
+        # self.write({'state':'cancel'})
 
 
 class WizardCouponPackageLine(models.Model):
@@ -180,6 +248,15 @@ class WizardCouponPack(models.Model):
     package_id = fields.Many2one('product.product', string="Package")
     branch_id = fields.Many2one('project.project', string="Branch")
     production_id = fields.Many2one('wizard.coupon.production', string='Production')
-    state = fields.Selection([('new','New'),('sold','Sold')],default='new')
+    expiry_date = fields.Date(string='Expiry Date')
+    state = fields.Selection([('new','New'),('sold','Sold'),('cancel','Cancel')],default='new')
+
+    def update_expiry_date(self):
+        package_ids = self.env['wizard.coupon.pack'].search([('expiry_date','=',False)],limit=1000)
+        for package in package_ids:
+            coupon_line_ids = package.production_id.mapped('coupon_line').filtered(lambda x: x.package_id == package.package_id)
+            if coupon_line_ids:
+                package.expiry_date = coupon_line_ids[0].expire_date
+
 
 

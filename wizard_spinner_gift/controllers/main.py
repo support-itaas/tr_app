@@ -27,7 +27,7 @@ class AuthSignupHome(Home):
 
     def degree_spinner_random(self):
         list_of_lists = []
-        gifts = request.env['spinner.wheel.gift'].sudo().search([("remaining_count", ">=", 0)])
+        gifts = request.env['spinner.wheel.gift'].sudo().search([("remaining_count", ">=", 0),("is_limited", "!=", True),("active", "=", True)])
         for gift in gifts:
             if gift.spinner_degree:
                 new_array = gift.spinner_degree.replace(" ", "")
@@ -92,7 +92,9 @@ class AuthSignupHome(Home):
 
     @http.route('/spinner_gifts', type='http', auth='public', website=True, sitemap=False)
     def spinner_gifts(self, **post):
-        gifts = request.env['spinner.wheel.gift'].sudo().search([])
+        partner = post.get('partner')
+        partner_id = request.env['res.partner'].sudo().browse(int(partner))
+        gifts = request.env['spinner.wheel.gift'].sudo().search([('active','=',True)])
         random_degree_and_gift = ''
         random = self.degree_spinner_random()
         for gift in gifts:
@@ -104,6 +106,7 @@ class AuthSignupHome(Home):
                     if exists:
                         random_degree_and_gift = {
                             "gift_name": gift.name,
+                            "customer": partner_id.name,
                             "random": random
                         }
         return json.dumps(random_degree_and_gift)
@@ -142,37 +145,68 @@ class AuthSignupHome(Home):
                     'note': '',
                     'purchase_date': datetime.date.today(),
                 })
-            else:
                 spinner_notification = request.env['wizard.notification'].sudo().create({
                     'name': 'Congratulations',
-                    'message': 'Congratulations Mr/Ms. ' + partner_id.name + '. You won a ' + gift.name + '. Please contact to our office.',
+                    'message': 'ยินดีด้วยคุณได้รับคูปอง ' + gift.name + '. กรุณาตรวจสอบคูปองใน My Coupon',
                     'read_message': False,
                     'partner_id': partner_id.id,
                     'message_at': fields.Datetime.now(),
                 })
-                if partner_id.device_token:
-                    serverToken = request.env['car.settings'].sudo().search([]).server_token
-                    deviceToken = request.partner_id.device_token
-                    notifications = request.env['wizard.notification'].search(
-                        [('partner_id', '=', partner_id.id),
-                         ('read_message', '=', False)])
-                    if serverToken:
-                        headers = {
-                            'Content-Type': 'application/json',
-                            'Authorization': 'key=' + serverToken,
-                        }
-                        body = {
-                            'notification': {'title': 'Congratulations',
-                                             'body': 'Congratulations Mr/Ms ' + partner_id.name + '. You won a ' + gift.name + '. Please contact to our office.',
-                                             'badge': len(notifications),
-                                             "click_action": "FCM_PLUGIN_ACTIVITY"
-                                             },
-                            'to': deviceToken,
-                            'priority': 'high',
-                            'data': {"notification_count": len(notifications),
-                                     'notification_id': spinner_notification.id}, }
-                        response = requests.post("https://fcm.googleapis.com/fcm/send", headers=headers,
-                                                 data=json.dumps(body))
+
+            elif gift.is_voucher:
+                voucher_id = request.env['pos.voucher'].sudo().search([('value','=',gift.voucher_amount),('customer_id','=',False),('state','=','active')],limit=1)
+                if voucher_id:
+                    voucher_id.update({'customer_id': partner_id.id})
+
+                if voucher_id:
+                    message = 'ยินดีด้วยคุณได้รับ Voucher ' + gift.name + ' Code:' + voucher_id.code + ' กรุณานำโค้ดนี้ไปโชว์ที่สาขาเพื่อเป็นส่วนลดในการสั่งซื้อครั้งต่อไป'
+                else:
+                    message = 'ยินดีด้วยคุณได้รับ Voucher ' + gift.name + ' กรุณานำโค้ดนี้ไปโชว์ที่สาขาเพื่อเป็นส่วนลดในการสั่งซื้อครั้งต่อไป'
+
+                print ('VOUCHER')
+                spinner_notification = request.env['wizard.notification'].sudo().create({
+                    'name': 'Congratulations',
+                    'message': message,
+                    'read_message': False,
+                    'partner_id': partner_id.id,
+                    'message_at': fields.Datetime.now(),
+                })
+
+
+            else:
+
+                if not gift.is_no_gift:
+                    spinner_notification = request.env['wizard.notification'].sudo().create({
+                        'name': 'Congratulations',
+                        'message': 'ยินดีด้วยคุณได้รับ ' + gift.name + '. กรุณาอัพเดทที่อยู่ที่ App ทางบริษัท จะจัดส่งของไปให้ท่านตามที่อยู่ในระบบ',
+                        'read_message': False,
+                        'partner_id': partner_id.id,
+                        'message_at': fields.Datetime.now(),
+                    })
+
+                # if partner_id.device_token:
+                #     serverToken = request.env['car.settings'].sudo().search([]).server_token
+                #     deviceToken = request.partner_id.device_token
+                #     notifications = request.env['wizard.notification'].search(
+                #         [('partner_id', '=', partner_id.id),
+                #          ('read_message', '=', False)])
+                #     if serverToken:
+                #         headers = {
+                #             'Content-Type': 'application/json',
+                #             'Authorization': 'key=' + serverToken,
+                #         }
+                #         body = {
+                #             'notification': {'title': 'Congratulations',
+                #                              'body': 'ยินดีด้วยคุณได้รับ ' + gift.name + '. กรุณาอัพเดทที่อยู่ที่ App ทางบริษัท จะจัดส่งของไปให้ท่านตามที่อยู่ในระบบ',
+                #                              'badge': len(notifications),
+                #                              "click_action": "FCM_PLUGIN_ACTIVITY"
+                #                              },
+                #             'to': deviceToken,
+                #             'priority': 'high',
+                #             'data': {"notification_count": len(notifications),
+                #                      'notification_id': spinner_notification.id}, }
+                #         response = requests.post("https://fcm.googleapis.com/fcm/send", headers=headers,
+                #                                  data=json.dumps(body))
 
 
 

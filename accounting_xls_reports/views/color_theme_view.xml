@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+          
+
+       <record id="color_xls_theme_tree_view" model="ir.ui.view">
+            <field name="name">color_xls_theme.tree</field>
+            <field name="model">color.xls.theme</field>
+            <field name="arch" type="xml">
+                <tree string="XLS Report Color Themes">
+                    <field name="name"/>               
+                </tree>
+            </field>
+        </record>
+
+       <record id="color_xls_theme_form_view" model="ir.ui.view">
+            <field name="name">color.xls.theme.form</field>
+            <field name="model">color.xls.theme</field>
+            <field eval="25" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="XLS report Color Themes">
+       
+                <sheet>
+                  <group>
+                      <field name="name" required="1" />
+                      <field name="bg_color"/>
+                      <field name="font_size" />
+                      <field name="font_bold" />
+                      <field name="font_color" />
+                      <field name="font_italic" />
+                      <field name="header_alignment" />
+                   </group>
+                   <group>
+                     <group string="Column Headers">
+                        <field name="column_font_size" />
+                        <field name="column_font_bold" />
+                        <field name="column_font_italic" />
+                        <field name="column_font_color"/>
+                        <field name="column_bg_color"/>
+                        <field name="column_header_alignment" />
+                     </group>
+                     <group string="Body Settings">
+                        <field name="body_font_size" />
+                      <field name="body_font_color" />
+                      <field name="body_bg_color"/>
+                      <field name="body_font_bold" />
+                      <field name="body_font_italic" />
+                      <field name="body_header_alignment" />
+                     </group>
+                  </group>
+                </sheet>
+             </form>
+            </field>
+       </record>
+
+      <record id="color_xls_theme_action" model="ir.actions.act_window">
+                <field name="name">XLS Theme</field>
+                <field name="res_model">color.xls.theme</field>
+                <field name="view_mode">tree,form</field>
+                <field name="view_type">form</field>
+
+        </record>
+
+
+       <menuitem name="XLS Report Theme" id="color_xls_theme_main_menu" parent="base.menu_administration"/>
+
+         <menuitem name="XLS Report Theme" id="color_xls_theme_menu" parent="color_xls_theme_main_menu" action="color_xls_theme_action"/>
+
+                
+
+</data>
+</odoo>

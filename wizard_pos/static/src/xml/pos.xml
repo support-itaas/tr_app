@@ -143,72 +143,72 @@
 
 
                     </div>
-                    <t t-if='partner.is_a_member'>
-                        <h1 class='client-details-left' style="font-size:25px; margin-left:100px;">Membership</h1>
-                        <div class='client-details-left'>
-                            <div class='client-detail'>
-                                <span class='label'>ID</span>
-                                <input class='detail member' name='member'
-                                       t-att-value='partner.member || ""'></input>
-                            </div>
-                            <div class='client-detail'>
-                                <div class='label'>Number</div>
-                                <input class='detail member_number' name='member_number'
-                                       t-att-value='partner.member_number || ""'></input>
-                            </div>
-                            <h1 class='client-details-left oe_inline client-label-partner-name' style="font-size:20px; margin-left:100px;">Plate Number
-                                <div class='client-detail' style="font-size:13px !important;">
-                                    <table class="client-detail-partner-name edit">
-                                        <input type="hidden" class='detail client-car-detail-input' name='car_ids'/>
-                                        <t t-if="partner.car_ids.length > 0">
-                                            <t t-foreach='partner.car_ids' t-as='car_id'>
-                                                <tr class="client-line-detail" t-att-data-id="car_id">
-                                                    <td>
-                                                        <input class="client-car-detail" t-att-value="widget.pos.get_car_detail_by_id[car_id].name"/>
-                                                    </td>
-                                                    <td class="delete"><i class="fa fa-trash"></i></td>
-                                                </tr>
-                                            </t>
-                                        </t>
-                                        <t t-else="">
-                                            <tr class="client-line-detail">
-                                                <td>
-                                                    <input class="client-car-detail"/>
-                                                </td>
-                                                <td class="delete"><i class="fa fa-trash"></i></td>
-                                            </tr>
-                                        </t>
-                                        <tr class="client-line">
-                                            <td><span class="add_plate_number"><i class="fa fa-plus"></i> Add Line</span></td>
-                                            <td></td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </h1>
+<!--                    <t t-if='partner.is_a_member'>-->
+<!--                        <h1 class='client-details-left' style="font-size:25px; margin-left:100px;">Membership</h1>-->
+<!--                        <div class='client-details-left'>-->
+<!--                            <div class='client-detail'>-->
+<!--                                <span class='label'>ID</span>-->
+<!--                                <input class='detail member' name='member'-->
+<!--                                       t-att-value='partner.member || ""'></input>-->
+<!--                            </div>-->
+<!--                            <div class='client-detail'>-->
+<!--                                <div class='label'>Number</div>-->
+<!--                                <input class='detail member_number' name='member_number'-->
+<!--                                       t-att-value='partner.member_number || ""'></input>-->
+<!--                            </div>-->
+<!--                            <h1 class='client-details-left oe_inline client-label-partner-name' style="font-size:20px; margin-left:100px;">Plate Number-->
+<!--                                <div class='client-detail' style="font-size:13px !important;">-->
+<!--                                    <table class="client-detail-partner-name edit">-->
+<!--                                        <input type="hidden" class='detail client-car-detail-input' name='car_ids'/>-->
+<!--                                        <t t-if="partner.car_ids.length > 0">-->
+<!--                                            <t t-foreach='partner.car_ids' t-as='car_id'>-->
+<!--                                                <tr class="client-line-detail" t-att-data-id="car_id">-->
+<!--                                                    <td>-->
+<!--                                                        <input class="client-car-detail" t-att-value="widget.pos.get_car_detail_by_id[car_id].name"/>-->
+<!--                                                    </td>-->
+<!--                                                    <td class="delete"><i class="fa fa-trash"></i></td>-->
+<!--                                                </tr>-->
+<!--                                            </t>-->
+<!--                                        </t>-->
+<!--                                        <t t-else="">-->
+<!--                                            <tr class="client-line-detail">-->
+<!--                                                <td>-->
+<!--                                                    <input class="client-car-detail"/>-->
+<!--                                                </td>-->
+<!--                                                <td class="delete"><i class="fa fa-trash"></i></td>-->
+<!--                                            </tr>-->
+<!--                                        </t>-->
+<!--                                        <tr class="client-line">-->
+<!--                                            <td><span class="add_plate_number"><i class="fa fa-plus"></i> Add Line</span></td>-->
+<!--                                            <td></td>-->
+<!--                                        </tr>-->
+<!--                                    </table>-->
+<!--                                </div>-->
+<!--                            </h1>-->
 
 
-                        </div>
-                        <div class='client-details-right'>
-                            <div class='client-detail'>
-                                <div class='label'>Date</div>
-                                <input class='detail member_date' name='member_date' type="date"
-                                       t-att-value='partner.member_date || ""'
-                                ></input>
-                            </div>
-                            <div class='client-detail'>
-                                <span class='label' style="font-size:13px;">Base Branch</span>
-                                <select class='detail client-base_branch_id needsclick' name='base_branch_id'>
-                                    <option value=''>None</option>
-                                    <t t-foreach='widget.pos.branches' t-as='branch'>
-                                        <option t-att-value='branch.id'
-                                                t-att-selected="partner.base_branch_id ? ((branch.id === partner.base_branch_id[0]) ? true : undefined) : undefined">
-                                            <t t-esc='branch.name'/>
-                                        </option>
-                                    </t>
-                                </select>
-                            </div>
-                        </div>
-                    </t>
+<!--                        </div>-->
+<!--                        <div class='client-details-right'>-->
+<!--                            <div class='client-detail'>-->
+<!--                                <div class='label'>Date</div>-->
+<!--                                <input class='detail member_date' name='member_date' type="date"-->
+<!--                                       t-att-value='partner.member_date || ""'-->
+<!--                                ></input>-->
+<!--                            </div>-->
+<!--                            <div class='client-detail'>-->
+<!--                                <span class='label' style="font-size:13px;">Base Branch</span>-->
+<!--                                <select class='detail client-base_branch_id needsclick' name='base_branch_id'>-->
+<!--                                    <option value=''>None</option>-->
+<!--                                    <t t-foreach='widget.pos.branches' t-as='branch'>-->
+<!--                                        <option t-att-value='branch.id'-->
+<!--                                                t-att-selected="partner.base_branch_id ? ((branch.id === partner.base_branch_id[0]) ? true : undefined) : undefined">-->
+<!--                                            <t t-esc='branch.name'/>-->
+<!--                                        </option>-->
+<!--                                    </t>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </t>-->
 
                 </div>
             </section>
@@ -358,105 +358,105 @@
                             </t>
                         </div>
                     </div>
-                    <t t-if='partner.is_a_member'>
-                        <h1 class='client-details-left oe_inline' style="font-size:25px; margin-left:100px;">Membership
-                            <t t-set="colour" t-value='partner.membership_type_color'/>
+<!--                    <t t-if='partner.is_a_member'>-->
+<!--                        <h1 class='client-details-left oe_inline' style="font-size:25px; margin-left:100px;">Membership-->
+<!--                            <t t-set="colour" t-value='partner.membership_type_color'/>-->
 
-                            <span t-att-style="'background-color:' +  colour +';'+ 'border-radius:10%;'+'margin-left:20px !important;'+'padding-left:8px !important;'">
-                                <t t-if="colour == '#000000'">
-                                    <span style="font-size:20px !important; color: white !important;">
-                                        <t t-esc='partner.membership_type_id[1]' class="oe_inline"/>
-                                    </span>
-                                </t>
-                                <t t-else="">
-                                    <span style="font-size:20px !important; color: black !important;">
-                                        <t t-esc='partner.membership_type_id[1]' class="oe_inline"/>
-                                    </span>
-                                </t>
-                            </span>
-                            <span style="margin-left:20px !important; font-size:21px;">
-                                <span style="margin-left:5px;  font-weight:bold; color:#7A7A7A;">
-                                    <i class="fa fa-ticket"></i>
-                                </span>
-                                <t t-esc='partner.available_coupon_count' class="oe_inline" style="margin-left:5px;"/>
-                            </span>
-                            <span style="margin-left:20px !important; font-size:21px;">
-                                <t t-esc='partner.stars' class="oe_inline"/>
-                                <span style="margin-left:5px;  font-weight:bold; color:#ffd700;">
-                                    <i class="fa fa-star"></i>
-                                </span>
-                            </span>
-                            <span style="margin-left:20px !important; font-size:21px;">
-                                <t t-esc='partner.points' class="oe_inline"/>
-                                <span style="margin-left:5px; font-weight:bold; color:#7A7A7A;">
-                                    <i class="fa fa-database"></i>
-                                </span>
-                            </span>
+<!--                            <span t-att-style="'background-color:' +  colour +';'+ 'border-radius:10%;'+'margin-left:20px !important;'+'padding-left:8px !important;'">-->
+<!--                                <t t-if="colour == '#000000'">-->
+<!--                                    <span style="font-size:20px !important; color: white !important;">-->
+<!--                                        <t t-esc='partner.membership_type_id[1]' class="oe_inline"/>-->
+<!--                                    </span>-->
+<!--                                </t>-->
+<!--                                <t t-else="">-->
+<!--                                    <span style="font-size:20px !important; color: black !important;">-->
+<!--                                        <t t-esc='partner.membership_type_id[1]' class="oe_inline"/>-->
+<!--                                    </span>-->
+<!--                                </t>-->
+<!--                            </span>-->
+<!--                            <span style="margin-left:20px !important; font-size:21px;">-->
+<!--                                <span style="margin-left:5px;  font-weight:bold; color:#7A7A7A;">-->
+<!--                                    <i class="fa fa-ticket"></i>-->
+<!--                                </span>-->
+<!--                                <t t-esc='partner.available_coupon_count' class="oe_inline" style="margin-left:5px;"/>-->
+<!--                            </span>-->
+<!--                            <span style="margin-left:20px !important; font-size:21px;">-->
+<!--                                <t t-esc='partner.stars' class="oe_inline"/>-->
+<!--                                <span style="margin-left:5px;  font-weight:bold; color:#ffd700;">-->
+<!--                                    <i class="fa fa-star"></i>-->
+<!--                                </span>-->
+<!--                            </span>-->
+<!--                            <span style="margin-left:20px !important; font-size:21px;">-->
+<!--                                <t t-esc='partner.points' class="oe_inline"/>-->
+<!--                                <span style="margin-left:5px; font-weight:bold; color:#7A7A7A;">-->
+<!--                                    <i class="fa fa-database"></i>-->
+<!--                                </span>-->
+<!--                            </span>-->
 
 
-                        </h1>
+<!--                        </h1>-->
 
-                        <div class='client-details-left'>
-                            <div class='client-detail'>
-                                <span class='label'>ID</span>
-                                <t t-if='partner.member'>
-                                    <span class='detail client-member'>
-                                        <t t-esc='partner.member'/>
-                                    </span>
-                                </t>
-                                <t t-if='!partner.member'>
-                                    <span class='detail client-member empty'>N/A</span>
-                                </t>
-                            </div>
+<!--                        <div class='client-details-left'>-->
+<!--                            <div class='client-detail'>-->
+<!--                                <span class='label'>ID</span>-->
+<!--                                <t t-if='partner.member'>-->
+<!--                                    <span class='detail client-member'>-->
+<!--                                        <t t-esc='partner.member'/>-->
+<!--                                    </span>-->
+<!--                                </t>-->
+<!--                                <t t-if='!partner.member'>-->
+<!--                                    <span class='detail client-member empty'>N/A</span>-->
+<!--                                </t>-->
+<!--                            </div>-->
 
-                            <div class='client-detail'>
-                                <span class='label'>Number</span>
-                                <t t-if='partner.member_number'>
-                                    <span class='detail client-member_number'>
-                                        <t t-esc='partner.member_number'/>
-                                    </span>
-                                </t>
-                                <t t-if='!partner.member_number'>
-                                    <span class='detail client-member_number empty'>N/A</span>
-                                </t>
-                            </div>
-                            <h1 class='client-details-left oe_inline client-label-partner-name' style="font-size:20px; margin-left:100px;">Plate Number
-                                <div class='client-detail' style="font-size:13px !important; margin-left:50px !important;">
-                                    <table class="client-detail-partner-name">
-                                        <t t-foreach='partner.car_ids' t-as='car_id'>
-                                            <tr class="client-line">
-                                                <td><t t-esc="widget.pos.get_car_detail_by_id[car_id].name"/></td>
-                                            </tr>
-                                        </t>
-                                    </table>
-                                </div>
-                            </h1>
-                        </div>
-                        <div class='client-details-right'>
-                            <div class='client-detail'>
-                                <span class='label'>Date</span>
-                                <t t-if='partner.member_date'>
-                                    <span class='detail client-member_date'>
-                                        <t t-esc='partner.member_date'/>
-                                    </span>
-                                </t>
-                                <t t-if='!partner.member_date'>
-                                    <span class='detail member_date empty'>N/A</span>
-                                </t>
-                            </div>
-                            <div class='client-detail'>
-                                <span class='label' style="font-size:13px;">Base Branch</span>
-                                <t t-if='partner.base_branch_id'>
-                                    <span class='detail client-base_branch_id'>
-                                        <t t-esc='partner.base_branch_id[1]'/>
-                                    </span>
-                                </t>
-                                <t t-if='!partner.base_branch_id'>
-                                    <span class='detail base_branch_id empty'>N/A</span>
-                                </t>
-                            </div>
-                        </div>
-                    </t>
+<!--                            <div class='client-detail'>-->
+<!--                                <span class='label'>Number</span>-->
+<!--                                <t t-if='partner.member_number'>-->
+<!--                                    <span class='detail client-member_number'>-->
+<!--                                        <t t-esc='partner.member_number'/>-->
+<!--                                    </span>-->
+<!--                                </t>-->
+<!--                                <t t-if='!partner.member_number'>-->
+<!--                                    <span class='detail client-member_number empty'>N/A</span>-->
+<!--                                </t>-->
+<!--                            </div>-->
+<!--                            <h1 class='client-details-left oe_inline client-label-partner-name' style="font-size:20px; margin-left:100px;">Plate Number-->
+<!--                                <div class='client-detail' style="font-size:13px !important; margin-left:50px !important;">-->
+<!--                                    <table class="client-detail-partner-name">-->
+<!--                                        <t t-foreach='partner.car_ids' t-as='car_id'>-->
+<!--                                            <tr class="client-line">-->
+<!--                                                <td><t t-esc="widget.pos.get_car_detail_by_id[car_id].name"/></td>-->
+<!--                                            </tr>-->
+<!--                                        </t>-->
+<!--                                    </table>-->
+<!--                                </div>-->
+<!--                            </h1>-->
+<!--                        </div>-->
+<!--                        <div class='client-details-right'>-->
+<!--                            <div class='client-detail'>-->
+<!--                                <span class='label'>Date</span>-->
+<!--                                <t t-if='partner.member_date'>-->
+<!--                                    <span class='detail client-member_date'>-->
+<!--                                        <t t-esc='partner.member_date'/>-->
+<!--                                    </span>-->
+<!--                                </t>-->
+<!--                                <t t-if='!partner.member_date'>-->
+<!--                                    <span class='detail member_date empty'>N/A</span>-->
+<!--                                </t>-->
+<!--                            </div>-->
+<!--                            <div class='client-detail'>-->
+<!--                                <span class='label' style="font-size:13px;">Base Branch</span>-->
+<!--                                <t t-if='partner.base_branch_id'>-->
+<!--                                    <span class='detail client-base_branch_id'>-->
+<!--                                        <t t-esc='partner.base_branch_id[1]'/>-->
+<!--                                    </span>-->
+<!--                                </t>-->
+<!--                                <t t-if='!partner.base_branch_id'>-->
+<!--                                    <span class='detail base_branch_id empty'>N/A</span>-->
+<!--                                </t>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </t>-->
 
                 </div>
             </section>

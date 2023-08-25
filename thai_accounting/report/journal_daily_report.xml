@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="journal_daily_report">
+             <t t-call="web.basic_layout">
+                <div class="page">
+                    <t t-set="company_id" t-value="company_id"/>
+                    <t t-set="date_form" t-value="date_form"/>
+                    <t t-set="date_to" t-value="date_to"/>
+                    <style>
+                        .title{width:100%; height:30px;}
+                        .header{width:100%; height:20px;}
+                        .content{width:100%; height:30px;}
+                        .footer{width:100%; height:200px;}
+                    </style>
+
+                    <!--title-->
+                    <div class="title" style="text-align:center">
+                        <font style="font-size: 16px;">
+                            <h><span t-esc="company_id.name" /></h>
+                        </font>
+                        <br/>
+                        <font style="font-size: 12px;">
+                            <strong>จากวันที่:</strong>
+                            <span t-esc="date_from" />
+                            <strong>ถึงวันที่</strong>
+                            <span t-esc="date_to" />
+                        </font>
+                    </div>
+                    <br/>
+                    <t t-set="total_debit" t-value="0"/>
+                    <t t-set="total_credit" t-value="0"/>
+                    <t t-foreach="docs" t-as="o">
+                        <!--header-->
+                        <div class="header">
+                            <div class="col-xs-2">
+                                <font style="font-size: 12px;">
+                                    <strong>วันที่</strong>
+                                    <span t-field="o.date" />
+
+                                </font>
+                            </div>
+                            <div class="col-xs-2">
+                                <font style="font-size: 12px;">
+                                    <strong>เลขที่</strong>
+                                    <span t-field="o.name" />
+                                </font>
+                            </div>
+                            <div class="col-xs-2">
+                                <font style="font-size: 12px;">
+                                    <strong>คู่ค้า</strong>
+                                    <span t-field="o.partner_id.name" />
+                                </font>
+                            </div>
+                            <div class="col-xs-2">
+                                <font style="font-size: 12px;">
+                                    <strong>สมุดรายวัน</strong>
+                                    <span t-field="o.journal_id.name" />
+                                </font>
+                            </div>
+                            <div class="col-xs-2">
+                                <font style="font-size: 12px;">
+                                    <strong>รายการบัญชี</strong>
+                                    <span t-field="o.narration" />
+                                </font>
+                            </div>
+                            <div class="col-xs-2">
+                                <font style="font-size: 12px;">
+                                    <strong>อ้างอิง</strong>
+                                    <span t-field="o.ref" />
+                                </font>
+                            </div>
+                        </div>
+
+                        <!--content-->
+                        <div>
+                            <div class="col-xs-12">
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-xs-1" style="text-align:center">
+                                                <font style="font-size: 12px;">วันที่</font>
+                                            </th>
+                                            <th class="col-xs-2" style="text-align:center">
+                                                <font style="font-size: 12px;">รหัสบัญชี</font>
+                                            </th>
+                                            <th class="col-xs-5" style="text-align:center">
+                                                <font style="font-size: 12px;">ชื่อบัญชี</font>
+                                            </th>
+                                            <th class="col-xs-5" style="text-align:center">
+                                                <font style="font-size: 12px;">รายการ</font>
+                                            </th>
+                                            <th class="col-xs-2" style="text-align:center">
+                                                <font style="font-size: 12px;">เดบิท</font>
+                                            </th>
+                                            <th class="col-xs-2" style="text-align:center">
+                                                <font style="font-size: 12px;">เครดิต</font>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="sale_tbody">
+                                        <t t-set="i" t-value="1" />
+                                        <t t-foreach="o.line_ids" t-as="l">
+                                            <tr>
+                                                <td style="text-align:center">
+                                                    <font style="font-size: 12px;">
+                                                        <span t-esc="i"/>
+                                                    </font>
+                                                </td>
+                                                <t t-set="i" t-value="i+1" />
+                                                <td style="text-align:center">
+                                                    <font style="font-size: 12px;">
+                                                        <span t-field="l.account_id.code"/>
+                                                    </font>
+                                                </td>
+                                                <td style="text-align:left">
+                                                    <font style="font-size: 12px;">
+                                                        <span t-field="l.account_id.name"/>
+                                                    </font>
+                                                </td>
+                                                <td style="text-align:left">
+                                                    <font style="font-size: 12px;">
+                                                        <span t-field="l.name"/>
+                                                    </font>
+                                                </td>
+                                                <td style="text-align:right">
+                                                    <t t-if="l.debit == 0.00">
+                                                        <span />
+                                                    </t>
+                                                    <t t-if="l.debit != 0.00">
+                                                        <t t-set="total_debit" t-value="total_debit + l.debit"/>
+                                                        <font style="font-size: 12px;">
+                                                            <span t-field="l.debit"/>
+                                                        </font>
+                                                    </t>
+                                                </td>
+                                                <td style="text-align:right">
+                                                    <t t-if="l.credit == 0.00">
+                                                        <span />
+                                                    </t>
+                                                    <t t-if="l.credit != 0.00">
+                                                        <t t-set="total_credit" t-value="total_credit + l.credit"/>
+                                                        <font style="font-size: 12px;">
+                                                            <span t-field="l.credit"/>
+                                                        </font>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </t>
+                    <br/>
+                    <div style="page-break-inside: avoid;text-align:center">
+                            <div class="col-xs-8" >
+                                <font style="font-size: 12px;">
+                                    <strong>รวม</strong>
+                                </font>
+                            </div>
+                            <div class="col-xs-2">
+                                <font style="font-size: 12px;">
+                                    <strong>เดบิท :</strong>
+                                    <span t-esc="total_debit"/>
+                                </font>
+                            </div>
+                            <div class="col-xs-2">
+                                <font style="font-size: 12px;">
+                                    <strong>เครดิต :</strong>
+                                    <span t-esc="total_credit"/>
+                                </font>
+                            </div>
+                        </div>
+                </div>
+              </t>
+        </template>
+
+    </data>
+</openerp>

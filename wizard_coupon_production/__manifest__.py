@@ -3,7 +3,7 @@
 
 {
     'name': 'Wizard Coupon Production',
-    'version': '11.0.1.7',
+    'version': '11.0.0.4',
     'summary': 'Wizard Coupon Production',
     'sequence': 1,
     'author': 'ITAAS',
@@ -15,8 +15,13 @@
         'security/ir.model.access.csv',
         'sequence.xml',
 
+        'data/create_production_coupon_scheduler.xml',
+        'data/validate_production_coupon_scheduler.xml',
+
         'views/wizard_coupon_view.xml',
         'views/pos_order_view.xml',
+        'views/wizard_coupon_reorder_view.xml',
+        'views/pos_session_view.xml',
 
     ],
     'installable': True,

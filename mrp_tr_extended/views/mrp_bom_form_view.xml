@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mrp_bom_form_inherit_itaas" model="ir.ui.view">
+        <field name="name">mrp.bom.form.inherit.itaas</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+        <field name="arch" type="xml">
+            <!--<xpath expr="//form/sheet/group/group/field[@name='type']" position="after">-->
+
+            <!--<group>-->
+            <!--<field name="permission_machine" invisible="1"/>-->
+            <!--<field name="permission_cleanser" invisible="1"/>-->
+            <!--</group>-->
+            <!--</xpath>-->
+
+            <!--<xpath expr="//form/sheet/group/group/field[@name='routing_id']" position="after">-->
+            <!--<field name="type_bom" widget="radio"/>-->
+            <!--</xpath>-->
+
+            <field name="routing_id" position="after">
+                <field name="type_bom" widget="radio"/>
+                <field name="permission_machine" invisible="1"/>
+                <field name="permission_cleanser" invisible="1"/>
+            </field>
+        </field>
+    </record>
+    <!--    23-08-2018 -->
+
+    <record id="view_mrp_bom_filter_itaas" model="ir.ui.view">
+        <field name="name">mrp.bom.select_itaas</field>
+        <field name="model">mrp.bom</field>
+        <field name="arch" type="xml">
+            <search string="Search Bill Of Material">
+                <field name="code" filter_domain="['|',('code','ilike',self),('product_tmpl_id','ilike',self)]"/>
+                <field name="bom_line_ids" string="Components"/>
+                <field name="product_tmpl_id" string="Product"/>
+                <field name="type_bom" string="ประเภท"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+                <separator/>
+                <filter string="Kit" name="phantom" domain="[('type', '=', 'phantom')]"/>
+                <filter string="Normal" name="normal" domain="[('type', '=', 'normal')]"/>
+                <group expand="0" string="Group By...">
+                    <filter string="Product" domain="[]" context="{'group_by':'product_tmpl_id'}"/>
+                    <filter string='Default Unit of Measure' domain="[]" context="{'group_by' : 'product_uom_id'}"/>
+                    <filter string="Routings" domain="[]" context="{'group_by':'routing_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <menuitem id="mrp.menu_mrp_bom_form_action"
+              action="mrp.mrp_bom_form_action"
+              parent="mrp.menu_mrp_bom"
+              groups="mrp.group_mrp_manager"
+              sequence="13"/>
+    <!--    <record model="ir.actions.act_window" id="mrp.mrp_bom_form_action">-->
+    <!--        <field name="groups">mrp.group_mrp_manager</field>-->
+    <!--        <field name="domain">[]</field>-->
+    <!--    </record>-->
+
+    <record id="mrp_bom_form_action_machine" model="ir.actions.act_window">
+        <field name="name">Bills of Materials Machine</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mrp.bom</field>
+        <field name="domain">[('type_bom','=','machine')]</field> <!-- force empty -->
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="search_view_id" ref="view_mrp_bom_filter_itaas"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a bill of material.
+            </p><p>
+            Bills of Materials allow you to define the list of required raw
+            materials used to make a finished product; through a manufacturing
+            order or a pack of products.
+        </p><p>
+            Odoo uses these BoMs to automatically propose manufacturing
+            orders according to procurement needs.
+        </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_mrp_bom_form_action_machine"
+              action="mrp_bom_form_action_machine"
+              parent="mrp.menu_mrp_bom"
+              groups="mrp_tr_extended.group_mrp_bom_machine"
+              sequence="15"/>
+
+    <record id="mrp_bom_form_action_cleanser" model="ir.actions.act_window">
+        <field name="name">Bills of Materials Cleanser</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mrp.bom</field>
+        <field name="domain">[('type_bom','=','cleanser')]</field> <!-- force empty -->
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="search_view_id" ref="view_mrp_bom_filter_itaas"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a bill of material.
+            </p><p>
+            Bills of Materials allow you to define the list of required raw
+            materials used to make a finished product; through a manufacturing
+            order or a pack of products.
+        </p><p>
+            Odoo uses these BoMs to automatically propose manufacturing
+            orders according to procurement needs.
+        </p>
+        </field>
+    </record>
+    <menuitem id="menu_mrp_bom_form_action_cleanser"
+              action="mrp_bom_form_action_cleanser"
+              parent="mrp.menu_mrp_bom"
+              groups="mrp_tr_extended.group_mrp_bom_cleanser"
+              sequence="16"/>
+    <!--=============================================================================================================-->
+    <!--    <record id="mrp_bom_form_action"  model="ir.actions.act_window">-->
+    <!--            <field name="name">Bills of Materials...</field>-->
+    <!--            <field name="type">ir.actions.act_window</field>-->
+    <!--            <field name="res_model">mrp.bom</field>-->
+    <!--            <field name="domain">[]</field> &lt;!&ndash; force empty &ndash;&gt;-->
+    <!--            <field name="view_type">form</field>-->
+    <!--            <field name="view_mode">tree,kanban,form</field>-->
+    <!--            <field name="search_view_id" ref="mrp.view_mrp_bom_filter"/>-->
+    <!--            <field name="help" type="html">-->
+    <!--              <p class="oe_view_nocontent_create">-->
+    <!--                Click to create a bill of material.-->
+    <!--              </p><p>-->
+    <!--                Bills of Materials allow you to define the list of required raw-->
+    <!--                materials used to make a finished product; through a manufacturing-->
+    <!--                order or a pack of products.-->
+    <!--              </p><p>-->
+    <!--                Odoo uses these BoMs to automatically propose manufacturing-->
+    <!--                orders according to procurement needs.-->
+    <!--              </p>-->
+    <!--            </field>-->
+    <!--        </record>-->
+    <!--    <record model="ir.actions.act_window" id="mrp.mrp_bom_form_action" groups="mrp_tr_extended.group_mrp_bom_machine">-->
+    <!--        <field name="domain">['|',('type','=','machine'),('type','=','False')]</field>-->
+    <!--    </record>-->
+    <!--    <record model="ir.actions.act_window" id="mrp.mrp_bom_form_action" groups="mrp_tr_extended.group_mrp_bom_cleanser">-->
+    <!--        <field name="domain">['|',('type','=','cleanser'),('type','=','False')]</field>-->
+    <!--    </record>-->
+</odoo>

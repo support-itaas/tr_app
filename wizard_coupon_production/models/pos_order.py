@@ -36,6 +36,9 @@ class pos_order_line(models.Model):
         for line in self:
             for coupon in coupon_ids:
                 coupon.update({'partner_id':line.order_id.partner_id.id})
+                coupon.update({'order_id': line.order_id.id})
+                coupon.update({'purchase_date': line.order_id.date_order})
+                coupon.sudo().update_coupons_value()
                 package_id.update({'state':'sold'})
 
 # class pos_order(models.Model):

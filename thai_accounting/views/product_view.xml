@@ -1,0 +1,52 @@
+<odoo>
+
+	<!-- inherit product.template search -->
+	<record id="view_product_template_filter_itaas_inherit" model="ir.ui.view">
+	    <field name="name">product.template.list.select.itaas</field>
+	    <field name="model">product.template</field>
+	    <field name="inherit_id" ref="product.product_template_search_view"/>
+	    <field name="arch" type="xml">
+	    	<field name="name" position="after">
+	    		<field name="barcode" string="Barcode" filter_domain="[('barcode','like',self)]"/>
+	    	</field>
+	    </field>
+	</record>
+
+	<record id="view_product_template_form_itaas_inherit" model="ir.ui.view">
+	    <field name="name">product.template.form.itaas</field>
+	    <field name="model">product.template</field>
+	    <field name="inherit_id" ref="product.product_template_only_form_view"/>
+	    <field name="arch" type="xml">
+	    	<field name="standard_price" position="attributes">
+				<attribute name="groups">thai_accounting.group_product_costing</attribute>
+	    	</field>
+			<field name="list_price" position="attributes">
+				<attribute name="groups">thai_accounting.group_product_sale_price</attribute>
+			</field>
+	    </field>
+	</record>
+
+	<record id="view_product_template_tree_itaas_inherit" model="ir.ui.view">
+	    <field name="name">product.template.tree.itaas</field>
+	    <field name="model">product.template</field>
+	    <field name="inherit_id" ref="product.product_template_tree_view"/>
+	    <field name="arch" type="xml">
+	    	<field name="standard_price" position="attributes">
+				<attribute name="groups">thai_accounting.group_product_costing</attribute>
+	    	</field>
+	    </field>
+	</record>
+
+	<record id="product_category_form_category_code_inherit" model="ir.ui.view">
+        <field name="name">product.category.form.itaas</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <field name="parent_id" position="after">
+                <field name="category_code" />
+            </field>
+        </field>
+    </record>
+
+
+</odoo>

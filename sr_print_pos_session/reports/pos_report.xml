@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="sr_pos_session_report"
+            model="pos.session"
+            string="Session Summary Report"
+            report_type="qweb-pdf"
+            name="sr_print_pos_session.pos_session_report_template"
+            file="sr_print_pos_session.pos_session_report_template"
+        />
+    </data>
+
+    <data>
+        <report
+            id="sr_pos_summery_order_report"
+            model="pos.session"
+            string="รายงานการส่งยอดขายประจำวัน"
+            report_type="qweb-pdf"
+            name="sr_print_pos_session.pos_summery_order_report_id"
+            file="sr_print_pos_session.pos_summery_order_report_id"
+        />
+    </data>
+</odoo>

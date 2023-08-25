@@ -1,0 +1,35 @@
+<odoo>
+	<!-- inherit account journal form -->
+	<record id="account_journal_form_itaas_inherit_cash_journal" model="ir.ui.view">
+		<field name="name">account.journal.form.itaas.cash</field>
+		<field name="model">account.journal</field>
+		<field name="inherit_id" ref="account.view_account_journal_form"/>
+		<field name="arch" type="xml">
+			<field name="type" position="after">
+				<field name="is_cash_management"/>
+				<field name="is_bank_post"/>
+			</field>
+
+			<field name="company_id" position="after">
+                <field name="cheque_journal_id"/>
+				<field name="voucher_sequence_id"
+                       options="{'no_create': True}"
+                       />
+
+            </field>
+
+			<field name="default_credit_account_id" position="after">
+				<!--<field name="return_cash_account_id"/>-->
+				<field name="return_cash_account_id" attrs="{'invisible': [('is_cash_management','=',False)],'required': [('is_cash_management','=',True)]}"/>
+
+			</field>
+
+<!--			########################### for post to bank voucher #############3-->
+
+
+		</field>
+	</record>
+
+
+    
+</odoo>

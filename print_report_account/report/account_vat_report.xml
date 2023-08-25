@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="account_vat_report_id">
+            <!--<t t-foreach="docs" t-as="doc">-->
+            <t t-call="report.internal_layout">
+                <t t-set="sum1" t-value="0"/>
+                <t t-set="sum_3" t-value="0"/>
+                <t t-set="sum_53" t-value="0"/>
+                <div class="page">
+                    <style>
+                        .header{width:100%; height:80px;}
+                        .content{width:100%; height:1000px;}
+                        .footer{width:100%; height:200px;}
+                        table.table-bordered1{
+                        border:1px solid black;
+                        margin-top:20px;
+                        border-collapse: collapse;
+                        width: 100%;
+                        }
+                        table.table-bordered1 &gt; thead &gt; tr &gt; th{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered1 &gt; thead &gt; tr &gt; td{
+                        border:1px solid black;
+                        border-left: 1px solid black;
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered1 &gt; tbody &gt; tr &gt; td{
+                        border:1px solid black;
+                        border-left: 1px solid black;
+                        border-collapse: collapse;
+                        height: 40px;
+                        }
+                        table.table-bordered1 &gt; tfoot &gt; tr &gt; td{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered &gt; thead &gt; tr &gt; th{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered &gt; tbody &gt; tr &gt; td{
+                        border:1px solid black;
+                        <!--border-left: 1px solid;-->
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered &gt; tfoot &gt; tr &gt; td{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                    </style>
+
+                    <div class="header">
+                        <table width="100%">
+                            <tr>
+                                <td style="text-align: center">
+                                    <font style="font-size: 14px;">
+                                        <strong>บัญชีพิเศษแสดงการหักภาษี ณ ที่จ่าย และการนำส่งภาษี</strong><br/>
+                                        <span>ตามประกาศอธิบดีกรมสรรพากร เกี่ยวกับภาษีเงินได้และภาษีการค้า(ฉบับที่ 4)</span><br/>
+                                        <span>เรื่อง กำหนดให้ผู้มีหน้าที่หักภาษีเงินได้หรือภาษีการค้า ณ ที่จ่าย มีบัญชีพิเศษ</span>
+                                    </font>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="content">
+                        <table class="table table-bordered1">
+                            <thead>
+                                <tr>
+                                    <td rowspan="3" style="text-align: center; vertical-align: middle;">
+                                        <font style="font-size: 14px;">
+                                            <span>ว.ด.ป.</span>
+                                        </font>
+                                    </td>
+                                    <td rowspan="3" style="text-align: center; vertical-align: middle;">
+                                        <font style="font-size: 14px;">
+                                            <span>ชื่อบุคคลหรือหน่วยงานที่ถูกหัก/คำอธิบาย</span>
+                                        </font>
+                                    </td>
+                                    <td rowspan="3" style="text-align: center; vertical-align: middle;">
+                                        <font style="font-size: 14px;">
+                                            <span>ประเภทเงินได้พึงประเมินที่จ่าย</span>
+                                        </font>
+                                    </td>
+                                    <td colspan="4" style="text-align: center; vertical-align: middle;">
+                                        <font style="font-size: 14px;">
+                                            <span>รวมจำนวนเงินภาษีหัก ณ ที่จ่ายประจำวัน</span>
+                                        </font>
+                                    </td>
+                                    <td colspan="4" style="text-align: center; vertical-align: middle;">
+                                        <font style="font-size: 14px;">
+                                            <span>การนำส่งภาษี</span>
+                                        </font>
+                                    </td>
+                                    <td rowspan="3" style="text-align: center; vertical-align: middle;">
+                                        <font style="font-size: 14px;">
+                                            <span>หมายเหตุหรือการบันทึกการตรวจของเจ้าพนักงานประเมิน</span>
+                                        </font>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align: center; vertical-align: middle;">
+                                        <font style="font-size: 14px;">
+                                            <span>หักจากบุคคลธรรมดา</span>
+                                        </font>
+                                    </td>
+                                    <td colspan="2" style="text-align: center; vertical-align: middle;">
+                                        <font style="font-size: 14px;">
+                                            <span>หักจากนิติบุคคล</span>
+                                        </font>
+                                    </td>
+                                    <td rowspan="2" style="text-align: center; vertical-align: middle;">
+                                        <font style="font-size: 14px;">
+                                            <span>ว.ด.ป.</span>
+                                        </font>
+                                    </td>
+                                    <td rowspan="2" style="text-align: center; vertical-align: middle;">
+                                        <font style="font-size: 14px;">
+                                            <span>แบบที่ใช้ยื่นรายการ</span>
+                                        </font>
+                                    </td>
+                                    <td rowspan="2" style="text-align: center; vertical-align: middle;">
+                                        <font style="font-size: 14px;">
+                                            <span>เลขที่ใบเสร็จรับชำระภาษี</span>
+                                        </font>
+                                    </td>
+                                    <td rowspan="2" style="text-align: center; vertical-align: middle;">
+                                        <font style="font-size: 14px;">
+                                            <span>จำนวนเงิน</span>
+                                        </font>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: center; vertical-align: middle;">
+                                        <font style="font-size: 14px;">
+                                            <span>ตามมาตรา 3</span>
+                                        </font>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;">
+                                        <font style="font-size: 14px;">
+                                            <span>อื่น ๆ</span>
+                                        </font>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;">
+                                        <font style="font-size: 14px;">
+                                            <span>ตามมาตรา 3</span>
+                                        </font>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;">
+                                        <font style="font-size: 14px;">
+                                            <span>อื่น ๆ</span>
+                                        </font>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody class="sale_tbody">
+                                <t t-foreach="docs" t-as="doc">
+                                    <tr>
+                                        <td>
+                                            <span t-field="doc.date_maturity"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="doc.partner_id.name"/>
+                                        </td>
+                                        <td>
+                                            <t t-if="doc.wht_type == '1%'">
+                                                <span>ค่าขนส่ง</span>
+                                            </t>
+                                            <t t-if="doc.wht_type == '2%'">
+                                                <span>ค่าโฆษณา</span>
+                                            </t>
+                                            <t t-if="doc.wht_type == '3%'">
+                                                <span>ค่าบริการ</span>
+                                            </t>
+                                            <t t-if="doc.wht_type == '5%'">
+                                                <span>ค่าเช่า</span>
+                                            </t>
+                                        </td>
+                                        <td class="text-right">
+                                            <t t-if="doc.wht_personal_company == 'personal'">
+                                                <t t-if="doc.credit">
+                                                    <span t-esc="'{0:,.2f}'.format(float(doc.credit))"/>
+                                                </t>
+                                                <t t-if="doc.debit">
+                                                    <span t-esc="'{0:,.2f}'.format(float(doc.dedit))"/>
+                                                </t>
+                                                <t t-set="sum_3" t-value="sum_3 + (doc.credit + doc.debit)"/>
+                                            </t>
+                                        </td>
+                                        <td></td>
+                                        <td class="text-right">
+                                            <t t-if="doc.wht_personal_company == 'company'">
+                                                <t t-if="doc.credit">
+                                                    <span t-esc="'{0:,.2f}'.format(float(doc.credit))"/>
+                                                </t>
+                                                <t t-if="doc.debit">
+                                                    <span t-esc="'{0:,.2f}'.format(float(doc.dedit))"/>
+                                                </t>
+                                                <t t-set="sum_53" t-value="sum_53 + (doc.credit + doc.debit)"/>
+                                            </t>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="text-center">
+                                            <t t-if="doc.wht_personal_company == 'personal'">
+                                                <span>ภ.ง.ด.3</span>
+                                            </t>
+                                            <t t-if="doc.wht_personal_company == 'company'">
+                                                <span>ภ.ง.ด.53</span>
+                                            </t>
+                                        </td>
+                                        <td></td>
+                                        <td class="text-right">
+                                            <t t-if="doc.credit">
+                                                <span t-esc="'{0:,.2f}'.format(float(doc.credit))"/>
+                                            </t>
+                                            <t t-if="doc.debit">
+                                                <span t-esc="'{0:,.2f}'.format(float(doc.dedit))"/>
+                                            </t>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <t t-set="sum1" t-value="sum1 + (doc.credit + doc.debit)"/>
+                                </t>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td style="text-align: center; vertical-align: middle;">
+                                        <font style="font-size: 14px;">
+                                            <span>รวมเป็นเงินทั้งสิ้นในเดือนนี้</span>
+                                        </font>
+                                    </td>
+                                    <td></td>
+                                    <td class="text-right">
+                                        <span t-esc="'{0:,.2f}'.format(float(sum_3))"/>
+                                    </td>
+                                    <td></td>
+                                    <td class="text-right">
+                                        <span t-esc="'{0:,.2f}'.format(float(sum_53))"/>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-right">
+                                        <span t-esc="'{0:,.2f}'.format(float(sum1))"/>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </t>
+            <!--</t>-->
+        </template>
+    </data>
+</openerp>

@@ -180,13 +180,49 @@
                                     <field name="expiry_date"/>
                                     <field name="order_branch_id"/>
                                     <field name="branch_id"/>
-                                    <field name="source_branch_amount" sum="Amount"/>
-                                    <field name="destination_branch_amount" sum="Amount"/>
+                                    <!--                                    <field name="source_branch_amount" sum="Amount"/>-->
+                                    <!--                                    <field name="destination_branch_amount" sum="Amount"/>-->
+                                    <field name="branch_amount" string="Destination Branch Amount" sum="Amount"/>
+<!--                                    <field name="branch_amount2" string="Destination Branch Amount" sum="Amount" />-->
                                     <field name="state"/>
                                 </tree>
                             </field>
                         </group>
+                        <group class="oe_subtotal_footer oe_right">
+                            <field name="branch_amount_total"/>
+<!--                            <field name="branch_amount_total2"/>-->
+<!--                            <field name="sum_branch_amount_total"/>-->
+                        </group>
                     </page>
+<!--                    <page string="Daily Coupon Record">-->
+<!--                        <group>-->
+<!--                            <field name="claim_coupon2_ids" colspan="4" nolabel="1" >-->
+<!--                                <tree>-->
+<!--                                    <field name="redeem_date" string="Redeem Date"/>-->
+<!--                                    <field name="name" string="Coupon"/>-->
+<!--                                    <field name="coupon_code" string="Code" invisible="1"/>-->
+<!--                                    <field name="partner_id"/>-->
+<!--                                    <field name="product_id"/>-->
+<!--                                    <field name="package_id"/>-->
+<!--                                    <field name="purchase_date"/>-->
+<!--                                    <field name="expiry_date"/>-->
+<!--                                    <field name="order_branch_id"/>-->
+<!--                                    <field name="branch_id"/>-->
+<!--                                    &lt;!&ndash;                                    <field name="source_branch_amount" sum="Amount"/>&ndash;&gt;-->
+<!--                                    &lt;!&ndash;                                    <field name="destination_branch_amount" sum="Amount"/>&ndash;&gt;-->
+<!--                                    <field name="branch_amount2" string="Destination Branch Amount" sum="Amount"/>-->
+<!--                                    <field name="branch_amount" string="Destination Branch Amount" sum="Amount"/>-->
+<!--                                    <field name="state"/>-->
+<!--                                </tree>-->
+<!--                            </field>-->
+<!--                        </group>-->
+<!--                        <group class="oe_subtotal_footer oe_right">-->
+<!--                            <field name="branch_amount_total2"/>-->
+<!--                            <field name="branch_amount_total"/>-->
+<!--                            <field name="sum_branch_amount_total2"/>-->
+<!--                        </group>-->
+<!--                    </page>-->
+
                     <page string="Summary by Payment Methods"
                           attrs="{'invisible' : [('state', '=', 'opening_control')]}">
                         <field name="statement_ids" colspan="4"
@@ -194,10 +230,10 @@
                             <tree string="Statements">
                                 <field name="name"/>
                                 <field name="journal_id"/>
-                                <field name="balance_start"/>
-                                <field name="total_entry_encoding"/>
-                                <field name="balance_end_real"/>
-                                <field name="difference"/>
+                                <field name="balance_start" sum="Amount"/>
+                                <field name="total_entry_encoding" sum="Amount"/>
+                                <field name="balance_end_real" sum="Amount"/>
+                                <field name="difference" sum="Amount"/>
                                 <field name="currency_id" groups="base.group_multi_currency"/>
                                 <field name="state"/>
                             </tree>

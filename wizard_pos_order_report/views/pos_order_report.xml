@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pos_order_form_inherit_more_daily_report" model="ir.ui.view">
+        <field name="name">pos.session.form.inherit.add.pos.order</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="wizard_pos.pos_order_form_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/notebook" position="inside">
+                <page name="daily_order" string="Daily Order">
+                    <field name="order_ids" nolabel="1"/>
+                    <seperator/>
+                    <field name="order_line_ids" nolabel="1"/>
+                </page>
+                <page name="daily_task" string="Daily Task">
+                    <field name="task_ids" nolabel="1" readonly="1">
+                        <tree>
+                            <field name="id"/>
+                            <field name="date_start"/>
+                            <field name="name"/>
+                            <field name="plate_number_id"/>
+                            <field name="project_id"/>
+                            <field name="user_id"/>
+                            <field name="count_type_paper" sum="Total"/>
+                            <field name="count_type_e_coupon" sum="Total"/>
+                            <field name="planned_hours"/>
+                            <field name="remaining_hours"/>
+                            <field name="stage_id"/>
+                        </tree>
+                    </field>
+                </page>
+                <page name="stock" string="Stock">
+                    <field name="stock_bom_ids" nolabel="1" readonly="1">
+                        <tree>
+                            <field name="product_id"/>
+                            <field name="product_qty"/>
+                            <field name="product_uom_id"/>
+                        </tree>
+                    </field>
+                </page>
+                <button name="check_claim_coupon" position="after">
+                    <button name="update_task_date_deadline" type="object" string="Update Deadline" groups="base.group_no_one"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+
+
+
+
+
+
+
+</odoo>

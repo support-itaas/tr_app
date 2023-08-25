@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_bank_form_inherit" model="ir.ui.view">
+            <field name="name">res.bank.form.inherit</field>
+            <field name="model">res.bank</field>
+            <field name="inherit_id" ref="base.view_res_bank_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//form" position="inside">
+                    <group>
+                        <group string="Layout">
+                            <h4>Image1 A/C Payeeonly </h4>
+                            <field name="layout_image1_top"/>
+                            <field name="layout_image1_left"/>
+                            <field name="layout_image1_height"/>
+                            <field name="layout_image1_width"/>
+                            <field name="layout_image1_show"/>
+                            <h4>Image2 //</h4>
+                            <field name="layout_image2_top"/>
+                            <field name="layout_image2_right"/>
+                            <field name="layout_image2_height"/>
+                            <field name="layout_image2_width"/>
+                            <field name="layout_image2_show"/>
+                            <h4>Name of cheque</h4>
+                            <field name="layout_name_top"/>
+                            <field name="layout_name_left"/>
+                            <field name="layout_name_show"/>
+                            <h4>Partner name</h4>
+                            <field name="layout_partner_top"/>
+                            <field name="layout_partner_left"/>
+                            <field name="layout_partner_show"/>
+                        </group>
+                        <group>
+                            <br/><br/><br/><br/>
+                            <h4>Date of cheque</h4>
+                            <field name="layout_date_top"/>
+                            <field name="layout_date_left"/>
+                            <field name="layout_date_show"/>
+                            <h4>Amount</h4>
+                            <field name="layout_amount_top"/>
+                            <field name="layout_amount_left"/>
+                            <field name="layout_name_show"/>
+                            <h4>Bath text</h4>
+                            <field name="layout_baht_top"/>
+                            <field name="layout_baht_left"/>
+                            <field name="layout_baht_show"/>
+                        </group>
+                    </group>
+
+
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

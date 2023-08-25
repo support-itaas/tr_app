@@ -2,9 +2,12 @@ odoo.define("wizard_pos.models", function (require) {
 "use strict";
 
 var models = require('point_of_sale.models');
+//old field - original change on 30/06/2021
+//models.load_fields('res.partner', ['last_name','gender','birth_date','line_id', 'mobile', 'member', 'member_number', 'member_date', 'base_branch_id', 'membership_type_id',
+// 'points', 'membership_type_color', 'is_a_member', 'available_coupon_count', 'stars','car_ids']);
 
-models.load_fields('res.partner', ['last_name','gender','birth_date','line_id', 'mobile', 'member', 'member_number', 'member_date', 'base_branch_id', 'membership_type_id',
- 'points', 'membership_type_color', 'is_a_member', 'available_coupon_count', 'stars','car_ids']);
+//new field - 30/06/2021
+models.load_fields('res.partner', ['last_name','gender','birth_date','line_id', 'mobile', 'member', 'member_number', 'member_date', 'base_branch_id','is_a_member']);
 models.load_models([
          {
            model: 'project.project',

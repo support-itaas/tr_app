@@ -35,9 +35,7 @@ class POSOrder(models.Model):
                     destination_id = picking_type.default_location_dest_id.id
 
             if picking_type:
-                message = _(
-                    "This transfer has been created from the point of sale session: <a href=# data-oe-model=pos.order data-oe-id=%d>%s</a>") % (
-                              order.id, order.name)
+                message = _("This transfer has been created from the point of sale session: <a href=# data-oe-model=pos.order data-oe-id=%d>%s</a>") % (order.id, order.name)
                 picking_vals = {
                     'origin': order.name,
                     'partner_id': address.get('delivery', False),
@@ -64,9 +62,7 @@ class POSOrder(models.Model):
                     return_picking = Picking.create(return_vals)
                     return_picking.message_post(body=message)
 
-            for line in order.lines.filtered(
-                    lambda l: l.product_id.type in ['product', 'consu'] and not float_is_zero(l.qty,
-                                                                                              precision_rounding=l.product_id.uom_id.rounding)):
+            for line in order.lines.filtered(lambda l: l.product_id.type in ['product', 'consu'] and not float_is_zero(l.qty, precision_rounding=l.product_id.uom_id.rounding)):
 
                 if line.product_id.is_pack:
                     if line.product_id.is_deliverable_product:

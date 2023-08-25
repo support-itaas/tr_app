@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- QWeb Reports for Product -->
+        <record id="paperformat_A4_Zero_Margin_ACC" model="report.paperformat">
+            <field name="name">A4_Zero_Margin</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">20</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="paperformat_A4_stock" model="report.paperformat">
+            <field name="name">A4_Stock</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">20</field>
+            <field name="margin_bottom">20</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">20</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="paperformat_A4_Landscape_Zero_Margin_Stock" model="report.paperformat">
+            <field name="name">A4_Zero_Margin</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">5</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="paperformat_A4_Portrait_Zero_Margin_Stock" model="report.paperformat">
+            <field name="name">A4_Zero_Margin</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">40</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">35</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="paperformat_A4_Zero1" model="report.paperformat">
+            <field name="name">A4_Zero_Margin1</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">5</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">20</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+                id="action_report_stock_history"
+                string="Inventory Report"
+                model="stock.history"
+                report_type="qweb-pdf"
+                paperformat="stock_extended.paperformat_A4_stock"
+                file="stock_extended.report_stockhistory_id"
+                name="stock_extended.report_stockhistory_id"
+        />
+
+         <report
+                id="action_stock_report_simple"
+                model="product.template"
+                menu="True"
+                report_type="qweb-pdf"
+                paperformat="stock_extended.paperformat_A4_Portrait_Zero_Margin_Stock"
+                string="รายงานสินค้าและวัตถุดิบ"
+                name="stock_extended.product_report_id"
+                file="stock_extended.product_report_id"
+        />
+
+        <!--<report-->
+                <!--id="product_report"-->
+                <!--model="product.template"-->
+                <!--menu="True"-->
+                <!--report_type="qweb-pdf"-->
+                <!--paperformat="stock_extended.paperformat_A4_Zero1"-->
+                <!--string="รายงานสินค้าและวัตถุดิบ"-->
+                <!--name="stock_extended.sale_extendrd"-->
+                <!--file="stock_extended.sale_extendrd"-->
+        <!--/>-->
+
+        <report
+                id="action_product_stock_report_id"
+                model="product.template"
+                menu="False"
+                report_type="qweb-pdf"
+                paperformat="stock_extended.paperformat_A4_Landscape_Zero_Margin_Stock"
+                string="รายงานสินค้าและวัตถุดิบ"
+                name="stock_extended.product_stock_report_id"
+                file="stock_extended.product_stock_report_id"
+        />
+
+    </data>
+</openerp>

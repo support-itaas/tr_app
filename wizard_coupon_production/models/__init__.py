@@ -4,6 +4,7 @@
 
 from . import wizard_coupon
 from . import pos_order
+from . import wizard_coupon_reorder
 # from . import product
 # from . import partner
 

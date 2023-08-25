@@ -34,21 +34,108 @@ class PosSession(models.Model):
     meter_9_end = fields.Float("Meter 9 End")
     meter_10_start = fields.Float("Meter 10 Start")
     meter_10_end = fields.Float("Meter 10 End")
-    claim_coupon_ids = fields.Many2many('wizard.coupon', 'coupon_claim_session_rel', 'coupon_id', 'session_id',
-                                           string='Claim Coupon')
+    claim_coupon_ids = fields.Many2many('wizard.coupon', 'coupon_claim_session_rel', 'coupon_id', 'session_id',string='Claim Coupon')
+    claim_coupon2_ids = fields.Many2many('wizard.coupon', 'coupon_claim_session_rel', 'coupon_id', 'session_id',string='Claim Coupon')
     use_coupon_by_branch_ids = fields.One2many('wizard.coupon','session_id',string='Use Coupon by Branch')
     use_coupon_by_other_ids = fields.One2many('wizard.coupon', 'session_id', string='Use Coupon by Others')
+    branch_amount_total = fields.Float(string="Branch Amount Total", )
+    branch_amount_total2 = fields.Float(string="Branch Amount Total", )
+    sum_branch_amount_total = fields.Float(string="Branch Amount Total 1 - Branch Amount Total 2")
+    sum_branch_amount_total2 = fields.Float(string="Branch Amount Total 1 - Branch Amount Total 2")
 
 
     @api.multi
     def check_claim_coupon(self):
         session_date = strToDatetime(self.start_at) + relativedelta(hours=7)
         print (session_date.date())
-        coupon_ids = self.env['wizard.coupon'].search([('redeem_date', '=', session_date.date()),('state', '=', 'redeem'),'|',('branch_id', '=', self.config_id.branch_id.id),('order_branch_id', '=', self.config_id.branch_id.id)])
+        coupon_ids = self.env['wizard.coupon'].sudo().search([('redeem_date', '=', session_date.date()),('state', '=', 'redeem'),'|',('branch_id', '=', self.config_id.branch_id.id),('order_branch_id', '=', self.config_id.branch_id.id)])
+        print('coupon_ids:', coupon_ids)
         claim_coupon_ids = coupon_ids.filtered(lambda x: x.branch_id != x.order_branch_id)
+        print('claim_coupon_ids:', claim_coupon_ids)
         self.claim_coupon_ids = [(6, 0, claim_coupon_ids.ids)]
-        # print (coupon_ids)
+        print('self.claim_coupon_ids:', self.claim_coupon_ids)
+
+        branch_amount_total = 0.00
+        branch_amount_total2 = 0.00
+        for coupon in self.claim_coupon_ids:
+            if coupon.sudo().order_branch_id.name == self.sudo().config_id.branch_id.name and coupon.sudo().branch_id.name != self.sudo().config_id.branch_id.name:
+                print("bbbbbb")
+                branch_amount = coupon.destination_branch_amount * -1
+                branch_amount2 = coupon.destination_branch_amount
+                branch_amount_total += branch_amount
+                branch_amount_total2 += branch_amount2
+            else:
+                branch_amount = coupon.destination_branch_amount
+                branch_amount2 = coupon.destination_branch_amount * -1
+                branch_amount_total += branch_amount
+                branch_amount_total2 += branch_amount2
+
+            coupon.branch_amount = branch_amount
+            coupon.branch_amount2 = branch_amount2
+            self.branch_amount_total = branch_amount_total
+            self.branch_amount_total2 = branch_amount_total2
+            self.sum_branch_amount_total = branch_amount_total - branch_amount_total2
+            self.sum_branch_amount_total2 = branch_amount_total2 - branch_amount_total
+            print("branch_amount:", coupon.branch_amount)
+            print("branch_amount_total:", self.branch_amount_total)
+
+            # session_id = self.env['pos.session'].sudo().search([
+            #     # ('config_id.branch_id', 'in', (coupon.order_branch_id.id, coupon.branch_id.id)),
+            #     ('config_id.branch_id', '=', coupon.branch_id.id),
+            # ], limit=1)
+            # print("session_id:", session_id)
+            #
+            # for session in session_id:
+            #     session_branch_amount_total.append(session.branch_amount_total)
+            #     print("session:",session.branch_amount_total)
+            #     print("session_branch_amount_total:",session_branch_amount_total)
+
+                # for  in session_branch_amount_total:
+                # print("sum:",session_branch_amount_total[0] - session_branch_amount_total[1])
+
+            # self.sum_branch_amount_total = session_branch_amount_total[0] - session_branch_amount_total[1]
+
+
+
+
+        # print ('claim_coupon_ids:',claim_coupon_ids)
         # coupon_ids.update({'session_id': self.id})
+
+        # self.stock_bom_ids.sudo().unlink()
+        # if claim_coupon_ids.sudo():
+        #     print("coupon")
+        #     for coupon in claim_coupon_ids:
+        #         product = coupon.product_id.filtered(lambda x: x.select_stock_bom)
+        #         # print('coupon_product :', product)
+        #         if product.related_service_id and product.related_service_id.bom_ids:
+        #             bom_line_ids = product.related_service_id.bom_ids[0].bom_line_ids
+        #             print('coupon_bom_line_ids :', bom_line_ids)
+        #             if coupon.session_id.sudo().stock_bom_ids and bom_line_ids:
+        #                 for bom in bom_line_ids:
+        #                     stock_bom_id = coupon.session_id.sudo().stock_bom_ids.filtered(lambda x: x.product_id == bom.product_id and x.product_uom_id == bom.product_uom_id)
+        #                     print('coupon_stock_bom_id:', stock_bom_id)
+        #                     if stock_bom_id:
+        #                         stock_bom_id.update({
+        #                             'product_qty': stock_bom_id.product_qty + bom.product_qty,
+        #                         })
+        #                     else:
+        #                         value = {
+        #                             'session_id': self.id,
+        #                             'product_id': bom.product_id.id,
+        #                             'product_qty': bom.product_qty,
+        #                             'product_uom_id': bom.product_uom_id.id,
+        #                         }
+        #                         self.env['pos.session.bom'].sudo().create(value)
+        #             else:
+        #                 for bom in bom_line_ids:
+        #                     value = {
+        #                         'session_id': self.id,
+        #                         'product_id': bom.product_id.id,
+        #                         'product_qty': bom.product_qty,
+        #                         'product_uom_id': bom.product_uom_id.id,
+        #                     }
+        #                     self.env['pos.session.bom'].sudo().create(value)
+
 
     @api.multi
     def action_pos_session_closing_control(self):

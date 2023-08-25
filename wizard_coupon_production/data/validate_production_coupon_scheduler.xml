@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record forcecreate="True" id="ir_validate_production_coupon_scheduler" model="ir.cron">
+            <field name="name">Validate Production Coupon Scheduler</field>
+            <field eval="False" name="active"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="nextcall">2019-01-01 02:00:00</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_wizard_coupon_reorder"/>
+            <field name="state">code</field>
+            <field name="code">model.action_validate_production_coupon_reorder()</field>
+        </record>
+    </data>
+</odoo>

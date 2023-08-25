@@ -2,7 +2,7 @@
 <odoo>
     <!-- Top menu item -->
     <menuitem id="car_care_root_menu" name="Car Care"
-              groups="project.group_project_manager,project.group_project_user"/>
+              groups="project.group_project_manager"/>
     <!--menu main in car care-->
     <menuitem id="car_care_main_menu" name="Main" groups="project.group_project_manager,project.group_project_user"
               sequence="1" parent="car_care_root_menu"/>

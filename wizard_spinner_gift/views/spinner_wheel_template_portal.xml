@@ -2,14 +2,6 @@
 <odoo>
     <template id="spinner_wheel" name="Spinner">
         <t t-call="website.layout">
-            <style>
-                header{
-                display: none !important;
-                }
-                footer{
-                display: none !important;
-                }
-            </style>
             <section class="spin_weels">
                 <div class="mainbox" id="mainbox">
                     <input type="hidden" name="res_partner" id="res_partner" t-att-value="user.id"/>
@@ -42,16 +34,16 @@
                         </div>
                     </div>
                     <t t-if="user.allotted_attempts == user.used_attempts or user.allotted_attempts &lt; user.used_attempts">
-                    <button class="spin" disabled="True">x</button>
+                        <button class="spin" disabled="True">x</button>
                     </t>
                     <t t-else="">
                         <button class="spin" onclick="spin()">SPIN</button>
                     </t>
                 </div>
-                 <div class="card" style="text-align: center; color: #fff;">
-                        <h4>Allotted Attempts : <t t-esc="user.allotted_attempts"/></h4>
-                        <h4 class="allotted_class">Used Attempts : <t t-esc="user.used_attempts"/></h4>
-                 </div>
+                <div class="card" style="text-align: center; color: #fff;">
+                    <h4>จำนวนสิทธิ์ : <t t-esc="user.allotted_attempts"/> ครั้ง</h4>
+                    <h4 class="allotted_class">ใช้สิทธิ์แล้ว : <t t-esc="user.used_attempts"/> ครั้ง</h4>
+                </div>
                 <a t-att-href="'/my/spinner_logout?ak=%s'%user.access_token">
                     <button class="log_out_spin">Logout</button>
                 </a>

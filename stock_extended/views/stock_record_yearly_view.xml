@@ -1,0 +1,45 @@
+<odoo>
+
+
+<!--    <record id="action_stock_yearly_record" model="ir.ui.view">-->
+<!--        <field name="name">stock.record.yearly.form.itaas</field>-->
+<!--        <field name="model">stock.record.yearly</field>-->
+<!--        <field name="inherit_id" ref="stock.view_move_form"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <field name="product_id" position="after">-->
+<!--                <field name="name" readonly="1" force_save="1"/>-->
+<!--                <field name="operating_unit_id" groups="operating_unit.group_multi_operating_unit"/>-->
+<!--            </field>-->
+<!--        </field>-->
+<!--    </record>-->
+
+    <record id="view_stock_record_tree" model="ir.ui.view">
+        <field name="name">stock.record.yearly.tree.itaas</field>
+        <field name="model">stock.record.yearly</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date"/>
+            <field name="product_id"/>
+            <field name="qty"/>
+            <field name="unit_price"/>
+            <field name="value"/>
+            <field name="lot"/>
+            <field name="location"/>
+            <field name="account_id"/>
+            </tree>
+
+        </field>
+    </record>
+
+
+    <record id="action_stock_yearly_record" model="ir.actions.act_window">
+        <field name="name">Stock Record</field>
+        <field name="res_model">stock.record.yearly</field>
+        <field name="view_id" ref="view_stock_record_tree"/>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_stock_yearly_record_per_account" name="Stock Record"
+			  action="stock_extended.action_stock_yearly_record" parent="stock.menu_stock_config_settings" sequence="22"/>
+
+</odoo>

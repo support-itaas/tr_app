@@ -1,0 +1,236 @@
+<odoo>
+
+	<!--paylsip form-->
+	<record id="view_hr_payslip_form_itaas" model="ir.ui.view">
+		<field name="name">hr.payslip.form.itaas</field>
+		<field name="model">hr.payslip</field>
+		<field name="inherit_id" ref="hr_payroll.view_hr_payslip_form" />
+		<field name="arch" type="xml">
+			<field name="credit_note" position="after">
+				<field name="is_full_year"/>
+				<!--<field name="is_wht"/>-->
+				<field name="is_manual_tax"/>
+				<field name="is_manual_sso"/>
+			</field>
+			<xpath expr="//sheet/group" position="after">
+				<group col="4" colspan="4" string="สรุปเงินเดือน">
+					<field name="total_net" readonly="1"/>
+					<field name="total_revenue_summary_net" readonly="1"/>
+					<field name="total_revenue_summary_for_tax" readonly="1"/>
+					<field name="total_tax_paid" readonly="1"/>
+					<field name="total_sso_paid" readonly="1"/>
+					<field name="total_working_day" invisible="0"/>
+					<field name="total_month_day" invisible="0"/>
+					<field name="total_revenue_summary_for_tax" invisible="0"/>
+					<field name="tax_paid" invisible="1"/>
+					<field name="sum_total_tax"/>
+					<field name="sum_total_sso" groups="base.group_no_one"/>
+				</group>
+				<group colspan="4" col="4" name="allow" string="รายเพิ่ม">
+					<field name="overtime" string="โอที" context="{'code': 'overtime'}"/>
+					<field name="allow01" string="เบี้ยขยัน" context="{'code': 'allow01'}"/>
+					<field name="allow02" string="เบี้ยเลี้ยง" context="{'code': 'allow02'}"/>
+					<field name="allow04" string="ค่าพาหนะ" context="{'code': 'allow04'}"/>
+					<field name="allow13" string="เงินเดือนตกเบิก" context="{'code': 'allow13'}"/>
+					<field name="allow08" string="คอมมิชชั่น" context="{'code': 'allow08'}"/>
+					<field name="allow11" string="โบนัส" context="{'code': 'allow11'}"/>
+					<field name="allow12" string="รายได้อื่นๆ" context="{'code': 'allow12'}"/>
+					<field name="allow05" string="ค่าน้ำมัน" context="{'code': 'allow05'}" />
+					<field name="allow06" string="ค่าโทรศัพท์" context="{'code': 'allow06'}" />
+					<field name="allow07" string="เงินคืน" context="{'code': 'allow07'}" />
+					<field name="allow03" string="ค่าเดินทาง" context="{'code': 'allow03'}" />
+					<field name="allow14" context="{'code': 'allow14'}" />
+					<field name="allow15" context="{'code': 'allow15'}" />
+					<field name="allow16" context="{'code': 'allow16'}" />
+					<field name="allow17" context="{'code': 'allow17'}" />
+					<field name="allow18" context="{'code': 'allow18'}" />
+					<field name="allow19" context="{'code': 'allow19'}" />
+					<field name="allow20" context="{'code': 'allow20'}" />
+					<field name="total_wage" string="รวมรายได้เดือนนี้"/>
+				</group>
+				<!--<separator string="ลบ" colspan="2"/>-->
+				<group colspan="4" col="4" name="deduct" string="รายหัก">
+					<field name="deduct01" string="เข้างานสาย"/>
+					<field name="deduct02" string="หักภาษี"/>
+					<field name="deduct09" string="หักประกันสังคม"/>
+					<field name="deduct05" string="เงินกู้ยืม"/>
+					<field name="deduct06" string="เงินกองทุนสำรอง"/>
+					<field name="deduct10" string="หักอื่นๆ"/>
+					<field name="deduct07" string="หักค่าโทรศัพท์"/>
+					<field name="deduct08" string="หักเงินเดือน"/>
+					<field name="deduct14" string="หักค่าน้ำมัน"/>
+					<field name="deduct03" string="เงินประกันการทำงาน"/>
+					<!--<field name="deduct04" string="เงินประกันชุดฟอร์ม" />-->
+					<field name="deduct15"/>
+					<field name="deduct16"/>
+					<field name="deduct17"/>
+				</group>
+			</xpath>
+
+			<button name="action_payslip_done" position="attributes">
+				<attribute name="states">validate</attribute>
+			</button>
+
+			<button name="action_payslip_cancel" position="attributes">
+				<attribute name="states">draft,validate</attribute>
+			</button>
+
+			<button name="action_payslip_done" position="after">
+				<button name="validate_payroll" string="Validate" type='object' states="draft" groups="hr_payroll.group_hr_payroll_user"/>
+			</button>
+
+			<field name="state" position="attributes">
+				<attribute name="statusbar_visible">draft,validate,confirm</attribute>
+			</field>
+
+			<!--<field name="credit_note" position="after">-->
+			<!--<field name="total_net" readonly="1"/>-->
+			<!--<field name="total_revenue_summary_net" readonly="1"/>-->
+			<!--<field name="total_tax_paid" readonly="1"/>-->
+			<!--<field name="total_sso_paid" readonly="1"/>-->
+			<!--<field name="total_working_day" invisible="0"/>-->
+			<!--<field name="total_month_day" invisible="0"/>-->
+			<!--<separator string="เพิ่ม" colspan="2"/>-->
+			<!--<group colspan="4" col="4" name="allow">-->
+			<!--<field name="overtime" string="โอที"/>-->
+			<!--<field name="allow01" string="เบี้ยขยัน"/>-->
+			<!--<field name="allow02" string="เบี้ยเลี้ยง"/>-->
+			<!--<field name="allow03" string="ค่าเดินทาง"/>-->
+			<!--<field name="allow04" string="ค่าพาหนะ"/>-->
+			<!--<field name="allow05" string="ค่าน้ำมัน"/>-->
+			<!--<field name="allow06" string="ค่าโทรศัพท์"/>-->
+			<!--<field name="allow07" string="เงินคืน"/>-->
+			<!--<field name="allow13" string="เงินเดือนตกเบิก"/>-->
+			<!--<field name="allow08" string="คอมมิชชั่น"/>-->
+			<!--<field name="allow11" string="โบนัส"/>-->
+			<!--<field name="allow12" string="รายได้อื่นๆ"/>-->
+			<!--</group>-->
+			<!--<separator string="ลบ" colspan="2"/>-->
+			<!--<group colspan="4" col="4" name="deduct">-->
+			<!--<field name="deduct01" string="เข้างานสาย"/>-->
+			<!--<field name="deduct02" string="หักภาษี"/>-->
+			<!--<field name="deduct09" string="หักประกันสังคม"/>-->
+			<!--<field name="deduct03" string="เงินประกันการทำงาน"/>-->
+			<!--<field name="deduct04" string="เงินประกันชุดฟอร์ม"/>-->
+			<!--<field name="deduct05" string="เงินกู้ยืม"/>-->
+			<!--<field name="deduct06" string="เงินกองทุนสำรอง"/>-->
+			<!--<field name="deduct07" string="หักค่าโทรศัพท์"/>-->
+			<!--<field name="deduct08" string="หักค่านำมัน"/>-->
+			<!--<field name="deduct14" string="หักความผิดพลาด"/>-->
+			<!--<field name="deduct10" string="หักอื่นๆ"/>-->
+
+			<!--</group>-->
+
+			<xpath expr="//sheet/notebook/page" position="inside">
+				<page string="Calculate Tax">
+					<div colspan="4">
+						<field name="calculate_tax"/>
+					</div>
+				</page>
+			</xpath>
+
+			<xpath expr="//sheet/notebook/page" position="before">
+				<page string="Employee Benefits">
+					<group>
+						<separator string="Employee Benefits"/>
+						<div class="oe_right oe_button_box">
+							<button string="Compute Benefits" name="button_compute_benefits" type="object" states="draft" />
+						</div>
+					</group>
+					<group name="employee_benefit">
+						<field name="benefit_line_ids" col="2" nolabel="1">
+							<tree editable="top">
+								<field name="source" readonly="1"/>
+								<field name="category_id" attrs="{'readonly': [('source', '!=', 'manual')]}"/>
+								<field name="employee_amount" attrs="{'readonly': [('source', '!=', 'manual')]}"/>
+								<field name="employer_amount" attrs="{'readonly': [('source', '!=', 'manual')]}"/>
+								<field name="reference" attrs="{'readonly': [('source', '!=', 'manual')]}"/>
+							</tree>
+						</field>
+					</group>
+				</page>
+			</xpath>
+
+		</field>
+		<!--</field>-->
+	</record>
+
+	<record id="view_hr_salary_rule_form_itaas" model="ir.ui.view">
+		<field name="name">hr.salary.rule.form.itaas</field>
+		<field name="model">hr.salary.rule</field>
+		<field name="inherit_id" ref="hr_payroll.hr_salary_rule_form" />
+		<field name="arch" type="xml">
+			<field name="appears_on_payslip" position="after">
+				<field name="cal_tax"/>
+				<field name="cal_sso"/>
+			</field>
+		</field>
+	</record>
+
+	<record id="view_hr_salary_rule_tree_itaas" model="ir.ui.view">
+		<field name="name">hr.salary.rule.tree.itaas</field>
+		<field name="model">hr.salary.rule</field>
+		<field name="inherit_id" ref="hr_payroll.hr_salary_rule_list" />
+		<field name="arch" type="xml">
+			<field name="register_id" position="after">
+				<field name="cal_tax"/>
+				<field name="cal_sso"/>
+				<field name="amount_python_compute"/>
+				<field name="company_id" invisible="1"/>
+			</field>
+		</field>
+	</record>
+
+	<record id="view_hr_payslip_tree_itaas" model="ir.ui.view">
+		<field name="name">hr.payslip.tree.itaas</field>
+		<field name="model">hr.payslip</field>
+		<field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree" />
+		<field name="arch" type="xml">
+			<field name="state" position="before">
+				<field name="total_net"/>
+			</field>
+		</field>
+	</record>
+
+	<record id="hr_payslip_line_tree" model="ir.ui.view">
+		<field name="name">hr.payslip.line.tree</field>
+		<field name="model">hr.payslip.line</field>
+		<field name="arch" type="xml">
+			<tree string="HR Payslip Lines" create="false">
+				<field name="employee_id"/>
+				<field name="date_from"/>
+				<field name="date_to"/>
+				<field name="date_payment"/>
+				<field name="number"/>
+				<field name="name"/>
+				<field name="total"/>
+				<field name="state"/>
+				<field name="company_id" invisible="1"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="hr_payslip_line_form_action" model="ir.actions.act_window">
+		<field name="name">HR Payslip Line</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">hr.payslip.line</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form,pivot</field>
+		<field name="domain">[('state','=','done')]</field>
+	</record>
+
+	<record id="hr_payslip_line_form_action_tree" model="ir.actions.act_window.view">
+		<field eval="1" name="sequence"/>
+		<field name="view_mode">tree</field>
+		<field name="view_id" ref="hr_payslip_line_tree"/>
+
+		<field name="act_window_id" ref="hr_payslip_line_form_action"/>
+	</record>
+
+	<menuitem
+			action="hr_payslip_line_form_action"
+			id="menu_hr_payslip_line"
+			sequence="11"
+			parent="hr_payroll.menu_hr_payroll_root"/>
+
+</odoo>

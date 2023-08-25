@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_inventory_filter,inventory_filter,wizard_filter_tree.model_inventory_filter,base.group_user,1,1,1,1

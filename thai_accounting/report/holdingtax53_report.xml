@@ -1,0 +1,285 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<openerp>
+    <data>
+
+        <template id="holdingtax53_report_id">
+            <t t-call="web.basic_layout">
+                <!--<t t-foreach="docs" t-as="doc">-->
+                <t t-set="i" t-value="1"/>
+                <t t-set="register" t-value="0"/>
+                <t t-set="branch" t-value="0"/>
+                <t t-set="partner_vat" t-value="0"/>
+                <t t-set="partner_branch" t-value="0"/>
+                <t t-set="sumcredit_wht" t-value="0"/>
+                <t t-set="suminvoice_total" t-value="0"/>
+                <t t-foreach="range(0, int(docs[0].roundup(len(docs))/6))" t-as="x">
+                    <div class="page" t-attf-style="background-image:url('/thai_accounting/static/description/53.jpg'); background-size:510mm 338mm; width:510mm; height:338mm;">
+                        <style>
+                            .header{width:100%; height:16px;}
+                            .content{width:100%; height:191px;}
+                        </style>
+                        <div class="header">
+
+                        </div>
+                        <t t-set="register" t-value="docs[0].company_id.vat"/>
+                        <t t-set="branch" t-value="docs[0].company_id.branch_no"/>
+
+                        <div class="content">
+                            <div>
+                                <br style="line-height: 35px"/>
+                                <font style="font-size: 22px;">
+                                    <t t-if="register">
+                                        <span t-esc="register[0]" style="position: absolute;left: 720px;"/>
+                                        <span t-esc="register[1]" style="position: absolute;left: 765px;"/>
+                                        <span t-esc="register[2]" style="position: absolute;left: 790px;"/>
+                                        <span t-esc="register[3]" style="position: absolute;left: 820px;"/>
+                                        <span t-esc="register[4]" style="position: absolute;left: 850px;"/>
+                                        <span t-esc="register[5]" style="position: absolute;left: 890px;"/>
+                                        <span t-esc="register[6]" style="position: absolute;left: 915px;"/>
+                                        <span t-esc="register[7]" style="position: absolute;left: 940px;"/>
+                                        <span t-esc="register[8]" style="position: absolute;left: 970px;"/>
+                                        <span t-esc="register[9]" style="position: absolute;left: 1000px;"/>
+                                        <span t-esc="register[10]" style="position: absolute;left: 1040px;"/>
+                                        <span t-esc="register[11]" style="position: absolute;left: 1063px;"/>
+                                        <span t-esc="register[12]" style="position: absolute;left: 1110px;"/>
+                                    </t>
+                                    <t t-if="branch">
+                                        <span t-esc="branch[0]" style="position: absolute;left: 1230px;"/>
+                                        <span t-esc="branch[1]" style="position: absolute;left: 1255px;"/>
+                                        <span t-esc="branch[2]" style="position: absolute;left: 1285px;"/>
+                                        <span t-esc="branch[3]" style="position: absolute;left: 1315px;"/>
+                                        <span t-esc="branch[4]" style="position: absolute;left: 1340px;"/>
+                                        <!--<span t-esc="branch[5]" />-->
+                                    </t>
+                                </font>
+                            </div>
+                            <!--<div>-->
+                            <!--<br style="line-height: 15px"/>-->
+                            <!--<font style="font-size: 22px;">-->
+                            <!--<t t-if="branch">-->
+                            <!--<span t-esc="branch[0]" style="position: absolute;left: 1400px;"/>-->
+                            <!--<span t-esc="branch[1]" style="position: absolute;left: 1420px;"/>-->
+                            <!--<span t-esc="branch[2]" style="position: absolute;left: 1440px;"/>-->
+                            <!--<span t-esc="branch[3]" style="position: absolute;left: 1460px;"/>-->
+                            <!--<span t-esc="branch[4]" style="position: absolute;left: 1480px;"/>-->
+                            <!--&lt;!&ndash;<span t-esc="branch[5]" />&ndash;&gt;-->
+                            <!--</t>-->
+                            <!--</font>-->
+                            <!--</div>-->
+                        </div>
+
+
+                        <t t-foreach="range(x * 6, (x * 6)+6)" t-as="y">
+                            <table width="100%">
+                                <t t-if="y &lt; len(docs)">
+                                    <t t-set="partner_vat" t-value="docs[y].partner_id.vat"/>
+                                    <t t-set="partner_branch" t-value="docs[y].partner_id.branch_no"/>
+                                    <t t-set="partner_name" t-value="docs[y].partner_id.name"/>
+                                    <t t-set="street" t-value="docs[y].partner_id.street"/>
+                                    <t t-set="street2" t-value="docs[y].partner_id.street2"/>
+                                    <t t-set="city" t-value="docs[y].partner_id.city"/>
+                                    <t t-set="state" t-value="docs[y].partner_id.state_id.name"/>
+                                    <t t-set="zipcode" t-value="docs[y].partner_id.zip"/>
+                                    <t t-set="date" t-value="docs[y].date"/>
+                                    <t t-set="whttype" t-value="docs[y].wht_type"/>
+                                    <t t-set="credit" t-value="docs[y].credit"/>
+                                    <t t-set="amount_untaxed" t-value="docs[y].invoice_id.amount_untaxed"/>
+                                    <t t-set="sumcredit_wht" t-value="sumcredit_wht + credit"/>
+                                    <t t-set="payment_date" t-value="docs[y].date"/>
+                                    <t t-if="payment_date">
+                                        <t t-set="date" t-value="time.strptime(payment_date,'%Y-%m-%d')"/>
+                                    </t>
+                                    <t t-if="whttype == '1%'">
+                                        <t t-set="withholding" t-value="1"/>
+                                    </t>
+                                    <t t-if="whttype == '2%'">
+                                        <t t-set="withholding" t-value="2"/>
+                                    </t>
+                                    <t t-if="whttype == '3%'">
+                                        <t t-set="withholding" t-value="3"/>
+                                    </t>
+                                    <t t-if="whttype == '5%'">
+                                        <t t-set="withholding" t-value="5"/>
+                                    </t>
+                                    <t t-set="invoice_total" t-value="(credit / withholding) * 100"/>
+                                    <t t-set="suminvoice_total" t-value="suminvoice_total + invoice_total"/>
+                                    <tr>
+                                        <td width="4%">
+                                            <font style="font-size: 22px;">
+                                                &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                                &amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                                <span t-esc="i"/>
+                                            </font>
+                                        </td>
+                                        <t t-set="i" t-value="i+1"/>
+                                        <td width="23%">
+                                            <font style="font-size: 22px;">
+                                                <t t-if="partner_vat">
+                                                    <span t-esc="partner_vat[0]" style="position: absolute;left: 160px;"/>
+                                                    <span t-esc="partner_vat[1]" style="position: absolute;left: 200px;"/>
+                                                    <span t-esc="partner_vat[2]" style="position: absolute;left: 230px;"/>
+                                                    <span t-esc="partner_vat[3]" style="position: absolute;left: 260px;"/>
+                                                    <span t-esc="partner_vat[4]" style="position: absolute;left: 290px;"/>
+                                                    <span t-esc="partner_vat[5]" style="position: absolute;left: 330px;"/>
+                                                    <span t-esc="partner_vat[6]" style="position: absolute;left: 355px;"/>
+                                                    <span t-esc="partner_vat[7]" style="position: absolute;left: 380px;"/>
+                                                    <span t-esc="partner_vat[8]" style="position: absolute;left: 410px;"/>
+                                                    <span t-esc="partner_vat[9]" style="position: absolute;left: 435px;"/>
+                                                    <span t-esc="partner_vat[10]" style="position: absolute;left: 480px;"/>
+                                                    <span t-esc="partner_vat[11]" style="position: absolute;left: 505px;"/>
+                                                    <span t-esc="partner_vat[12]" style="position: absolute;left: 550px;"/>
+                                                </t>
+                                            </font>
+                                        </td>
+                                        <td width="8%">
+                                            <font style="font-size: 22px;">
+                                                <t t-if="partner_branch">
+                                                    <span t-esc="partner_branch[0]" style="position: absolute;left: 805px;"/>
+                                                    <span t-esc="partner_branch[1]" style="position: absolute;left: 835px;"/>
+                                                    <span t-esc="partner_branch[2]" style="position: absolute;left: 865px;"/>
+                                                    <span t-esc="partner_branch[3]" style="position: absolute;left: 890px;"/>
+                                                    <span t-esc="partner_branch[4]" style="position: absolute;left: 920px;"/>
+                                                    <!--<span t-esc="partner_branch[5]"/>-->
+                                                </t>
+                                            </font>
+                                        </td>
+                                        <td width="9%">
+                                            <font style="font-size: 22px;">
+                                                <t t-if="payment_date">
+                                                    <span t-esc="date.tm_mday"/>/<span t-esc="date.tm_mon"/>/<span t-esc="date.tm_year + 543"/>
+                                                </t>
+                                            </font>
+                                        </td>
+                                        <td width="6%">
+                                            <t t-if="whttype == '1%'">
+                                                <font style="font-size: 22px;">
+                                                    <span>ขนส่ง</span>
+                                                </font>
+                                            </t>
+                                            <t t-if="whttype == '2%'">
+                                                <font style="font-size: 22px;">
+                                                    <span>โฆษณา</span>
+                                                </font>
+                                            </t>
+                                            <t t-if="whttype == '3%'">
+                                                <font style="font-size: 22px;">
+                                                    <span>บริการ</span>
+                                                </font>
+                                            </t>
+                                            <t t-if="whttype == '5%'">
+                                                <font style="font-size: 22px;">
+                                                    <span>ค่าเช้า</span>
+                                                </font>
+                                            </t>
+                                        </td>
+                                        <td width="3%">
+                                            <t t-if="whttype == '1%'">
+                                                <font style="font-size: 22px;">
+                                                    <span>1%</span>
+                                                </font>
+                                            </t>
+                                            <t t-if="whttype == '2%'">
+                                                <font style="font-size: 22px;">
+                                                    <span>2%</span>
+                                                </font>
+                                            </t>
+                                            <t t-if="whttype == '3%'">
+                                                <font style="font-size: 22px;">
+                                                    <span>3%</span>
+                                                </font>
+                                            </t>
+                                            <t t-if="whttype == '5%'">
+                                                <font style="font-size: 22px;">
+                                                    <span>5%</span>
+                                                </font>
+                                            </t>
+                                        </td>
+                                        <td width="8%" style="text-align: right">
+                                            <font style="font-size: 22px; position: absolute; right: 323px;">
+                                                <span t-esc="'{0:,.2f}'.format(invoice_total)"/>
+                                            </font>
+                                        </td>
+                                        <td width="8%" style="text-align: right;">
+                                            <font style="font-size: 22px; position: absolute; right: 98px;">
+                                                <span t-esc="'{0:,.2f}'.format(credit)"/>
+                                            </font>
+                                        </td>
+                                        <td width="2%">
+                                            <font style="font-size: 22px;">
+                                                <span>1</span>
+                                            </font>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td/>
+                                        <td colspan="7">
+                                            <font style="font-size: 22px;">
+                                                <t t-if="partner_name">
+                                                    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                                    &amp;nbsp;
+                                                    <span t-esc="partner_name"/>
+                                                </t>
+
+                                                <!--<t t-if="partner_name">-->
+                                                <!--<span>นามสกุลยังไม่มี</span>-->
+                                                <!--</t>-->
+                                            </font>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td/>
+                                        <td colspan="7">
+                                            <font style="font-size: 22px;">
+                                                <t t-if="street">
+                                                    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                                    &amp;nbsp;
+                                                    <span t-esc="street"/>&amp;nbsp;<span t-esc="street2"/>&amp;nbsp;
+                                                    <span t-esc="city"/>&amp;nbsp;<span t-esc="state"/>&amp;nbsp;<span t-esc="zipcode"/>
+                                                </t>
+                                            </font>
+                                        </td>
+                                    </tr>
+                                    <!--<br style="line-height: 15px"/>-->
+                                </t>
+                                <t t-if="y &lt; len(docs)">
+                                    <br style="line-height: 40px"/>
+                                </t>
+                                <!--<t t-if="y &gt; (len(docs) - 1)">-->
+                                <!--<br style="line-height: 110px"/>-->
+                                <!--</t>-->
+                            </table>
+                        </t>
+                        <table width="100%">
+                            <tr>
+                                <td colspan="6"/>
+                                <td style="text-align: right; position: absolute; right: 323px; top: 920px;">
+                                    <font style="font-size: 22px;">
+                                        <span t-esc="'{0:,.2f}'.format(int(suminvoice_total))"/>
+                                    </font>
+                                </td>
+                                <td style="text-align: right; position: absolute; right: 98px; top: 920px;">
+                                    <font style="font-size: 22px;">
+                                        <span t-esc="'{0:,.2f}'.format(sumcredit_wht)"/>
+                                    </font>
+                                </td>
+                                <td/>
+                            </tr>
+                        </table>
+                        <table width="100%">
+                            <tr style="text-align: center; position: absolute; right: 460px; top: 1098px;">
+                                <td colspan="8" width="72%">
+                                    <font style="font-size: 22px;">
+                                        <span t-esc="user.name"/>
+                                    </font>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+                <!--</t>-->
+
+            </t>
+        </template>
+
+    </data>
+</openerp>

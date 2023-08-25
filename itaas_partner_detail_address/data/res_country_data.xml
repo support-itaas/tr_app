@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+         <record id="base.th" model="res.country">
+            <field eval="'%(street)s\n%(street2)s\n%(sub_district_name)s %(district_name)s \n%(state_name)s %(zip)s\n%(country_name)s'" name="address_format" />
+        </record>
+
+    </data>
+</odoo>

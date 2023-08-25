@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <report
+                id="pm_report_xls"
+                model="wizard.product.movement.report"
+                string="รายงานเคลื่อนไหวสินค้า"
+                report_type="xlsx"
+                name="itaas_product_movement_report.pm_report_xls"
+                file="itaas_product_movement_report.pm_report_xls"
+                menu="False"
+                attachment_use="False"/>
+
+        <report
+                id="purchase_report_xls"
+                model="wizard.product.movement.report"
+                string="รายงานเคลื่อนไหวสินค้า-ซื้อ"
+                report_type="xlsx"
+                name="itaas_product_movement_report.purchase_report_xls"
+                file="itaas_product_movement_report.purchase_report_xls"
+                menu="False"
+                attachment_use="False"/>
+
+
+    </data>
+</odoo>

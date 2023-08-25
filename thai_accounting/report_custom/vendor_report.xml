@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <template id="vendor_report_id">
+
+             <t t-call="report.internal_layout">
+                <div class="page">
+
+                    <t t-set="i" t-value="1"/>
+                    <t t-foreach="docs" t-as="doc">
+                        <div style="text-align:left">
+                            <font style="font-size: 22px;">
+                                <t t-if="i == 1" >
+                                    <t t-set="company" t-value="doc.company_id.name" />
+                                    <span t-esc="company" />
+                                </t>
+                                <t t-set="i" t-value="i+1"/>
+                            </font>
+                        </div>
+                    </t>
+
+                    <div style="text-align:left">
+                        <font style="font-size: 24px;">
+                            <strong><span>รายงานประวัติเจ้าหนี้พร้อมที่อยู่ทั้งหมด</span></strong>
+                        </font>
+                    </div>
+                    <br/>
+                    <h4>
+                        <table class="table table-responsive">
+                            <tr>
+                                <td style="text-align:center">รหัส</td>
+                                <td style="text-align:center">ชื่อเจ้าหนี้</td>
+                                <td style="text-align:center">วิธีชำระหนี้<br/>เลขที่บัญชี</td>
+                                <td style="text-align:center">ที่อยู่</td>
+                                <td style="text-align:center">โทรศัพท์<br/>โทรสาร</td>
+                                <td style="text-align:center">สาขา<br/>สถานภาพการติดต่อ</td>
+                                <td style="text-align:center">เลขประจำตัวผู้เสียภาษี<br/>ประเภทธุรกิจ</td>
+                            </tr>
+                                <t t-foreach="docs" t-as="o">
+                            <tr>
+                                <td style="text-align:center"><span t-field="o.supplier_code" /></td>
+                                <td style="text-align:left"><span t-field="o.name" /></td>
+                                <td style="text-align:center"><t t-if="o.bank_account_count == 0"><span>เงินสด</span></t>
+                                    <t t-if="o.bank_account_count != 0">
+                                        <span t-esc="o.bank_ids[0].bank_id.name"/><br/>
+                                        <span t-esc="o.bank_ids[0].acc_number"/>
+                                    </t>
+                                </td>
+                                <td style="text-align:left">
+                                    <span t-field="o.street" />&amp;nbsp;
+                                    <span t-field="o.street2" />&amp;nbsp;
+                                    <span t-field="o.city" />&amp;nbsp;
+                                    <span t-field="o.state_id.name" />&amp;nbsp;
+                                    <span t-field="o.zip" />
+                                </td>
+                                <td style="text-align:left">
+                                    <span t-field="o.phone" />&amp;nbsp;
+                                    <span t-field="o.mobile" />&amp;nbsp;
+                                    <span t-field="o.fax" />
+                                </td>
+                                <td style="text-align:center">
+                                    <t t-if="o.supplier">
+                                        <span>ระบุ</span>
+                                    </t>
+                                    <t t-if="o.supplier != True">
+                                        <span>ไม่ระบุ</span>
+                                    </t>
+                                </td>
+                                <td style="text-align:center">
+                                    <span t-field="o.vat"/><br/>
+                                    <span t-field="o.category_id.name"/>
+                                </td>
+                            </tr>
+                                </t>
+                        </table>
+                    </h4>
+
+                </div>
+             </t>
+
+        </template>
+        
+    </data>
+</openerp>

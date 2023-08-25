@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2015 DevIntelle Consulting Service Pvt.Ltd (<http://www.devintellecs.com>).
+
+For Module Support : devintelle@gmail.com  or Skype : devintelle 
+ -->
+<odoo>
+
+    <record id="view_account_payment_form_partial_invoice_payment" model="ir.ui.view">
+        <field name="name">account.register.payments.wizard</field>
+        <field name="model">account.register.payments</field>
+        <field name="inherit_id" ref="account.view_account_payment_from_invoices"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/group" position="after">
+                <seperator string='Invoices'/>
+                <field name="invoice_register_ids">
+                    <tree editable="buttom">
+                        <field name="invoice_id" />
+                        <field name="partner_id" />
+                        <field name="inv_amount" />
+                        <field name="amount" sum="Due Amount"/>
+                        <field name="paid_amount" sum="Paid Amount"/>
+                        <field name="currency_id"/>
+                    </tree>
+                </field>
+            </xpath>
+        </field>
+    </record>
+
+
+
+</odoo>

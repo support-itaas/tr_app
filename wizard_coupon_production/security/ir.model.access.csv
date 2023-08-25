@@ -6,3 +6,9 @@ access_wizard_coupon_pack_user,wizard.coupon.pack.user,model_wizard_coupon_pack,
 access_wizard_coupon_pack_manager,wizard.coupon.pack.manager,model_wizard_coupon_pack,project.group_project_manager,1,1,1,1
 access_wizard_coupon_production_manager,access.wizard.coupon.production.manager,model_wizard_coupon_production,project.group_project_manager,1,1,1,1
 
+access_wizard_coupon_reorder_manager,access.wizard_coupon_reorder,model_wizard_coupon_reorder,project.group_project_manager,1,1,1,1
+access_wizard_coupon_package_reorderline_manager,access.wizard_coupon_package_reorderline,model_wizard_coupon_package_reorderline,project.group_project_manager,1,1,1,1
+
+
+
+

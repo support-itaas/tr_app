@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="debitcredit_report_id">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                <div class="header">
+                    <div class="col-xs-10">
+                        <font style="font-size: 16px;">
+                            <h><span t-field="o.company_id.name" /></h>
+                        </font>
+                        <br/>
+                        <font style="font-size: 12px;">
+                            <span t-field="o.company_id.street" />&amp;nbsp;
+                            <span t-field="o.company_id.street2" />&amp;nbsp;
+                            <span t-field="o.company_id.city" />&amp;nbsp;
+                            <span t-field="o.company_id.state_id.name" />&amp;nbsp;
+                            <span t-field="o.company_id.zip" />
+                        </font>
+                    </div>
+                    <br/>
+
+                    <div class="col-xs-7"> </div>
+                    <div class="col-xs-2">
+                        <br/>
+                        <font style="font-size: 12px;">
+                            <span>เลขที่</span><br/>
+                            <span>วันที่</span>
+                        </font>
+                    </div>
+                    <div class="col-xs-3">
+                        <br/>
+                        <font style="font-size: 12px;">
+                            <span t-field="o.name" /><br/>
+                            <span t-field="o.date" />
+                        </font>
+                    </div>
+                    <br/>
+                    <div class="col-xs-7">
+                        <font style="font-size: 12px;">
+                            <span>สมุดรายวันเงินสดย่อย</span><br/>
+                            <span>รายละเอียด</span>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                            <span t-field="o.narration" />
+                        </font>
+                    </div>
+                    <div class="col-xs-5">
+                        <font style="font-size: 12px;">
+                            <span t-field="o.ref" />
+                        </font>
+                    </div>
+
+                </div>
+                <div class="page">
+                    <!--<style>-->
+                    <!--.header{width:100%; height:40px;}-->
+                    <!--.content{width:100%; height:900px;}-->
+                    <!--.footer{width:100%; height:200px;}-->
+                    <!--</style>-->
+
+                    <div class="col-xs-12">
+                        <br/>
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th class="col-xs-2" style="text-align:center">
+                                        <font style="font-size: 12px;">เลขที่บัญชี</font>
+                                    </th>
+                                    <th class="col-xs-6" style="text-align:center">
+                                        <font style="font-size: 12px;">ชื่อบัญชี</font>
+                                    </th>
+                                    <th class="col-xs-6" style="text-align:center">
+                                        <font style="font-size: 12px;">รายละเอียด</font>
+                                    </th>
+                                    <th class="col-xs-2" style="text-align:center">
+                                        <font style="font-size: 12px;">เดบิท</font>
+                                    </th>
+                                    <th class="col-xs-2" style="text-align:center">
+                                        <font style="font-size: 12px;">เครดิต</font>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="sale_tbody">
+                                <t t-foreach="o.line_ids" t-as="l">
+                                    <tr>
+                                        <td style="text-align:left">
+                                            <font style="font-size: 12px;">
+                                                <span t-field="l.account_id.code"/>
+                                            </font>
+                                        </td>
+                                        <td style="text-align:left">
+                                            <font style="font-size: 12px;">
+                                                <span t-field="l.account_id.name"/>
+                                            </font>
+                                        </td>
+                                        <td style="text-align:left">
+                                            <font style="font-size: 12px;">
+                                                <span t-field="l.name"/>
+                                            </font>
+                                        </td>
+
+                                        <td style="text-align:right">
+                                            <t t-if="l.debit == 0.00">
+                                                <span />
+                                            </t>
+                                            <t t-if="l.debit != 0.00">
+                                                <font style="font-size: 12px;">
+                                                    <span t-field="l.debit"/>
+                                                </font>
+                                            </t>
+                                        </td>
+                                        <td style="text-align:right">
+                                            <t t-if="l.credit == 0.00">
+                                                <span />
+                                            </t>
+                                            <t t-if="l.credit != 0.00">
+                                                <font style="font-size: 12px;">
+                                                    <span t-field="l.credit"/>
+                                                </font>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <div class="row" style="page-break-inside: avoid">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td colspan="2">
+                                    <div class="col-xs-10">
+                                        <font style="font-size: 12px;">
+                                            <span>(<span t-field="o.amount_total_invoice_text" />)</span>
+                                        </font>
+                                    </div>
+                                    <div class="col-xs-2" style="text-align:right">
+                                        <font style="font-size: 12px;">
+                                            <span>รวม</span>
+                                        </font>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="text-align:right">
+                                        <font style="font-size: 12px;">
+                                            <span t-field="o.amount" />
+                                        </font>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="text-align:right">
+                                        <font style="font-size: 12px;">
+                                            <span t-field="o.amount" />
+                                        </font>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="text-align:center" >
+                                        <font style="font-size: 12px;"><br/><br/>
+                                            <span>ผู้จัดทำ ___________________</span>
+                                        </font>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="text-align:center">
+                                        <font style="font-size: 12px;"><br/><br/>
+                                            <span>ผู้ตรวจสอบ ___________________</span>
+                                        </font>
+                                    </div>
+                                </td>
+                                <td rowspan="2" colspan="2">
+                                    <div style="text-align:center">
+                                        <font style="font-size: 12px;">
+                                            <span>ได้รับเงินถูกต้องเรียบร้อย</span><br/><br/><br/>
+                                            ___________________<br/><br/>
+                                            ____/____/____<br/>
+                                            <span>ผู้รับเงิน</span>
+                                        </font>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="text-align:center">
+                                        <font style="font-size: 12px;"><br/><br/>
+                                            <span>ผู้รับรองถูกต้อง ___________________</span>
+                                        </font>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="text-align:center">
+                                        <font style="font-size: 12px;"><br/><br/>
+                                            <span>ผู้อนุมัติ ___________________</span>
+                                        </font>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+
+            </t>
+            </t>
+        </template>
+
+    </data>
+</openerp>

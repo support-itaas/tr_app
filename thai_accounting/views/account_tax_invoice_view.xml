@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!--<record id="view_account_invoice_filter_tax_invoice_itaas_inherit" model="ir.ui.view">-->
+		<!--<field name="name">account.tax.invoice.select.itaas</field>-->
+		<!--<field name="model">account.invoice</field>-->
+		<!--<field name="inherit_id" ref="account.view_account_invoice_filter"/>-->
+		<!--<field name="arch" type="xml">-->
+            <!--<filter name="invoices" position="replace">-->
+                <!--<filter name="invoices" string="Invoices" domain="['&amp;', ('state','in',['open','paid']),('type','in',('out_invoice','in_invoice')),('tax_inv_generated','=',False)]"/>-->
+            <!--</filter>-->
+            <!--<filter name="status" position="after">-->
+                <!--<filter string="Tax Invoice Date" context="{'group_by':'tax_inv_date'}"/>-->
+            <!--</filter>-->
+		<!--</field>-->
+	<!--</record>-->
+
+        <!--###########################for tax inovice #############-->
+        <record id="account_tax_invoice_tree_new" model="ir.ui.view">
+            <field name="name">account.tax.invoice.tree</field>
+            <field name="model">account.invoice</field>
+            <field name="arch" type="xml">
+                <tree decoration-info="state == 'draft'" decoration-muted="state == 'cancel'" string="Tax Invoice" create="false">
+                    <field name="partner_id" groups="base.group_user" string="Customer"/>
+                    <field name="tax_inv_date"/>
+                    <field name="tax_inv_no"/>
+                    <field name="commercial_partner_id" invisible="1"/>
+                    <field name="reference" invisible="1"/>
+                    <field name="name" invisible="1"/>
+                    <field name="journal_id" invisible="1"/>
+                    <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                    <field name="user_id"/>
+                    <field name="date_due"/>
+                    <field name="origin"/>
+                    <field name="amount_total_signed" sum="Total" />
+                    <field name="residual_signed" sum="Amount due"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="company_currency_id" invisible="1"/>
+                    <field name="state"/>
+                    <field name="type" invisible="context.get('type',True)"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_account_customer_tax_invoice_new" model="ir.actions.act_window">
+            <field name="name">Tax Invoice</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field eval="False" name="view_id"/>
+            <field name="domain">[('type','=','out_invoice'),('tax_inv_generated','=',True)]</field>
+            <field name="context">{'default_type': 'out_invoice', 'type': 'out_invoice', 'journal_type': 'sale'}</field>
+            <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to record a new customer credit note.
+                </p><p>
+            </p>
+            </field>
+
+        </record>
+
+        <record id="action_tax_invoice_out_form" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="account.invoice_form"/>
+            <field name="act_window_id" ref="action_account_customer_tax_invoice_new"/>
+        </record>
+
+        <record id="action_tax_invoice_out_tree" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="account_tax_invoice_tree_new"/>
+            <field name="act_window_id" ref="action_account_customer_tax_invoice_new"/>
+        </record>
+
+        <menuitem action="action_account_customer_tax_invoice_new"
+                  id="menu_tax_invoice_new"
+                  name="Tax Invoice"
+                  parent="account.menu_finance_receivables_documents"
+                  sequence="1"
+                  groups="thai_accounting.group_account_ar"/>
+        <!--###################################################################-->
+
+    </data>
+</openerp>

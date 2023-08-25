@@ -1,0 +1,18 @@
+<odoo>
+    <record id="mrp_repair_form_itaas_inherit" model="ir.ui.view">
+        <field name="name">mrp.repair.form.itaas</field>
+        <field name="model">mrp.repair</field>
+        <field name="inherit_id" ref="mrp_repair.view_repair_order_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="operating_unit_id" />
+            </field>
+
+            <xpath expr="//sheet/group/group[2]" position="inside">
+                <field name="origin" />
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

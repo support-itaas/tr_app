@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_invoice_button_copy_view" model="ir.ui.view">
+        <field name="name">account.invoice.button.copy.view</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <button name="action_invoice_draft" position="after">
+                <button name="action_copy_invoice" states="open" string="Copy Invoice" type="object"/>
+            </button>
+            <field name="move_id" position="after">
+                <field name="ref_sh"/>
+            </field>
+        </field>
+    </record>
+
+
+</odoo>

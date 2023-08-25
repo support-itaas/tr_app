@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="quotations_report_id2">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="report.external_layout1">
+                    <div class="page">
+                    <style>
+                        .header{width:100%; height:30px;}
+                        .content{width:100%; height:700px;}
+                        .footer{width:100%; height:30px;}
+                        .doubleUnderline{border-bottom: 3px double;}
+
+                        table.table-bordered1{
+                        border:1px solid black;
+                        margin-top:20px;
+                        border-collapse: collapse;
+                        width: 100%;
+                        }
+                        table.table-bordered1 &gt; thead &gt; tr &gt; th{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered1 &gt; tbody &gt; tr &gt; td{
+                        border:0px solid white;
+                        border-left: 1px solid black;
+                        border-collapse: collapse;
+                        height: 40px;
+                        }
+                        table.table-bordered1 &gt; tfoot &gt; tr &gt; td{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered &gt; thead &gt; tr &gt; th{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered &gt; tbody &gt; tr &gt; td{
+                        border:1px solid black;
+                        <!--border-left: 1px solid;-->
+                        border-collapse: collapse;
+                        }
+                        table.table-bordered &gt; tfoot &gt; tr &gt; td{
+                        border:1px solid black;
+                        border-collapse: collapse;
+                        }
+                        .doubleUnderline {
+                        text-decoration:underline;
+                        border-bottom: 1px solid #000;
+                        }
+                        table.table-table1 {
+                        border:1px solid black;
+                        margin-top:20px;
+                        border-collapse: collapse;
+                        border-left: 1px solid;
+                        border-right: 1px solid;
+                        border-bottom: 1px solid;
+                        border-top: 1px solid;
+                        width: 100%;
+                        }
+                    </style>
+                    <div class="content" style="font-family: TH Krub;">
+                    <div class="col-xs-12" style="text-align:center">
+                        <font style="font-size: 26px;">
+                            <strong>ใบเสนอราคา</strong>
+                            <br/>
+                        </font>
+                    </div>
+                    <div class="row" style="margin-top: 0cm;">
+                                <div class="col-xs-12">
+                                    <div class="row">
+                                    <table style="width:100%;">
+                                        <td class="col-xs-1" style="text-align:left">
+                                    <span t-if="o.contact_person">
+                                        <font style="font-size: 18px;">
+                                            <B>เรียน:&amp;nbsp;</B>
+                                            <br/>
+                                        </font>
+                                    </span>
+                                    <font style="font-size: 18px;">
+                                        <!--&amp;nbsp;&amp;nbsp;&amp;nbsp;รหัส:&amp;nbsp;<span>ยังไม่มีข้อมูล</span><br/>-->
+                                        <span t-if="o.partner_id.parent_id">
+                                            <B>บริษัท:&amp;nbsp;</B>
+                                            <br/>
+                                        </span>
+                                        <span t-if="not o.partner_id.parent_id">
+                                            <B>บริษัท:&amp;nbsp;</B>
+                                            <br/>
+                                            </span>
+
+                                        <B>ที่อยู่:&amp;nbsp;&amp;nbsp;</B>
+                                            <br/>
+                                            <br/>
+                                          <span t-if="o.contact_person">
+                                             <B>Tel:&amp;nbsp;</B><br/>
+                                            <B>E-mail:&amp;nbsp;</B>
+                                         </span>
+                                        <span t-if="not o.contact_person">
+                                            <B>Tel:&amp;nbsp;</B><br/>
+                                            <B>E-mail:&amp;nbsp;</B>
+                                        </span>
+                                    </font>
+                                </td>
+                                <td class="col-xs-8" style="text-align:left">
+                                    <span t-if="o.contact_person">
+                                        <font style="font-size: 18px;">
+                                            <span t-field="o.contact_person.name"/>
+                                            <br/>
+                                        </font>
+                                    </span>
+                                    <font style="font-size: 18px;">
+                                        <!--&amp;nbsp;&amp;nbsp;&amp;nbsp;รหัส:&amp;nbsp;<span>ยังไม่มีข้อมูล</span><br/>-->
+                                        <span t-if="o.partner_id.parent_id">
+                                            <span t-field="o.partner_id.parent_id.name"/>
+                                            <br/>
+                                        </span>
+                                        <span t-if="not o.partner_id.parent_id">
+                                            <span t-field="o.partner_id.name"/>
+                                            <br/>
+                                        </span>
+
+                                        <span t-field="o.partner_id.street"/>&amp;nbsp;
+                                        <span t-field="o.partner_id.street2"/>
+                                        <br/>
+                                        <span t-if="o.partner_id.city and o.partner_id.state_id and o.partner_id.state_id.code == 'BKK'">
+                                            <span t-field="o.partner_id.city"/>&amp;nbsp;
+                                        </span>
+                                        <span t-if="o.partner_id.city and o.partner_id.state_id and o.partner_id.state_id.code != 'BKK'">
+                                            <span t-field="o.partner_id.city"/>&amp;nbsp;
+                                        </span>
+                                        <span t-if="o.partner_id.state_id.name">
+                                            <span t-field="o.partner_id.state_id.name"/>&amp;nbsp;
+                                        </span>
+                                        <span t-field="o.partner_id.zip"/>
+                                        <span t-if="o.contact_person">
+                                            <br/>
+                                            <span t-field="o.contact_person.phone"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            <span t-field="o.contact_person.email"/>
+                                        </span>
+                                        <span t-if="not o.contact_person">
+                                            <br/>
+                                            <span t-field="o.partner_id.phone"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            <span t-field="o.partner_id.email"/>
+                                        </span>
+                                    </font>
+                                </td>
+                                <!--<div class="col-xs-1"/>-->
+                                <td class="col-xs-3">
+                                     <font style="font-size: 18px;">
+                                        <B>เลขที่.&amp;nbsp;&amp;nbsp;&amp;nbsp;</B>
+                                        <span t-field="o.name"/>
+                                        <br/>
+                                          <B>วันที่:&amp;nbsp;&amp;nbsp;</B>
+                                    </font>
+                                </td>
+                                    </table>
+                                    </div>
+                        </div>
+                    </div>
+
+                            <div class="row" style="margin-top: 0cm;">
+                                <div class="col-xs-12">
+                                    <div class="row">
+                                        <table class="table table-bordered1" style="width:100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th width="7%" style="text-align:center">
+                                                        <font style="font-size: 18px;">ลำดับที่</font>
+                                                    </th>
+                                                    <th width="53%" style="text-align:center">
+                                                        <font style="font-size: 18px;">รายการ</font>
+                                                    </th>
+                                                    <th width="10%" style="text-align:center">
+                                                        <font style="font-size: 16px;">จำนวน</font>
+                                                    </th>
+                                                    <th width="15%" style="text-align:center">
+                                                        <font style="font-size: 18px;">ราคาต่อหน่วย</font>
+                                                    </th>
+                                                    <th width="15%" style="text-align:center">
+                                                        <font style="font-size: 18px;">ราคารวม</font>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="sale_tbody" style="">
+                                                <t t-set="i" t-value="1"/>
+                                                <t t-set="max" t-value="10"/>
+                                                <t t-set="count" t-value="1"/>
+                                                <t t-set="total" t-value="o.amount_untaxed"/>
+                                                <t t-set="total_multi" t-value="0"/>
+                                                <t t-foreach="o.order_line" t-as="l">
+                                                    <tr style="line-height: 18px">
+                                                        <td style="text-align:center">
+                                                            <font style="font-size: 18px;">
+                                                                <span t-esc="i"/>
+                                                            </font>
+                                                        </td>
+                                                        <t t-set="i" t-value="i+1"/>
+                                                        <t t-if="count &gt; 10">
+                                                            <t t-set="count" t-value="1"/>
+                                                        </t>
+                                                        <t t-if="count &lt; 11">
+                                                            <t t-set="count" t-value="count + l.get_line(l.name) + 1"/>
+                                                        </t>
+                                                        <td style="text-align:left">
+                                                            <font style="font-size: 18px;">
+                                                                <span t-field="l.name"/>
+                                                            </font>
+                                                        </td>
+                                                        <td style="text-align:center">
+                                                            <font style="font-size: 18px;">
+                                                                <span t-field="l.product_uom_qty"/>
+                                                            </font>
+                                                        </td>
+                                                        <td style="text-align:right">
+                                                            <font style="font-size: 18px;">
+                                                                <span t-esc="'{0:,.2f}'.format(float(l.price_unit))"/>
+                                                            </font>
+                                                        </td>
+                                                        <td style="text-align:right">
+                                                            <font style="font-size: 18px;">
+                                                                <span t-esc="'{0:,.2f}'.format(float(l.price_subtotal))"/>
+                                                            </font>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                                <t t-foreach="range(count, 10)" t-as="x">
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="3">
+                                                        <font style="font-size: 18px;">
+                                                            <strong>หมายเหตุ :</strong>&amp;nbsp;
+
+                                                            <br/>
+                                                            <br/>
+                                                        </font>
+                                                    </td>
+                                                    <td>
+                                                        <font style="font-size: 18px; text-align:center">
+                                                            รวม
+                                                            <br/>
+                                                            ภาษีมูลค่าเพิ่ม 7%
+                                                            <br/>
+                                                            <t t-if="o.discount_view == 'Before Tax'">
+                                                                <span>ส่วนลด</span>
+                                                            </t>
+                                                            <t t-if="o.discount_view == 'After Tax'">
+                                                                <span>ส่วนลด</span>
+                                                            </t>
+                                                            ยอดรวมสุทธิ
+                                                            <br/>
+                                                        </font>
+                                                    </td>
+                                                    <td style="text-align:right">
+                                                        <font style="font-size: 18px;">
+                                                            <span t-esc="'{0:,.2f}'.format(float(o.amount_untaxed))"/>
+                                                            <br/>
+                                                            <t t-if="o.discount_view == 'Before Tax'">
+                                                                <span t-esc="'{0:,.2f}'.format(float(o.discounted_amount))"/>
+                                                                <br/>
+                                                            </t>
+                                                            <span t-esc="'{0:,.2f}'.format(float(o.amount_tax))"/>
+                                                            <br/>
+                                                            <t t-if="o.discount_view == 'After Tax'">
+                                                                <span t-esc="'{0:,.2f}'.format(float(o.amount_untaxed + o.amount_tax))"/>
+                                                                <br/>
+                                                            </t>
+                                                            <span t-esc="'{0:,.2f}'.format(float(o.amount_total))"/>
+                                                            <br/>
+                                                        </font>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <font style="font-size: 18px;line-height: 18px">
+                                                            <U>ข้อกำหนดและเงื่อนไขการขอใบเสนอราคา</U>
+                                                            <br/>
+                                                            <span t-field="o.note"/>
+                                                        </font>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+
+                                    <div class="row" style="margin-top: -1cm;">
+                                <div class="col-xs-12">
+                                    <div class="row">
+                                        <table class="table table-bordered1" style="width:100%;">
+                                            <td class="col-xs-4">
+                                                <font style="font-size: 18px;">
+                                                    <br/>
+                                                    <br/><p align = "center">
+                                                    __________________<br/>
+                                                    ลงนามผู้มีอำนาจสั่งซื้อสินค้า<br/></p>
+                                                    ตำแหน่ง:&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;__________________
+                                                </font>
+                                            </td>
+                                            <td class="col-xs-4">
+                                                <font style="text-align:center; font-size: 18px;">
+                                                    <br/><p align = "center">
+                                                    <span t-field="o.user_id.name"/><br/>
+                                                    ผู้จัดทำใบเสนอราคา<br/></p>
+                                                    Tel:&amp;nbsp;<span t-field="o.user_id.mobile"/><br/>
+                                                    E-mail:&amp;nbsp;<span t-field="o.user_id.email"/>
+                                                </font>
+                                            </td>
+                                            <td class="col-xs-4">
+                                                 <font style="text-align:center; font-size: 18px;">
+                                                    <br/><p align = "center">
+                                                    Mr.Shuchart&amp;nbsp;&amp;nbsp;Suphawimol<br/>
+                                                    Manager<br/></p>
+                                                    Tel: 081-8279592<br/>
+                                                    E-mail: shuchart@rbs-center.info
+                                                </font>
+                                            </td>
+                                        </table>
+                                    </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

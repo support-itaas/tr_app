@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+		<record id="hr_rule_wage" model="hr.salary.rule">
+			<field name="name">เงินเดือน</field>
+			<field name="sequence" eval="1"/>
+			<field name="code">BASIC</field>
+			<field name="category_id" ref="hr_payroll.BASIC"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = contract.wage</field>
+		</record>
+		<record id="hr_rule_allow14" model="hr.salary.rule">
+			<field name="name">ค่าตำแหน่ง</field>
+			<field name="sequence" eval="2"/>
+			<field name="code">allow14</field>
+			<field name="category_id" ref="hr_payroll.ALW"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.allow14</field>
+		</record>
+		<record id="hr_rule_allow15" model="hr.salary.rule">
+			<field name="name">ค่าวิชาชีพ</field>
+			<field name="sequence" eval="3"/>
+			<field name="code">allow15</field>
+			<field name="category_id" ref="hr_payroll.ALW"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.allow15</field>
+		</record>
+		<record id="hr_rule_allow16" model="hr.salary.rule">
+			<field name="name">ค่าการจัดการ</field>
+			<field name="sequence" eval="4"/>
+			<field name="code">allow16</field>
+			<field name="category_id" ref="hr_payroll.ALW"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.allow16</field>
+		</record>
+		<record id="hr_rule_allow05" model="hr.salary.rule">
+			<field name="name">ค่าน้ำมัน-พาหนะ</field>
+			<field name="sequence" eval="5"/>
+			<field name="code">allow05</field>
+			<field name="category_id" ref="hr_payroll.ALW"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.allow05+payslip.allow04</field>
+		</record>
+		<record id="hr_rule_allow06" model="hr.salary.rule">
+			<field name="name">ค่าโทรศัพท์</field>
+			<field name="sequence" eval="6"/>
+			<field name="code">allow06</field>
+			<field name="category_id" ref="hr_payroll.ALW"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.allow06</field>
+		</record>
+		<record id="hr_rule_allow17" model="hr.salary.rule">
+			<field name="name">ค่าบำรุงรักษารถยนต์</field>
+			<field name="sequence" eval="7"/>
+			<field name="code">allow17</field>
+			<field name="category_id" ref="hr_payroll.ALW"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.allow17</field>
+		</record>
+		<record id="hr_rule_overtime" model="hr.salary.rule">
+			<field name="name">โอที</field>
+			<field name="sequence" eval="8"/>
+			<field name="code">overtime</field>
+			<field name="category_id" ref="hr_payroll.ALW"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.overtime</field>
+		</record>
+		<record id="hr_rule_allow18" model="hr.salary.rule">
+			<field name="name">เงินพิเศษ</field>
+			<field name="sequence" eval="9"/>
+			<field name="code">allow18</field>
+			<field name="category_id" ref="hr_payroll.ALW"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.allow18</field>
+		</record>
+		<record id="hr_rule_allow01" model="hr.salary.rule">
+			<field name="name">เบี้ยขขยัน</field>
+			<field name="sequence" eval="10"/>
+			<field name="code">allow01</field>
+			<field name="category_id" ref="hr_payroll.ALW"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.allow01</field>
+		</record>
+		<record id="hr_rule_allow08" model="hr.salary.rule">
+			<field name="name">ค่าคอมฯ</field>
+			<field name="sequence" eval="11"/>
+			<field name="code">allow08</field>
+			<field name="category_id" ref="hr_payroll.ALW"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.allow08</field>
+		</record>
+		<record id="hr_rule_allow13" model="hr.salary.rule">
+			<field name="name">เงินเดือนตกเบิก</field>
+			<field name="sequence" eval="12"/>
+			<field name="code">allow13</field>
+			<field name="category_id" ref="hr_payroll.ALW"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.allow13</field>
+		</record>
+		<record id="hr_rule_allow11" model="hr.salary.rule">
+			<field name="name">โบนัส</field>
+			<field name="sequence" eval="13"/>
+			<field name="code">allow11</field>
+			<field name="category_id" ref="hr_payroll.ALW"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.allow11</field>
+		</record>
+		<record id="hr_rule_allow19" model="hr.salary.rule">
+			<field name="name">ชดเชยวันหยุด</field>
+			<field name="sequence" eval="14"/>
+			<field name="code">allow19</field>
+			<field name="category_id" ref="hr_payroll.ALW"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.allow19</field>
+		</record>
+		<record id="hr_rule_allow20" model="hr.salary.rule">
+			<field name="name">เกษียณ</field>
+			<field name="sequence" eval="15"/>
+			<field name="code">allow20</field>
+			<field name="category_id" ref="hr_payroll.ALW"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.allow20</field>
+		</record>
+		<record id="hr_rule_gross" model="hr.salary.rule">
+			<field name="name">รวมรายได้</field>
+			<field name="sequence" eval="100"/>
+			<field name="code">GROSS</field>
+			<field name="category_id" ref="hr_payroll.GROSS"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = categories.BASIC + categories.ALW</field>
+		</record>
+
+
+		<!--#deduct-->
+		<record id="hr_rule_deduct02" model="hr.salary.rule">
+			<field name="name">ภาษีหัก ณ ที่จ่าย</field>
+			<field name="sequence" eval="16"/>
+			<field name="code">deduct02</field>
+			<field name="category_id" ref="hr_payroll.DED"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.deduct02*(-1)</field>
+		</record>
+		<record id="hr_rule_deduct09" model="hr.salary.rule">
+			<field name="name">ประกันสังคม</field>
+			<field name="sequence" eval="17"/>
+			<field name="code">deduct09</field>
+			<field name="category_id" ref="hr_payroll.DED"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.deduct09*(-1)</field>
+		</record>
+		<record id="hr_rule_deduct03" model="hr.salary.rule">
+			<field name="name">เงินประกัน</field>
+			<field name="sequence" eval="18"/>
+			<field name="code">deduct03</field>
+			<field name="category_id" ref="hr_payroll.DED"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.deduct03*(-1)</field>
+		</record>
+		<record id="hr_rule_deduct01" model="hr.salary.rule">
+			<field name="name">มาสาย</field>
+			<field name="sequence" eval="19"/>
+			<field name="code">deduct01</field>
+			<field name="category_id" ref="hr_payroll.DED"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.deduct01*(-1)</field>
+		</record>
+		<record id="hr_rule_deduct15" model="hr.salary.rule">
+			<field name="name">ทำงานไม่ครบเดือน</field>
+			<field name="sequence" eval="20"/>
+			<field name="code">deduct15</field>
+			<field name="category_id" ref="hr_payroll.DED"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.deduct15*(-1)</field>
+		</record>
+		<record id="hr_rule_deduct07" model="hr.salary.rule">
+			<field name="name">ค่าโทรศัพท์</field>
+			<field name="sequence" eval="21"/>
+			<field name="code">deduct07</field>
+			<field name="category_id" ref="hr_payroll.DED"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.deduct07*(-1)</field>
+		</record>
+		<record id="hr_rule_deduct08" model="hr.salary.rule">
+			<field name="name">ค่าน้ำมัน</field>
+			<field name="sequence" eval="22"/>
+			<field name="code">deduct08</field>
+			<field name="category_id" ref="hr_payroll.DED"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.deduct08*(-1)</field>
+		</record>
+		<record id="hr_rule_deduct10" model="hr.salary.rule">
+			<field name="name">ค่าใช้จ่ายอื่นๆ</field>
+			<field name="sequence" eval="23"/>
+			<field name="code">deduct10</field>
+			<field name="category_id" ref="hr_payroll.DED"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.deduct10*(-1)</field>
+		</record>
+		<record id="hr_rule_deduct16" model="hr.salary.rule">
+			<field name="name">ค่าผ่อนของ</field>
+			<field name="sequence" eval="24"/>
+			<field name="code">deduct16</field>
+			<field name="category_id" ref="hr_payroll.DED"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.deduct16*(-1)</field>
+		</record>
+		<record id="hr_rule_deduct05" model="hr.salary.rule">
+			<field name="name">เงินกู้ยืม</field>
+			<field name="sequence" eval="25"/>
+			<field name="code">deduct05</field>
+			<field name="category_id" ref="hr_payroll.DED"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.deduct05*(-1)</field>
+		</record>
+		<record id="hr_rule_deduct04" model="hr.salary.rule">
+			<field name="name">ค่าฟอร์ม ค่าประกันห้องเช่า</field>
+			<field name="sequence" eval="26"/>
+			<field name="code">deduct04</field>
+			<field name="category_id" ref="hr_payroll.DED"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.deduct04*(-1)</field>
+		</record>
+		<record id="hr_rule_deduct14" model="hr.salary.rule">
+			<field name="name">ค่าความเสีย</field>
+			<field name="sequence" eval="27"/>
+			<field name="code">deduct14</field>
+			<field name="category_id" ref="hr_payroll.DED"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.deduct14*(-1)</field>
+		</record>
+		<record id="hr_rule_deduct06" model="hr.salary.rule">
+			<field name="name">เงินสำรองจ่าย</field>
+			<field name="sequence" eval="28"/>
+			<field name="code">deduct06</field>
+			<field name="category_id" ref="hr_payroll.DED"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.deduct06*(-1)</field>
+		</record>
+		<record id="hr_rule_deduct17" model="hr.salary.rule">
+			<field name="name">ขาดงาน</field>
+			<field name="sequence" eval="29"/>
+			<field name="code">deduct17</field>
+			<field name="category_id" ref="hr_payroll.DED"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = payslip.deduct17*(-1)</field>
+		</record>
+		<record id="hr_rule_all_ded" model="hr.salary.rule">
+			<field name="name">รวมรายหัก</field>
+			<field name="sequence" eval="200"/>
+			<field name="code">All_DED</field>
+			<field name="category_id" ref="hr_payroll.DED"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = categories.DED</field>
+		</record>
+
+		<record id="hr_rule_total" model="hr.salary.rule">
+			<field name="name">รวมรายได้สุทธิ</field>
+			<field name="sequence" eval="300"/>
+			<field name="code">NET</field>
+			<field name="category_id" ref="hr_payroll.NET"/>
+			<field name="condition_select">none</field>
+			<field name="amount_select">code</field>
+			<field name="amount_python_compute">result = categories.BASIC + categories.ALW + categories.DED</field>
+		</record>
+
+	</data>
+</openerp>
+		

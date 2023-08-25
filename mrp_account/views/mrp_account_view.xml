@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="mrp_workcenter_view_inherit" model="ir.ui.view">
+        <field name="name">mrp.workcenter.form.inherit</field>
+        <field name="model">mrp.workcenter</field>
+        <field name="inherit_id" ref="mrp.mrp_workcenter_view"/>
+        <field name="arch" type="xml">
+            <group name="capacity" position="after">
+                <group string="Costing Information">
+                    <field name="costs_hour"/>
+                    <field name="costs_hour_account_id" groups="analytic.group_analytic_accounting"/>
+                </group>
+            </group>
+        </field>
+    </record>
+
+    <!-- cost structure report -->
+    <report
+            id="action_cost_struct_mrp_production"
+            model="mrp.production"
+            string="Cost Analysis"
+            report_type="qweb-html"
+            name="mrp_account.mrp_cost_structure"
+            file="mrp_account.mrp_cost_structure"
+            paperformat="base.paperformat_batch_deposit"
+            print_report_name="'Cost Analysis - %s ' % object.name"
+    />
+
+    <record id="mrp_production_view_search_inherit_qc_state" model="ir.ui.view">
+        <field name="name">mrp.production.search.view.inherit.qc_state</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.view_mrp_production_filter"/>
+        <field name="arch" type="xml">
+
+            <filter name="todo" position="replace">
+                <filter string="To Do" name="todo" domain="[('state','in',('confirmed', 'qc_pass','planned','progress'))]" help="Manufacturing Orders which are in confirmed state."/>
+            </filter>
+        </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="mrp_production_form_inherit_view6">
+        <field name="name">mrp.production.form.inherit</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <button name="button_mark_done" position="attributes">
+                <!--                    <button name="button_mark_done" attrs="{'invisible': ['|', ('check_to_done', '=', False), ('consumed_less_than_planned', '=', False)]}" string="Mark as Done" type="object" class="oe_highlight" confirm="You have consumed less material than what was planned. Are you sure you want to close this MO?"/>-->
+                <attribute name="attrs">{'invisible': [('state', '!=', 'qc_pass')]}</attribute>
+            </button>
+
+            <button name="button_mark_done" position="after">
+                <button name="fix_post_inventory" type="object" string="Fix FG"/>
+            </button>
+
+            <button name="button_mark_done" position="before">
+
+                <button name="button_qc_pass"
+                        string="QC Pass"
+                        state="planned"
+                        type="object"
+                        class="oe_highlight"
+                        attrs="{'invisible': [('state', 'in', ('qc_pass','done','confirmed'))]}"
+                />
+
+
+
+            </button>
+            <!--            <field name="state" position="attributes" widget="statusbar" statusbar_visible="confirmed,progress,qc_pass,done,cancel" />-->
+
+            <field name="state" position="attributes">
+                <attribute name="statusbar_visible">confirmed,planned,progress,qc_pass,done,cancel</attribute>
+            </field>
+            <div name="button_box" position="inside">
+                <button name="%(mrp_account.action_cost_struct_mrp_production)d" type="action"
+                        class="oe_stat_button" icon="fa-circle-o" string="Cost Analysis" attrs="{'invisible': [('state', '!=', 'done')]}">
+                </button>
+            </div>
+        </field>
+    </record>
+
+    <report
+            id="action_cost_struct_product_template"
+            model="product.template"
+            string="Cost Structure Analysis"
+            report_type="qweb-html"
+            name="mrp_account.product_template_cost_structure"
+            file="mrp_account.product_template_cost_structure"
+            print_report_name="'Cost Structure Analysis - %s' % object.name"
+    />
+
+    <record id="product_product_inherit_form_view_cost_structure" model="ir.ui.view">
+        <field name="name">cost_structure_product_product_inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="groups_id" eval="[(4, ref('mrp.group_mrp_user'))]"/>
+        <field name="arch" type="xml">
+            <button name="toggle_active" position="before">
+                <field name="mo_count" invisible="1"/>
+                <button name="action_cost_structure" type="object"
+                        class="oe_stat_button" icon="fa-dollar" string="Cost Analysis" attrs="{'invisible': [('mo_count', '=', 0)]}">
+                </button>
+            </button>
+        </field>
+    </record>
+
+
+    <record id="view_mrp_production_advance" model="ir.ui.view">
+            <field name="name">mrp.production.advance.wizard</field>
+            <field name="model">mrp.production.advance</field>
+            <field name="arch" type="xml">
+                <form string="Create Account move">
+                    <footer>
+                        <button string='Validate' name="action_confirm" type="object" class="btn-primary"/>
+<!--                        <button string='Update Cost and Post (OUT)' name="update_unit_cost" type="object" class="btn-primary"/>-->
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+    </record>
+
+    <act_window
+            id="action_mrp_production_update"
+            name="MRP Production"
+            res_model="mrp.production.advance"
+            src_model="mrp.production"
+            view_mode="form"
+            multi="True"
+            target="new"
+            key2="client_action_multi"
+        />
+
+</odoo>

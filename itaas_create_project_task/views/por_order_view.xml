@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_pos_order_inherit" model="ir.ui.view">
+        <field name="name">pos.order.form.inherit</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='car_id']" position="after">
+                <field name="is_create_project_task" invisible="1"/>
+            </xpath>
+            <xpath expr="//button[@name='delete_coupon']" position="after">
+                <button name="create_project_task" string="Create Task" type="object" attrs="{'invisible': [('is_create_project_task','=',True)]}"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

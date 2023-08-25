@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_shift_saturday_type,shift_saturday_type,model_shift_saturday_type,hr.group_hr_user,1,1,1,1
+access_employee_shift,employee_shift,model_employee_shift,,hr.group_hr_user,1,1,1,1
+access_employee_multiple_working_schedule,employee_multiple_working_schedule,model_employee_multiple_working_schedule,hr.group_hr_user,1,1,1,1
+

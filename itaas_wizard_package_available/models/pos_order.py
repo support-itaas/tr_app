@@ -14,25 +14,29 @@ class PosOrder(models.Model):
     @api.model
     def create(self, values):
         lines = values.get('lines')
-        branch_id = values.get('branch_id')
-        for line in lines:
-            pdt = self.env['product.product'].search([('id', '=', line[2]['product_id'])])
-            if pdt.is_limit_branch and pdt.available_branch and branch_id not in pdt.available_branch.ids:
-                raise UserError(_('This package has limited order for specific branch '))
-            elif pdt.is_limit_branch and pdt.maximum_order_branch:
-                self.env.cr.execute(
-                    'SELECT sum(pol.qty) FROM pos_order_line pol '
-                    'join pos_order pos on (pol.order_id=pos.id) WHERE pol.product_id = %s and pos.branch_id = %s',
-                    (line[2]['product_id'],)+(branch_id,))
-                res_new = self.env.cr.dictfetchall()
-                if res_new[0]['sum'] + line[2]['qty'] > pdt.maximum_order_branch:
-                    raise UserError(_('This package has limited order maximum per branch '))
+        branch_id = values.get('operating_branch_id')
+        # print ('VLAL')
+        # print (values)
+        # print (lines)
+        if lines:
+            for line in lines:
+                pdt = self.env['product.product'].search([('id', '=', line[2]['product_id'])])
+                if pdt.is_limit_branch and pdt.available_branch and branch_id not in pdt.available_branch.ids:
+                    raise UserError(_('This package has limited order for specific branch '))
+                elif pdt.is_limit_branch and pdt.maximum_order_branch:
+                    self.env.cr.execute(
+                        'SELECT sum(pol.qty) FROM pos_order_line pol '
+                        'join pos_order pos on (pol.order_id=pos.id) WHERE pol.product_id = %s and pos.branch_id = %s',
+                        (line[2]['product_id'],)+(branch_id,))
+                    res_new = self.env.cr.dictfetchall()
+                    if res_new and res_new[0]['sum'] and res_new[0]['sum'] + line[2]['qty'] > pdt.maximum_order_branch:
+                        raise UserError(_('This package has limited order maximum per branch '))
 
         res = super(PosOrder, self).create(values)
         return res
 
     @api.multi
-    def place_order(self, partner_id=None, branch_id=None, use_wallet=False, order_line_data=[],order=None):
+    def place_order(self, partner_id=None, branch_id=None, use_wallet=False, order_line_data=[]):
         print ('PLACE ORDER--')
         if order_line_data:
             # is_limit = False
@@ -49,9 +53,8 @@ class PosOrder(models.Model):
                     if res_new[0]['sum'] + line['qty'] > pdt.maximum_order_branch:
                         raise UserError(_('This package has limited order maximum per branch '))
 
-            result = super(PosOrder, self).place_order(partner_id, branch_id, use_wallet, order_line_data, order)
-            return result
+            super(PosOrder, self).place_order(partner_id, branch_id, use_wallet, order_line_data)
         else:
-            super(PosOrder, self).place_order(partner_id,branch_id,use_wallet,order_line_data,order)
+            super(PosOrder, self).place_order(partner_id,branch_id,use_wallet,order_line_data)
 
 

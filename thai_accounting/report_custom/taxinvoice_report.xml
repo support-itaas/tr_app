@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="taxinvoice_report_id">
+            <t t-foreach="docs" t-as="doc">
+                <t t-set="amount_untaxed" t-value="doc.amount_untaxed"/>
+                <t t-set="amount_tax" t-value="doc.amount_tax"/>
+                <t t-set="discount_total" t-value="doc.amount_untaxed - doc.discounted_amount" />
+                <t t-call="report.internal_layout">
+                    <!--<div class="page" t-attf-style="background-image:url('/signature/static/tax-invoice2.jpg'); background-size:370mm 510mm; width:370mm; height:510mm;">-->
+                    <div class="page">
+                        <style>
+                            .header{width:100%; height:200px;}
+                            .content{width:100%; height:535px;}
+                            .footer{width:100%; height:200px;}
+                            .doubleUnderline{border-bottom: 3px double;}
+                        </style>
+                        <br/><br/><br/><br/><br/><br/><br/><br/>
+                        <div class="header">
+                            <div class="col-xs-1">
+
+                            </div>
+
+                            <div class="col-xs-6" style="position: absolute; left: 15%;">
+                                <font style="font-size: 15px;">
+                                    <span t-field="doc.partner_id.ref"/><br/> <p/>
+                                    <span t-field="doc.partner_id.name"/>&amp;nbsp;<span t-field="doc.partner_id.vat"/><br/> <p/>
+                                    <span t-field="doc.partner_id.street"/>&amp;nbsp;<span t-field="doc.partner_id.street2"/><br/> <p/>
+                                    <span t-field="doc.partner_id.city"/>&amp;nbsp;<span t-field="doc.partner_id.state_id.name"/><br/> <p/>
+                                    <span t-field="doc.partner_id.zip"/><br/> <p/>
+                                    <span t-field="doc.partner_id.phone"/><br/><br/>
+                                </font>
+                            </div>
+
+                            <div class="col-xs-2">
+
+                            </div>
+
+                            <div class="col-xs-3" style="position: absolute; left: 75%;">
+                                <font style="font-size: 14px;">
+                                    <span t-field="doc.number"/><br/> <p/>
+                                    <span t-field="doc.date_invoice"/><br/> <p/>
+                                    <span t-field="doc.partner_id.name"/><br/> <br/>
+                                    <span t-field="doc.payment_term_id.name"/><br/> <br/>
+                                    <span t-field="doc.date_due"/><br/> <br/>
+                                </font>
+                            </div>
+                        </div>
+
+                        <div class="content">
+                            <table width="100%">
+                                <t t-set="i" t-value="1"/>
+                                <t t-foreach="doc.invoice_line_ids" t-as="l">
+                                    <t t-set="price_subtotal" t-value="l.price_subtotal"/>
+                                    <tr>
+                                        <td width="7%" style="text-align: center">
+                                            <font style="font-size: 14px;">
+                                                <span t-esc="i"/>
+                                            </font>
+                                        </td>
+                                        <t t-set="i" t-value="i+1"/>
+                                        <td width="53%" style="text-align: left">
+                                            <font style="font-size: 16px;">
+                                                <span t-field="l.product_id.name"/>
+                                            </font>
+                                        </td>
+                                        <td width="9%" style="text-align: center">
+                                            <font style="font-size: 14px;">
+                                                <span t-field="l.quantity"/>
+                                            </font>
+                                        </td>
+                                        <td width="11%" style="text-align: center">
+                                            <font style="font-size: 16px;">
+                                                <span t-field="l.uom_id.name"/>
+                                            </font>
+                                        </td>
+                                        <td width="10%" style="text-align: left">
+                                            <font style="font-size: 14px;">
+                                                <span t-field="l.price_unit"/>
+                                            </font>
+                                        </td>
+                                        <td width="10%" style="text-align: right">
+                                            <font style="font-size: 14px;">
+                                                <span t-esc="'{0:,.2f}'.format(float(price_subtotal))"/>
+                                            </font>
+                                        </td>
+                                        <td width="4%"> </td>
+                                    </tr>
+                                </t>
+                            </table>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <table width="100%">
+                                <tr>
+                                    <td width="90%" style="text-align: left">
+                                        <font style="font-size: 16px;">
+                                            <br/><br/><br/><br/><br/><br/><br/>
+                                            <span>(<span t-field="doc.amount_total_invoice_text"/>)</span>
+                                        </font>
+                                    </td>
+                                    <td width="10%" style="text-align: right">
+                                        <font style="font-size: 14px;">
+                                            <span t-esc="'{0:,.2f}'.format(float(amount_untaxed))"/><br/><br/>
+                                            <span t-esc="'{0:,.2f}'.format(float(doc.discounted_amount))"/><br/><br/>
+                                            <span t-esc="'{0:,.2f}'.format(float(discount_total))"/><br/><br/>
+                                            <span t-esc="'{0:,.2f}'.format(float(amount_tax))"/><br/><br/>
+                                            <span t-field="doc.amount_total"/>
+                                        </font>
+                                    </td>
+                                    <td width="4%"> </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</openerp>

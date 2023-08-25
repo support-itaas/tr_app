@@ -148,7 +148,6 @@ button.btn.btn-ghost:hover {
     padding: 150px 0;
     background-position: center;
     background-size: cover;
-    overflow-y: hidden;
 }
 
 

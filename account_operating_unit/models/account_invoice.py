@@ -11,12 +11,16 @@ class AccountInvoice(models.Model):
     _inherit = "account.invoice"
 
     operating_unit_id = fields.Many2one('operating.unit', 'Operating Unit',
-                                        default=lambda self:
-                                        self.env['res.users'].
-                                        operating_unit_default_get(self._uid),
                                         readonly=True,
                                         states={'draft': [('readonly',
                                                            False)]})
+
+    @api.onchange('partner_id')
+    def _onchange_partner_id_operating(self):
+        print('_onchange_partner_id_operating:')
+        operating = self.env['res.users'].operating_unit_default_get(self._uid)
+        print('operating:',operating)
+        self.operating_unit_id = operating.id
 
     @api.multi
     def finalize_invoice_move_lines(self, move_lines):
@@ -39,6 +43,9 @@ class AccountInvoice(models.Model):
                 pr.operating_unit_id and
                 pr.company_id != pr.operating_unit_id.company_id
             ):
+                print('TEST',pr.company_id.name)
+                print('TEST', pr.operating_unit_id.name)
+                print('TEST', pr.operating_unit_id.company_id.name)
                 raise ValidationError(_('The Company in the Invoice and in '
                                         'Operating Unit must be the same.'))
         return True

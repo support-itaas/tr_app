@@ -14,7 +14,7 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
 
-    birth_date_month = fields.Char(string='Birth Date Month',compute='_get_birth_date_month')
+    birth_date_month = fields.Char(string='Birth Date Month', compute='_get_birth_date_month')
 
     @api.multi
     @api.depends('birth_date')

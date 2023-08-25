@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="asset_labels_report_id">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <t t-foreach="docs" t-as="product">
+                            <div class="col-xs-4">
+                                <table width="100%">
+                                    <tr>
+                                        <td width="100%" style="text-align: center">
+                                            <img t-if="doc.barcode" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', doc.barcode, 600, 100)" style="width:100%;height:20%;"/><br/>
+                                            <font style="font-size: 8px;">
+                                                <span t-field="doc.barcode"/>
+                                            </font>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="100%" style="text-align: center">
+                                            <strong t-esc="doc.name"/>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                            <!--<div class="col-xs-6 mt8 mb64">-->
+                                <!--<table class="table table-bordered">-->
+                                    <!--<tbody>-->
+                                        <!--<tr height="40">-->
+                                            <!--<td style="text-align: center">-->
+                                                <!--<img t-if="doc.barcode" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', doc.barcode, 600, 100)" style="width:100%;height:20%;"/><br/>-->
+                                                <!--<font style="font-size: 8px;">-->
+                                                    <!--<span t-field="doc.barcode"/>-->
+                                                <!--</font>-->
+                                            <!--</td>-->
+                                        <!--</tr>-->
+                                        <!--<tr height="40">-->
+                                            <!--<td style="text-align: center">-->
+                                                <!--<strong t-esc="doc.name"/>-->
+                                            <!--</td>-->
+                                        <!--</tr>-->
+                                    <!--</tbody>-->
+                                <!--</table>-->
+                            <!--</div>-->
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</openerp>

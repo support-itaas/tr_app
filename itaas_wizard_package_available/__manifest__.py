@@ -4,7 +4,7 @@
 
 {
     'name': 'Wizard Package Availability',
-    'version': '11.0.1.3',
+    'version': '11.0.1.0',
     'summary': 'Wizard Package',
     'sequence': 1,
     'author': 'ITAAS',

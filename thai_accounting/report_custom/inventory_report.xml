@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="inventory_report_id">
+            <t t-foreach="docs" t-as="doc">
+                <t t-set="total_untaxed" t-value="0"/>
+                <t t-set="total_qty" t-value="0"/>
+                <t t-call="report.external_layout">
+
+                    <div class="page">
+                        <style>
+                            .header{width:100%;height:200px;}
+                            .content{width:100%; height:780px;}
+                            .footer{width:100%; height:200px;}
+                            .doubleUnderline{border-bottom: 3px double;}
+                        </style>
+
+                        <div class="header">
+                            <div class="col-xs-12">
+                                <div class="col-xs-3">
+                                    <!--<img t-att-src="'data:image/png;base64,%s' % o.company_id.logo" style="max-height: 125px;"/>-->
+                                    <img class="img-rounded pull-left" style="width: 100%;" src="/signature/static/logo-bow2.jpg"/>
+                                </div>
+                                <div class="col-xs-9" style="text-align:right">
+                                    <font style="font-size: 24px;">
+                                        <strong><span>ใบส่งสินค้า</span></strong>
+                                    </font>
+                                    <br/><br/>
+                                    <font style="font-size: 18px;">
+                                        <strong><span t-field="doc.partner_id.parent_id.supplier_code" /></strong>
+                                    </font>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="col-xs-9" style="text-align:left">
+                                    <font style="font-size: 18px;">
+                                        <strong><span t-field="doc.company_id.name"/></strong>
+                                    </font><br/>
+                                    <font style="font-size: 12px;">
+                                        <span t-field="doc.company_id.street" />&amp;nbsp;<span t-field="doc.company_id.street2" />&amp;nbsp;
+                                        <span t-field="doc.company_id.city" />&amp;nbsp;<span t-field="doc.company_id.state_id.name" />&amp;nbsp;
+                                        <span t-field="doc.company_id.zip" /><br/>
+                                        <span>Tel.</span>&amp;nbsp;<span t-field="doc.company_id.phone" />&amp;nbsp;
+                                        <span>Fax : </span>&amp;nbsp;<span t-field="doc.company_id.fax" /><br/>
+                                        <span>Email: </span>&amp;nbsp;<span t-field="doc.company_id.email" />&amp;nbsp;
+                                        <span>เลขประจำตัวผู้เสียภาษีอากร</span>&amp;nbsp;<span t-field="doc.company_id.vat" />
+                                    </font>
+                                </div>
+                                <div class="col-xs-3" style="text-align:right">
+                                    <font style="font-size: 16px;">
+                                        <strong><span t-field="doc.logistic_type_id.name" /></strong>
+                                    </font>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-xs-12">
+                                <br/><br/>
+                                <div class="col-xs-9">
+                                    <font style="font-size: 16">
+                                        &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                        <strong><span t-field="doc.partner_id.ref"/></strong>
+                                    </font>
+                                    <font style="font-size: 12px;">
+                                        &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                        <span>เลขประจำตัวผู้เสียภาษี</span>&amp;nbsp;
+                                        <span t-field="doc.partner_id.parent_id.vat"/><span>/</span><span t-field="doc.partner_id.ref"/>
+                                    </font><br/>
+                                    <font style="font-size: 16px;">
+                                        &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                        <strong><span t-field="doc.partner_id.parent_id.name"/><br/>
+                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            <span t-field="doc.partner_id.parent_id.street"/>&amp;nbsp;
+                                            <span t-field="doc.partner_id.parent_id.street2"/><br/>
+                                            &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                            <span t-field="doc.partner_id.parent_id.city"/>&amp;nbsp;
+                                            <span t-field="doc.partner_id.parent_id.state_id.name"/>&amp;nbsp;
+                                            <span t-field="doc.partner_id.parent_id.zip"/></strong>
+                                    </font>
+                                </div>
+                                <div class="col-xs-3" style="text-align: left">
+                                    <font style="font-size: 14px;">
+                                        <span t-field="doc.delivery_code"/><br/>
+                                        <span t-field="doc.min_date" t-field-options='{"format": "d MMMM y"}'/><br/>
+                                        <span t-field="doc.partner_id.name"/><br/>
+                                        <span t-field="doc.sale_id.payment_term_id.name"/><br/>
+                                        <span t-field="doc.sale_id.validity_date"/><br/><br/><br/>
+                                    </font>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="content">
+                            <table class="table table-condensed" width="100%">
+                                <t t-set="i" t-value="1"/>
+                                <t t-foreach="doc.pack_operation_product_ids" t-as="l">
+                                    <t t-set="product_qty" t-value="l.linked_move_operation_ids.move_id.procurement_id.sale_line_id.product_uom_qty"/>
+                                    <t t-set="uom_name" t-value="l.linked_move_operation_ids.move_id.procurement_id.sale_line_id.product_uom.name"/>
+                                    <t t-set="total_price" t-value="product_qty * l.linked_move_operation_ids.move_id.procurement_id.sale_line_id.price_unit"/>
+                                    <t t-set="total_untaxed" t-value="total_price + total_untaxed"/>
+                                    <t t-set="total_qty" t-value="product_qty+total_qty"/>
+                                    <tr>
+                                        <td width="6%" style="text-align: center">
+                                            <font style="font-size: 16px;">
+                                                <span t-esc="i"/>
+                                            </font>
+                                        </td>
+                                        <t t-set="i" t-value="i+1"/>
+                                        <td width="54%" style="text-align: left">
+                                            <font style="font-size: 18px;">
+                                                <span t-field="l.product_id.name"/>
+                                            </font>
+                                        </td>
+                                        <td width="7%" style="text-align: right">
+                                            <font style="font-size: 16px;">
+                                                <span t-esc="product_qty"/>
+                                            </font>
+                                        </td>
+                                        <td width="7%" style="text-align: center">
+                                            <font style="font-size: 16px;">
+                                                <span t-esc="uom_name"/>
+                                            </font>
+                                        </td>
+                                        <td width="11%" style="text-align: right">
+                                            <font style="font-size: 16px;">
+                                                <span t-field="l.linked_move_operation_ids.move_id.procurement_id.sale_line_id.price_unit"/>
+                                            </font>
+                                        </td>
+                                        <td width="11%" style="text-align: right">
+                                            <font style="font-size: 16px;">
+                                                <span t-esc="'{0:,.2f}'.format(float(total_price))"/>
+                                            </font>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </table>
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="col-xs-9">
+                                <font style="font-size: 14px;">
+                                    <u><strong><span>หมายเหตุ</span></strong></u>&amp;nbsp;
+                                    <span t-field="doc.note"/><br/><br/>
+                                </font>
+
+                                &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                                <font style="font-size: 18px;">
+                                    <strong><span>(<span t-esc="doc.baht_text(total_untaxed+(total_untaxed*0.07))"/>).</span></strong>
+                                </font>
+                            </div>
+                            <div class="col-xs-3" style="text-align: right">
+                                <font style="font-size: 14px;">
+                                    <span t-esc="'{0:,.2f}'.format(float(total_untaxed))"/><br/>
+                                    <span t-esc="'{0:,.2f}'.format(float(total_untaxed*0.07))"/><br/>
+                                    <span t-esc="'{0:,.2f}'.format(float(total_untaxed+(total_untaxed*0.07)))"/>
+                                    <!--span t-field="doc.amount_untaxed" /><br/>
+                                    <span t-field="doc.amount_tax" /><br/>
+                                    <span t-field="doc.amount_total" /-->
+                                </font>
+                            </div>
+                        </div><br/><br/><br/><br/><br/>
+                        <div class="col-xs-12" style="text-align: center">
+                            <font style="font-size: 12px;">
+                                <span>ได้รับสินค้าตามรายการข้างต้นไว้ในสภาพดี และถูกต้องแล้ว</span>
+                            </font>
+                        </div><br/><br/>
+                        <div class="col-xs-12">
+                            <div class="col-xs-3">
+
+                            </div>
+                            <div class="col-xs-3" style="text-align: center">
+                                <font style="font-size: 14px;">
+                                    <span>....................................</span><br/>
+                                    <span>ผู้ส่งสินค้า</span><br/>
+                                    <span>....................................</span><br/>
+                                    <span>ผู้รับสินค้า</span>
+                                </font>
+                            </div>
+                            <div class="col-xs-3" style="text-align: center">
+                                <font style="font-size: 14px;">
+                                    <span>....................................</span><br/>
+                                    <span>วันที่</span><br/>
+                                    <span>....................................</span><br/>
+                                    <span>วันที่</span>
+                                </font>
+                            </div><br/><br/>
+                            <div class="col-xs-3" style="text-align: center">
+                                <font style="font-size: 18px;">
+                                    <span>รวมสินค้า</span>&amp;nbsp;&amp;nbsp;<strong><span t-esc="'{0:,.0f}'.format(float(total_qty))"/></strong>&amp;nbsp;&amp;nbsp;<span>ชิ้น</span>
+                                    <!--t t-foreach="doc.move_lines" t-as="l">
+                                    <t t-set="count_sub" t-value="count[l.name]" />
+                                        <span t-esc="count_sub"></span>
+                                    </t-->
+                                </font>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </t>
+            </t>
+        </template>
+
+    </data>
+</openerp>
