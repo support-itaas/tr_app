@@ -1,1 +1,0 @@
-from . import gen_picking_coupon

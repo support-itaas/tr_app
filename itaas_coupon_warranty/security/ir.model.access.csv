@@ -1,3 +1,0 @@
-"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-"wizard_warranty_record_user","wizard_warranty_record_user","model_wizard_warranty_record","project.group_project_user",1,0,0,0
-"wizard_warranty_record_manager","wizard_warranty_record_manager","model_wizard_warranty_record","project.group_project_manager",1,1,1,1

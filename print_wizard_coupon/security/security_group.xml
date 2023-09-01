@@ -1,8 +1,0 @@
-<odoo>
-
-    <record id="group_print_wizard_coupon" model="res.groups">
-        <field name="name">Manage print wizard coupon</field>
-        <field name="category_id" ref="base.module_category_hidden"/>
-    </record>
-
-</odoo>

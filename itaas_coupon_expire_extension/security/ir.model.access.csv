@@ -1,6 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_wizard_coupon_extension_log,wizard.coupon.extension.log,model_wizard_coupon_extension_log,base.group_user,1,0,0,0
-access_wizard_coupon_extension_log_creator,wizard.coupon.extension.log,model_wizard_coupon_extension_log,wizard_pos.group_coupon_user,1,1,1,0
-access_coupon_extend_reason,access_coupon_extend_reason,model_coupon_extend_reason,base.group_user,1,0,0,0
-access_coupon_extend_reason_manager,access_coupon_extend_reason_manager,model_coupon_extend_reason,wizard_pos.group_coupon_manager,1,1,1,1
-

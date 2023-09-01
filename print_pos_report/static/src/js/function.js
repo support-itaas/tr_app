@@ -1,5 +1,0 @@
-function updatetxt()
-    {
-        alert("hello");
-    }
-     

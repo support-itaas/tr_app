@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <template id="archive_modulo_assets_backend" name="archive modulo assets" inherit_id="web.assets_backend">
-        <xpath expr="." position="inside">
-            <script type="text/javascript" src="/itaas_archive_management/static/src/js/basic_view.js"/>
-        </xpath>
-    </template>
-</odoo>

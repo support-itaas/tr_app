@@ -1,4 +1,0 @@
-"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-
-access_account_voucher_cash_management_user,cash_management_user,account_voucher.model_account_voucher,cash_management.cash_management_user,1,1,1,1
-access_account_account_cash_management_user,cash_management_user,account.model_account_account,cash_management.cash_management_user,1,1,1,1

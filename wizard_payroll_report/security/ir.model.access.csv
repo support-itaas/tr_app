@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_payroll_wizard_detail,payroll_wizard_detail,wizard_payroll_report.model_payroll_wizard_detail,base.group_user,1,1,1,1

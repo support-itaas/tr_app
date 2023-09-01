@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_hr_import_time , hr_import_time,import_timein_out.model_hr_import_time,base.group_user,1,1,1,1
-

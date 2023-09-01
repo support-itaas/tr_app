@@ -1,5 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_project_image_gallery_user,project.image.gallery,model_image_gallery,project.group_project_user,1,0,0,0
-access_project_image_gallery_manager,project.image.gallery,model_image_gallery,project.group_project_manager,1,1,1,1
-access_project_gallery_tags_user,project.gallery.tags,model_gallery_tags,project.group_project_user,1,0,0,0
-access_project_gallery_tags_manager,project.gallery.tags,model_gallery_tags,project.group_project_manager,1,1,1,1

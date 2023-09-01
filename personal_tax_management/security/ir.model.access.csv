@@ -1,8 +1,0 @@
-"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-access_social_security_user,social_security_user,model_social_security,hr.group_hr_user,1,1,1,1
-access_social_security_line_user,social_security_line_user,model_social_security_line,hr.group_hr_user,1,1,1,1
-access_personal_income_tax_user,personal_income_tax_user,model_personal_income_tax,hr.group_hr_user,1,1,1,1
-access_personal_income_tax_line_user,personal_income_tax_line_user,model_personal_income_tax_line,hr.group_hr_user,1,1,1,1
-access_employee_tax_deduction_line_user,employee_tax_deduction_line_user,model_employee_tax_deduction_line,hr.group_hr_user,1,1,1,1
-access_employee_tax_deduction_type_user,employee_tax_deduction_type_user,model_employee_tax_deduction_type,hr.group_hr_user,1,1,1,1
-

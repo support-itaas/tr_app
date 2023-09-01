@@ -1,5 +1,0 @@
-"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-"coupon_order_user","coupon.order.user","model_coupon_order","project.group_project_user",1,1,1,0
-"coupon_order_mgt","coupon.order.mgt","model_coupon_order","project.group_project_manager",1,1,1,1
-"coupon_order_line_user","coupon.order.line.user","model_coupon_order_line","project.group_project_user",1,1,1,0
-"coupon_order_line_mgt","coupon.order.line.mgt","model_coupon_order_line","project.group_project_manager",1,1,1,1

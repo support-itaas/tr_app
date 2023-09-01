@@ -1,7 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_wizard_coupon_user,access.wizard.coupon.user,model_wizard_coupon,project.group_project_user,1,0,0,0
-access_wizard_coupon_manager,access.wizard.coupon.manager,model_wizard_coupon,project.group_project_manager,1,1,1,1
-access_car_settings_user,access.car.settings.user,model_car_settings,project.group_project_user,1,0,0,0
-access_car_settings_manager,access.car.settings.manager,model_car_settings,project.group_project_manager,1,1,1,1
-access_car_remark_user,access.car.remark.user,model_car_remark,project.group_project_user,1,0,0,0
-access_car_remark_manager,access.car.remark.manager,model_car_remark,project.group_project_manager,1,1,1,1
